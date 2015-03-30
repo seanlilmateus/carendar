@@ -1,5 +1,5 @@
 module Carendar
-  class ContentDelegate
+  class ContentViewModel
     
     def initialize(controller)
       @controller = controller

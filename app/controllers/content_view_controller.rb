@@ -9,7 +9,7 @@ module Carendar
     
     def viewDidLoad
       super
-      @content_delegate = ContentDelegate.new WeakRef.new(self)
+      @content_view_model = ContentViewModel.new WeakRef.new(self)
       # attache the childrean Controllers
       addChildViewController calendar_view_controller
       addChildViewController events_view_controller
@@ -21,7 +21,7 @@ module Carendar
     end
     
     def viewDidLayout
-      @content_delegate.content_loaded
+      @content_view_model.content_loaded
     end
     
     def updateViewConstraints
@@ -54,7 +54,7 @@ module Carendar
     # childrean Controllers
     def calendar_view_controller
       @__calendar_view_controller__ ||= CalendarController.new.tap do |ins|
-        inst.delegate = @content_delegate
+        inst.delegate = @content_view_model
         inst.view.extend(Layout::View)
       end
     end
@@ -75,7 +75,7 @@ module Carendar
     def today_button
       @__today_button__ ||= create_button do |b|
         b.title = localized_string("Today", "Today")
-        b.target = @content_delegate
+        b.target = @content_view_model
         b.action = 'select_date:'
       end
     end
@@ -87,7 +87,7 @@ module Carendar
         button.alternateImage = NSImage.imageNamed('settings')
         button.image = NSImage.imageNamed('settings-active')
         button.bordered = false
-        button.target = @content_delegate
+        button.target = @content_view_model
         button.action = 'show_menu:'
       end
     end
