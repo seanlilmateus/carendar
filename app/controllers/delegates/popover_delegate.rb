@@ -1,7 +1,7 @@
 module Carendar
     class PopoverDelegate
         def initialize(status_item)
-            @status_button_cell = WeakRef.new(status_item.button.cell)
+            @status_button_cell = status_item.button.cell
         end
         
         def popoverWillShow(_)
