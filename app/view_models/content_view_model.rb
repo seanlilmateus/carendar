@@ -110,9 +110,8 @@ module Carendar
     end
     
     def create_nsevent(sender)
-      frame = sender.frame
-      pt = NSPoint.new(frame.origin.x + 120, frame.origin.y - 5)
-      menu_origin = sender.superview.convertPoint(pt, toView:nil)
+      point = NSPoint.new(-40, 12)
+      menu_origin = sender.convertPoint(point, toView:sender.superview)      
       NSEvent.mouseEventWithType( NSLeftMouseDown,
                         location: menu_origin,
                    modifierFlags: NSLeftMouseDownMask,
