@@ -18,15 +18,15 @@ module Carendar
       self.view.addSubview events_view_controller.view
       self.view.addSubview today_button
       self.view.addSubview settings_button
+      create_subviews_constraints
     end
     
     def viewDidLayout
       @content_view_model.content_loaded
     end
     
-    def updateViewConstraints
-      super
-      Dispatch.once do
+    def create_subviews_constraints
+      unless @__layouted__
         calendar = calendar_view_controller.view
         table_view = events_view_controller.view
         self.view.addConstraints([
@@ -48,6 +48,7 @@ module Carendar
           table_view.bottom == self.view.bottom,
           table_view.height(250) == self.view.height / 2.4,
         ])
+        @__layouted__ = true
       end
     end
     
