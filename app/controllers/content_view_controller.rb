@@ -82,18 +82,20 @@ module Carendar
     
     def settings_button
       @__settings_button__ ||= create_button do |b|
-        button.imagePosition = NSImageOnly
-        button.buttonType = NSMomentaryChangeButton
-        button.alternateImage = NSImage.imageNamed('settings')
-        button.image = NSImage.imageNamed('settings-active')
-        button.bordered = false
-        button.target = @content_view_model
-        button.action = 'show_menu:'
+        b.imagePosition = NSImageOnly
+        b.buttonType = NSMomentaryChangeButton
+        b.alternateImage = NSImage.imageNamed('settings')
+        b.image = NSImage.imageNamed('settings-active')
+        b.bordered = false
+        b.target = @content_view_model
+        b.action = 'show_menu:'
       end
     end
     
-    private def create_button
-      NSButton.alloc.init.tap do |b|
+    private
+    
+    def create_button
+      NSButton.new.tap do |b|
         b.translatesAutoresizingMaskIntoConstraints = false
         b.bezelStyle = NSTextFieldRoundedBezel
         b.buttonType = NSMomentaryPushInButton
