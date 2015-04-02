@@ -1,8 +1,10 @@
 module Carendar
   class EventsFetcher
+    
     def initialize
       @storage = EKEventStore.new
     end
+    
     def events_of_the_day(date)
       allowed?.then { validate_date?(date) }
               .then { DateOffset.new(date, DateOffset::DAY, 1) }
