@@ -46,7 +46,7 @@ module Carendar
           table_view.width == self.view.width,
           table_view.top == today_button.bottom + 10,
           table_view.bottom == self.view.bottom,
-          table_view.height(250) == self.view.height / 2.4,
+          table_view.height == 250.0
         ])
         @__layouted__ = true
       end
@@ -54,9 +54,10 @@ module Carendar
     
     # childrean Controllers
     def calendar_view_controller
-      @__calendar_view_controller__ ||= CalendarController.new.tap do |ins|
-        inst.delegate = @content_view_model
-        inst.view.extend(Layout::View)
+      @__calendar_view_controller__ ||= CalendarController.new.tap do |instance|
+        instance.view.translatesAutoresizingMaskIntoConstraints = false      
+        instance.delegate = @content_view_model
+        instance.view.extend(Layout::View)
       end
     end
     
