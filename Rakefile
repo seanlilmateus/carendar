@@ -16,3 +16,4 @@ Motion::Project::App.setup do |app|
   app.short_version = `git log -n 1 --pretty=format:'%h'`
   app.version = '0.8'
 end
+MotionBundler.setup
