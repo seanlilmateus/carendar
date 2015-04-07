@@ -6,6 +6,7 @@ module Carendar
         
     def popoverWillShow(_)
       NSApp.unhide(nil)
+      NSApp.activateIgnoringOtherApps(true)
       window = NSApp.windows.first
       def window.canBecomeKeyWindow; true; end
       window.becomeKeyWindow
@@ -29,7 +30,8 @@ module Carendar
     def popoverDidClose(notif)
       popover = notif.object
       popover.animates = true
-      NSApp.hide(nil)
+      NSApp.hide(nil) unless @__contract_
+      @__contract_ = false
     end
         
     def popoverDidShow(notif)

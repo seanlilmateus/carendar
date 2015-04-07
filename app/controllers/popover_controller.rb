@@ -54,6 +54,7 @@ module Carendar
       if self.popover.shown?
         NSEvent.removeMonitor(@monitor) if @monitor
         @monitor = nil
+        popover_delegate.instance_variable_set(:@__contract_, true)
         self.popover.close        
       end
     end
