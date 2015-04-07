@@ -10,7 +10,7 @@ class AppDelegate
   # Added an application listner to close the popover when our 
   # application is not the front most application
   def applicationDidFinishLaunching(_)
-    name = NSWorkspaceDidDeactivateApplicationNotification
+    name = NSWorkspaceDidActivateApplicationNotification
     work_space_nc = NSWorkspace.sharedWorkspace.notificationCenter
     work_space_nc.addObserver(self, selector:'foremost_app_activated:', name:name, object:nil)
   end
