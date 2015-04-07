@@ -83,7 +83,7 @@ module Layout
     end
     
     def less_than_or_equal_to(other)
-      relate_to_constant(other, NSLayoutRelationLessThanOrEqual)
+      relate_to(other, NSLayoutRelationLessThanOrEqual)
     end
   end
 end
