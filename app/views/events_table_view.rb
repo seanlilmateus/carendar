@@ -7,9 +7,11 @@ module Carendar
         tbv.opaque = false
         column = NSTableColumn.with(identifier: 'Events')
         tbv.addTableColumn column
-        column.width = 277.0
+        column.width = frame.size.width - 3.0
         column.headerCell.stringValue = localized_string('Events', 'Events')
         column.headerCell.alignment = NSCenterTextAlignment
+        column.resizingMask = NSTableColumnAutoresizingMask
+        tbv.columnAutoresizingStyle = NSTableViewFirstColumnOnlyAutoresizingStyle
       end
     end
     
