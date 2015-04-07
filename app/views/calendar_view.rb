@@ -33,7 +33,7 @@ module Carendar
           x = 6.0 + (width * idx)
           create_text_field(NSRect.new([x, 243.0], [width, 21.0])) do |tf|
             tf.stringValue, tf.identifier = "#{day}", "day#{idx}"
-            tf.textColor = NSColor.disabledTextColor
+            tf.textColor = NSColor.disabledControlTextColor
             tf.font = NSFont.fontWithName('.HelveticaNeueDeskInterface-Regular',
                                      size:15.5)
                                      
