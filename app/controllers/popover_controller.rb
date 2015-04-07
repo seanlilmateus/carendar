@@ -11,7 +11,7 @@ module Carendar
     def status_item
       @__status_item__ ||= begin
         sb = NSStatusBar.systemStatusBar.statusItemWithLength(IMAGE_VIEW_WIDTH)
-        sb.button.image = NSImage.imageNamed('lobster_normal').tap do |img|
+        sb.button.image = NSImage.imageNamed('icon_normal').tap do |img|
           img.template = true
           img.size = NSSize.new(20, 20)
         end
