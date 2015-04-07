@@ -7,28 +7,33 @@ module Carendar
     
     def content_loaded
       controller.today_button.enabled = false
-      events_for_the_month(controller.date)
+      events_for_the_month(calendar_controller.date)
       update_empty_view
+    end
+    
+    def calendar_controller
+      controller.calendar_view_controller
     end
     
     def didChangeMonth(date)
       update_empty_view
       deselect_rows
       controller.today_button.enabled = current_month?
+      events_for_the_month(date)
     end
     
     def didSelectDate(date)
-      update_empty_view date_formatter.stringFromDate(date)
       if date.nil?
         didChangeMonth(calendar_controller.date)
         return
       end
+      update_empty_view date_formatter.stringFromDate(date)
       events_for_the_day(date)
     end
     
     # Buttons Actions
     def select_date(sender) # previous go to date
-      controller.date = NSDate.date
+      calendar_controller.date = NSDate.date
       sender.enabled = false
       events_for_the_month(controller.calendar_view_controller.date)
       deselect_rows(sender)
@@ -63,11 +68,10 @@ module Carendar
     attr_reader :controller
     
     def current_month?
-      controller.calendar_view_controller
-                .view
-                .subviews
-                .select { |sbv| sbv.is_a?(CalendarCell) }
-                .none?(&:today?)
+      calendar_controller.view
+                         .subviews
+                         .select { |sbv| sbv.is_a?(CalendarCell) }
+                         .none?(&:today?)
     end
     
     def date_formatter
@@ -88,7 +92,7 @@ module Carendar
       table_view.deselectAll(sender)
     end
     
-    def update_empty_view(date_string=controller.calendarTitle.stringValue)
+    def update_empty_view(date_string=calendar_controller.view.calendarTitle.stringValue)
       table_view = controller.events_view_controller.tableView
       table_view.date_label.stringValue = date_string
     end
@@ -97,16 +101,18 @@ module Carendar
       events_controller = controller.events_view_controller
       controller.events_fetcher
                 .events_of_the_month(date)
-                .then { |items| events_controller.events = items }
-                .then { events_controller.reload_data }
+                .on_queue(queue=Dispatch::Queue.main)
+                .then { |items| events_controller.data_source.events = items }
+                .then { events_controller.tableView.reloadData }
     end
     
     def events_for_the_day(date)
       events_controller = controller.events_view_controller
       controller.events_fetcher
                 .events_of_the_day(date)
-                .then { |items| events_controller.events = items }
-                .then { events_controller.reload_data }
+                .on_queue(queue=Dispatch::Queue.main)
+                .then { |items| events_controller.data_source.events = items }
+                .then { events_controller.tableView.reloadData }
     end
     
     def create_nsevent(sender)
