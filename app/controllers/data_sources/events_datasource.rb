@@ -25,7 +25,7 @@ module Carendar
         # Ruby's own if let version :-P
         if title = event.title
           cell.textField.stringValue = title 
-          cell.textField.textColor = NSColor.blackColor #headerTextColor #textColo
+          cell.textField.textColor = NSColor.blackColor
         end
         cell
       end
