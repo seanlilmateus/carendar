@@ -3,9 +3,6 @@ module Carendar
     
     def initialize
       @popover_delegate = PopoverDelegate.new WeakRef.new(status_item)
-      @clock = Clock.new do |value|
-        status_item.button.title = value
-      end
       status_item.button.title  = 'Tue. 9:41'
       status_item.button.action = 'show_popover:'
     end

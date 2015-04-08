@@ -5,14 +5,17 @@ class AppDelegate
   end
   
   def applicationDidFinishLaunching(notification)
+    @clock = Carendar::Clock.new do |value|
+      popover_controller.status_item.button.title = value
+    end
   end
   
   # Added an application listner to close the popover when our 
   # application is not the front most application
-  def applicationDidFinishLaunching(_)
+  def applicationWillFinishLaunching(_)
     name = NSWorkspaceDidActivateApplicationNotification
     work_space_nc = NSWorkspace.sharedWorkspace.notificationCenter
-    work_space_nc.addObserver(self, selector:'foremost_app_activated:', name:name, object:nil)
+    work_space_nc.addObserver(self, selector:'foremost_app_activated:', name:name, object:nil)    
   end
   
   
