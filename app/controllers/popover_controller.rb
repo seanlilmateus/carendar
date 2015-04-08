@@ -43,10 +43,12 @@ module Carendar
     
     
     def show_popover sender
-      flags, type = [NSApp.currentEvent.modifierFlags, NSApp.currentEvent.type]
-      lhs_opts = (flags & NSAlternateKeyMask)
-      ctrl_click = lhs_opts == NSAlternateKeyMask ||(type == NSRightMouseDown)
-      popover_presenter
+      unless self.popover.shown?
+        status_item.button.cell.instance_variable_set(:@activated, true)
+        button, frame = status_item.button, status_item.button.frame
+        popover.showRelativeToRect(frame, ofView:button, preferredEdge: NSMaxYEdge)
+        make_popover_transient
+      end
     end
     
     
@@ -61,16 +63,7 @@ module Carendar
     
     private
     attr_reader :popover_delegate
-    
-    def popover_presenter
-      unless self.popover.shown?
-        status_item.button.cell.instance_variable_set(:@activated, true)
-        button, frame = status_item.button, status_item.button.frame
-        popover.showRelativeToRect(frame, ofView:button, preferredEdge: NSMaxYEdge)
-        make_popover_transient
-      end
-    end
-    
+        
     def make_popover_transient
       mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
       @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:-> event {
