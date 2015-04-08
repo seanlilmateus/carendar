@@ -43,7 +43,9 @@ module Carendar
     
     
     def show_popover sender
-      unless self.popover.shown?
+      if self.popover.shown?
+        hide_popover
+      else
         status_item.button.cell.instance_variable_set(:@activated, true)
         button, frame = status_item.button, status_item.button.frame
         popover.showRelativeToRect(frame, ofView:button, preferredEdge: NSMaxYEdge)
