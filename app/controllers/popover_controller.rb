@@ -52,8 +52,8 @@ module Carendar
     
     def hide_popover
       if self.popover.shown?
-        NSEvent.removeMonitor(@monitor) if @monitor
-        @monitor = nil
+        NSEvent.removeMonitor(@__monitor__)
+        @__monitor__ = nil
         popover_delegate.instance_variable_set(:@__contract_, true)
         self.popover.close        
       end
@@ -65,14 +65,19 @@ module Carendar
     def popover_presenter
       unless self.popover.shown?
         status_item.button.cell.instance_variable_set(:@activated, true)
-        popover.showRelativeToRect( status_item.button.frame, 
-                            ofView: status_item.button, 
-                     preferredEdge: NSMaxYEdge)
-        action = -> _ { hide_popover }
-        # mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
-        @monitor ||= NSEvent.addGlobalMonitorForEventsMatchingMask(NSLeftMouseUp,
-                                                           handler:action.weak!)
+        button, frame = status_item.button, status_item.button.frame
+        popover.showRelativeToRect(frame, ofView:button, preferredEdge: NSMaxYEdge)
+        make_popover_transient
       end
+    end
+    
+    def make_popover_transient
+      mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
+      @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:-> event {
+        view = content_view_controller.view
+        point = view.convertPoint(event.locationInWindow, fromView:nil)
+        hide_popover unless view.mouse(point, inRect:view.bounds)
+      })
     end
     
   end
