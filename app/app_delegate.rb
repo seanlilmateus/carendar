@@ -14,16 +14,17 @@ class AppDelegate
   # application is not the front most application
   def applicationWillFinishLaunching(_)
     name = NSWorkspaceDidActivateApplicationNotification
-    work_space_nc = NSWorkspace.sharedWorkspace.notificationCenter
-    work_space_nc.addObserver(self, selector:'foremost_app_activated:', name:name, object:nil)    
+    nc = NSWorkspace.sharedWorkspace.notificationCenter
+    nc.addObserver(self, selector:'foremost_app_activated:', name:name, object:nil)    
   end
   
   
   # remove the notification listener if the application will terminate
   def applicationWillTerminate(_)
+    @clock.cancel
     name = NSWorkspaceDidActivateApplicationNotification
-    work_space_nc = NSWorkspace.sharedWorkspace.notificationCenter
-    work_space_nc.removeObserver(self, name:name, object:nil)
+    nc = NSWorkspace.sharedWorkspace.notificationCenter
+    nc.removeObserver(self, name:name, object:nil)
   end
   
   private
