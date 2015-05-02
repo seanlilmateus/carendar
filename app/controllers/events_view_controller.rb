@@ -1,6 +1,6 @@
 module Carendar
   class EventsViewController < BaseViewController
-    
+
     def init
       super.tap { @data_source = EventsDataSource.new }
     end
@@ -24,7 +24,7 @@ module Carendar
     def table_container
       @__table_container__ ||= begin
         rect = NSRect.new([0, 0], [280.0, 250.0])
-        scrollview = NSScrollView.alloc.initWithFrame(rect).tap do |scv|
+        NSScrollView.alloc.initWithFrame(rect).tap do |scv|
           scv.backgroundColor = NSColor.clearColor
           scv.contentView.backgroundColor = NSColor.clearColor
           scv.documentView = tableView

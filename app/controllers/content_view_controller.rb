@@ -1,6 +1,6 @@
 module Carendar
   class ContentViewController < BaseViewController
-    
+
     def loadView
       self.view = NSView.alloc.initWithFrame([[0, 0], [280.0, 600]])
       self.view.wantsLayer = true

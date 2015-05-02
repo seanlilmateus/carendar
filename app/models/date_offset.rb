@@ -3,7 +3,7 @@ module Carendar
   # it can be day or months
   class DateOffset
     MONTH, DAY = :month, :day
-    
+
     def initialize(date, unit=DAY, offset=1)
       if unit == DAY
         @start_date = beginning_of_day(date)
@@ -13,11 +13,10 @@ module Carendar
         @end_date = end_of_month(date, offset)
       end
     end
-        
+
     attr_reader :start_date, :end_date
 
     private
-    
     def beginning_of_day(date)
       calendar = CalendarController.calendar
       opts = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
@@ -25,7 +24,7 @@ module Carendar
       # date.dateForStartOfDayInTimeZone(NSTimeZone.systemTimeZone)
       calendar.dateFromComponents(components)
     end
-    
+
     def end_of_day(date, offset=1)
       calendar = CalendarController.calendar
       components = NSDateComponents.new
@@ -34,7 +33,7 @@ module Carendar
       # date.dateForEndOfDayInTimeZone(NSTimeZone.systemTimeZone)
       date.dateByAddingTimeInterval(-1)
     end
-    
+
     def beginning_of_month(date)
       calendar = CalendarController.calendar
       opts = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
@@ -42,7 +41,7 @@ module Carendar
       components.day = 1
       beginning_of_day calendar.dateFromComponents(components)
     end
-    
+
     def end_of_month(date, offset=1)
       calendar = CalendarController.calendar
       opts = NSYearCalendarUnit|NSMonthCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit

@@ -1,33 +1,32 @@
 module Carendar
   class EventsFetcher
-    
+
     def initialize
       @storage = EKEventStore.new
     end
-    
+
     def events_of_the_day(date)
       allowed?.then { validate_date?(date) }
               .then { DateOffset.new(date, DateOffset::DAY, 1) }
               .then { |offset| events_from(offset.start_date, to:offset.end_date) }
     end
-    
+
     def events_of_the_month(date)
       allowed?.then { validate_date?(date) }
               .then { DateOffset.new(date, DateOffset::MONTH, 1) }
               .then { |offset| events_from(offset.start_date, to:offset.end_date) }
     end
-    
+
     private
-    
     attr_reader :storage
-    
+
     def events_from(start_date, to:end_date)
       predicate = storage.predicateForEventsWithStartDate( start_date,
                                         endDate: end_date,
                                       calendars: nil)
       storage.eventsMatchingPredicate(predicate)
     end
-    
+
     def validate_date?(date)
       promise = Promise.new
       if date.is_a?(NSDate)
@@ -39,7 +38,7 @@ module Carendar
       end
       promise
     end
-    
+
     def allowed?
       promise = Promise.new
       completion = Proc.new do |flag, error|

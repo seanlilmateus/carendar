@@ -1,6 +1,6 @@
 module Carendar
   class EventsTableView < NSTableView
-      
+
     def self.new(frame)
       alloc.initWithFrame(frame).tap do |tbv|
         tbv.backgroundColor = NSColor.clearColor
@@ -14,25 +14,25 @@ module Carendar
         tbv.columnAutoresizingStyle = NSTableViewFirstColumnOnlyAutoresizingStyle
       end
     end
-    
+
     def has_rows_to_display?
       self.numberOfRows > 0
     end
-    
+
     def reloadData
       super
       update_empty_view
     end
-    
+
     def layoutSubviews
       super
       update_empty_view
     end
-    
+
     def empty_view
       @empty_view || default_empty_view
     end
-    
+
     def empty_view=(nv)
       if self.empty_view && self.empty_view.superview
         self.empty_view.removeFromSuperview
@@ -40,7 +40,7 @@ module Carendar
       @empty_view = nv
       update_empty_view
     end
-    
+
     def date_label
       @__date_label__ ||= create_label do |sf|
         sf.stringValue = "Date Come here"
@@ -48,7 +48,7 @@ module Carendar
         sf.textColor = NSColor.disabledTextColor
       end
     end
-    
+
     private
     
     def update_empty_view
@@ -56,7 +56,7 @@ module Carendar
       if self.empty_view.superview != self
         self.addSubview(self.empty_view)
       end
-    
+      
       # setup empty view frame
       frame = self.bounds
       frame.origin = NSPoint.new
@@ -65,7 +65,7 @@ module Carendar
       self.empty_view.frame = frame
       mask = NSViewWidthSizable | NSViewHeightSizable
       self.empty_view.autoresizingMask = mask
-    
+      
       # check available data
       empty_view_should_be_shown = (self.has_rows_to_display? == false)
       # check bypassing
@@ -73,10 +73,10 @@ module Carendar
       if empty_view_should_be_shown && response
         by_passed = self.dataSource.tableViewShouldBypassEmptyView(self)
         empty_view_should_be_shown = empty_view_should_be_shown && !by_passed
-      end    
+      end
       self.empty_view.hidden = !empty_view_should_be_shown
     end
-    
+
     def default_empty_view
       @__default_empty_view__ ||= NSView.alloc.initWithFrame(self.frame).tap do |v|
         v.addSubview empty_label
@@ -90,7 +90,7 @@ module Carendar
         ])
       end
     end
-        
+
     def empty_label
       @__empty_label__ ||= create_label do |sf|        
         attributes = { 
@@ -103,7 +103,7 @@ module Carendar
         sf.attributedStringValue = attr_string
       end
     end
-      
+
     def create_label
       NSTextField.alloc.init.tap do |sf|
         sf.translatesAutoresizingMaskIntoConstraints = false

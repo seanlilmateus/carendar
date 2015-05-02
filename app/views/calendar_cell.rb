@@ -1,23 +1,23 @@
 module Carendar
   class CalendarCell < NSButton
-    
+
     attr_reader :selected, :representedDate
     attr_accessor :owner
-  
+
     def initWithFrame(frame)
       super.tap { common_init }
     end
-  
+
     def today?
       return false unless self.representedDate
       CalendarController.isSameDate(self.representedDate, date:NSDate.date)
     end
-  
+
     def selected=(flag)
       @selected = flag
-    	self.needsDisplay = true
+      self.needsDisplay = true
     end
-  
+
     def representedDate=(represented_date)
       @representedDate = represented_date
       self.title = if @representedDate
@@ -29,18 +29,18 @@ module Carendar
         NSString.string
       end
     end
-  
+
     def drawRect(dirty_rect)
       if self.owner
         NSGraphicsContext.saveGraphicsState
         bounds = self.bounds
-      
+
         if self.representedDate
         
           paragraph_style = NSMutableParagraphStyle.new
           paragraph_style.lineBreakMode = NSLineBreakByWordWrapping
           paragraph_style.alignment = NSCenterTextAlignment
-  						
+          
           props = {
             NSParagraphStyleAttributeName  => paragraph_style,
             NSFontAttributeName            => self.font,
@@ -59,10 +59,10 @@ module Carendar
             self.owner.selectionColor.set
             bzc.fill
           end
-
+          
           if self.selected
             color = NSColor.alternateSelectedControlColor
-    				color.set
+            color.set
             bzc.fill
             props[NSForegroundColorAttributeName] = NSColor.selectedMenuItemTextColor
             if self.today?
@@ -74,14 +74,13 @@ module Carendar
           
           size = self.title.sizeWithAttributes(props)
           y = bounds.origin.y + ((bounds.size.height - size.height)/2.0) + 1
-    			rect = NSRect.new([bounds.origin.x, y], [bounds.size.width, size.height])
-    			self.title.drawInRect(rect, withAttributes:props)
+          rect = NSRect.new([bounds.origin.x, y], [bounds.size.width, size.height])
+          self.title.drawInRect(rect, withAttributes:props)
         end
-    		NSGraphicsContext.restoreGraphicsState
-      
+        NSGraphicsContext.restoreGraphicsState
       end
     end
-    
+
     private
     def common_init
       self.bordered = true

@@ -1,6 +1,6 @@
 module Carendar
   class CalendarController < BaseViewController
-    
+
     attr_accessor :textColor, :selectionColor, :dayMarkerColor
     attr_accessor :todayMarkerColor, :backgroundColor, :date
     attr_reader :delegate
@@ -113,10 +113,10 @@ module Carendar
     end
   
     def lastDayOfTheMonth
-    	days_range = self.class
-                       .calendar
-                       .rangeOfUnit(NSCalendarUnitDay, inUnit:NSCalendarUnitMonth, forDate:self.date)
-    	days_range.length
+      opts, unit = NSCalendarUnitMonth, NSCalendarUnitDay
+      days_range = self.class.calendar
+                       .rangeOfUnit(unit, inUnit:opts, forDate:self.date)
+      days_range.length
     end
   
     def colForDay(day)
@@ -131,7 +131,7 @@ module Carendar
       cells = self.view.subviews
                   .select { |sbv| sbv.is_a?(CalendarCell) }
       cells.each { |sbv| sbv.representedDate, sbv.selected = nil, false }
-      
+
       unit_flags = NSCalendarUnitWeekday
       components = self.class.calendar.components(unit_flags, fromDate: monthDay(1))
       first_day = components.weekday
@@ -188,11 +188,11 @@ module Carendar
     private
     
     def common_init
-    	@todayMarkerColor = NSColor.greenColor
-    	@backgroundColor = NSColor.clearColor
-    	@selectionColor = NSColor.redColor
-    	@dayMarkerColor = NSColor.darkGrayColor
-    	@textColor = NSColor.blackColor
+      @todayMarkerColor = NSColor.greenColor
+      @backgroundColor = NSColor.clearColor
+      @selectionColor = NSColor.redColor
+      @dayMarkerColor = NSColor.darkGrayColor
+      @textColor = NSColor.blackColor
       @date = NSDate.date
     end
         
