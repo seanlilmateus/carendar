@@ -13,7 +13,7 @@ Motion::Project::App.setup do |app|
   app.name = 'Carendar'
   app.sdk_version = '10.10'
   app.entitlements['com.apple.security.app-sandbox'] = true
-  app.frameworks += %W[CoreFoundation QuartzCore Security ServiceManagement EventKit]
+  app.frameworks += %W[ScriptingBridge CoreFoundation QuartzCore Security ServiceManagement EventKit]
   app.info_plist['NSUIElement'] = 1
   app.copyright = "Copyright Mateus Armando © 2014"
   app.short_version = `git log -n 1 --pretty=format:'%h'`

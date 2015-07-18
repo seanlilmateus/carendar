@@ -14,6 +14,8 @@ module Carendar
       super
       self.tableView.delegate = @data_source
       self.tableView.dataSource = @data_source
+      self.tableView.target = @data_source
+      self.tableView.doubleAction = 'double_clicked:'
     end
     
     def tableView
