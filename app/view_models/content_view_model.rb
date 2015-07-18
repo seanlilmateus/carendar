@@ -48,9 +48,18 @@ module Carendar
         
         menu = NSMenu.new.tap { |m| m.autoenablesItems = true }
         [
-          { action: 'show_about_screen:', title: localized(about_string, app_name), eq:''},
-          { action: 'show_settings:', title: show_setting, eq:','},
-          { action: 'quit_application:', title: localized(quit_string, app_name), eq:'q'},
+          { action: 'show_about_screen:', 
+             title: localized(about_string, app_name), 
+                eq: ''
+          },
+          { action: 'show_settings:', 
+             title: show_setting, 
+                eq: ','
+          },
+          { action: 'quit_application:', 
+             title: localized(quit_string, app_name), 
+                eq: 'q'
+          },
         ].each do |h|
           item = menu.addItemWithTitle(h[:title], action:h[:action], keyEquivalent:h[:eq])
           item.target = NSApp.delegate
@@ -115,7 +124,7 @@ module Carendar
     end
 
     def create_nsevent(sender)
-      point = NSPoint.new(-40, 12)
+      point = NSPoint.new(-20, 12)
       menu_origin = sender.convertPoint(point, toView:sender.superview)      
       NSEvent.mouseEventWithType( NSLeftMouseDown,
                         location: menu_origin,

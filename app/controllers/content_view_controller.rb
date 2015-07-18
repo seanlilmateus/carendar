@@ -39,7 +39,7 @@ module Carendar
           #### Settings Button
           settings_button.centerY == show_current_month_button.centerY,
           settings_button.height == show_current_month_button.height,
-          settings_button.right == self.view.right - 5,
+          settings_button.right == self.view.right + 25,
           settings_button.width == show_current_month_button.width,
           
           table_view.centerX == self.view.centerX,
@@ -86,8 +86,9 @@ module Carendar
       @__settings_button__ ||= create_button do |b|
         b.imagePosition = NSImageOnly
         b.buttonType = NSMomentaryChangeButton
-        b.alternateImage = NSImage.imageNamed('settings')
-        b.image = NSImage.imageNamed('settings-active')
+        b.image = NSImage.imageNamed(NSImageNameActionTemplate)
+         .tap { |img| img.template = true}
+         .tap { |img| img.size = NSSize.new(20, 20) }
         b.bordered = false
         b.target = @content_view_model
         b.action = 'show_menu:'

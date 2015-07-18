@@ -7,7 +7,6 @@ module Carendar
       status_item.button.action = 'show_popover:'
     end
     
-    
     def status_item
       @__status_item__ ||= begin
         sb = NSStatusBar.systemStatusBar.statusItemWithLength(IMAGE_VIEW_WIDTH)
@@ -65,11 +64,12 @@ module Carendar
 
     def make_popover_transient
       mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
-      @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:-> event {
+      operation = Proc.new do |event|
         view = content_view_controller.view
         point = view.convertPoint(event.locationInWindow, fromView:nil)
         hide_popover unless view.mouse(point, inRect:view.bounds)
-      })
+      end
+      @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:operation)
     end
 
   end
