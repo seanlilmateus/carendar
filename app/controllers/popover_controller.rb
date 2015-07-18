@@ -23,7 +23,6 @@ module Carendar
       end
     end
     
-    
     def popover
       @_popover ||= NSPopover.alloc.init.tap do |pop|
         #pop.appearance = NSAppearance.appearanceNamed(NSAppearanceNameAqua)

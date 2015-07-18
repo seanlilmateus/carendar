@@ -46,14 +46,14 @@ module Carendar
     def output
       if @flash_sepatators && @blink
         formatter.dateFormat = format
-        @__current_blink__ = !@__current_blink__
+        @__current_blink__   = !@__current_blink__
         formatter.dateFormat = @__current_blink__ ? format : format.gsub(":", " ")
       end
       formatter.stringFromDate NSDate.date
     end
 
     def output_width
-      formatter.format.length * 5.0
+      formatter.format.length * 4.5
     end
   end
 end
