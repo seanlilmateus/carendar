@@ -43,7 +43,8 @@ module Carendar
       if sender
         app_name = NSApp.delegate.send(:app_name)
         about_string = localized_string("About %@", "About %@")
-        quit_string = localized_string("Quit %@", "Quit %@")
+        tmp = localized_string("Quit %@", "Quit %@")
+        quit_string = NSString.stringWithFormat(tmp, app_name)
         show_setting = localized_string("Preferences", "Preferences")
         
         menu = NSMenu.new.tap { |m| m.autoenablesItems = true }
@@ -57,7 +58,7 @@ module Carendar
                 eq: ','
           },
           { action: 'quit_application:', 
-             title: localized(quit_string, app_name), 
+             title: quit_string, 
                 eq: 'q'
           },
         ].each do |h|
