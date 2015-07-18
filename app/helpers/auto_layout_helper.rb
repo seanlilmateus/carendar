@@ -88,48 +88,49 @@ module Layout
 end
 
 module Layout
+  
   module View
-    def left(priority=NSLayoutPriorityRequired)
+    def left(priority=1000)
       operand(NSLayoutAttributeLeft, priority)
     end
 
-    def right(priority=NSLayoutPriorityRequired)
+    def right(priority=1000)
       operand(NSLayoutAttributeRight, priority)
     end
 
-    def top(priority=NSLayoutPriorityRequired)
+    def top(priority=1000)
       operand(NSLayoutAttributeTop, priority)
     end
 
-    def bottom(priority=NSLayoutPriorityRequired)
+    def bottom(priority=1000)
       operand(NSLayoutAttributeBottom, priority)
     end
 
-    def leading(priority=NSLayoutPriorityRequired)
+    def leading(priority=1000)
       operand(NSLayoutAttributeLeading, priority)
     end
 
-    def trailing(priority=NSLayoutPriorityRequired)
+    def trailing(priority=1000)
       operand(NSLayoutAttributeTrailing, priority)
     end
-
-    def width(priority=NSLayoutPriorityRequired)
+    
+    def width(priority=1000)
       operand(NSLayoutAttributeWidth, priority)
     end
-
-    def height(priority=NSLayoutPriorityRequired)
+    
+    def height(priority=1000)
       operand(NSLayoutAttributeHeight, priority)
     end
 
-    def centerX(priority=NSLayoutPriorityRequired)
+    def centerX(priority=1000)
       operand(NSLayoutAttributeCenterX, priority)
     end
 
-    def centerY(priority=NSLayoutPriorityRequired)
+    def centerY(priority=1000)
       operand(NSLayoutAttributeCenterY, priority)
     end
 
-    def baseline(priority=NSLayoutPriorityRequired)
+    def baseline(priority=1000)
       operand(NSLayoutAttributeBaseline, priority)
     end
 
