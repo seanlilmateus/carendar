@@ -16,7 +16,7 @@ module Carendar
       # add Subviews
       self.view.addSubview calendar_view_controller.view
       self.view.addSubview events_view_controller.view
-      self.view.addSubview today_button
+      self.view.addSubview show_current_month_button
       self.view.addSubview settings_button
       create_subviews_constraints
     end
@@ -34,17 +34,17 @@ module Carendar
           calendar.centerX == self.view.centerX,
           calendar.width == self.view.width,
           
-          today_button.centerX == self.view.centerX,
-          today_button.top(250) == calendar.bottom + 5,
+          show_current_month_button.centerX == self.view.centerX,
+          show_current_month_button.top(250) == calendar.bottom + 5,
           #### Settings Button
-          settings_button.centerY == today_button.centerY,
-          settings_button.height == today_button.height,
+          settings_button.centerY == show_current_month_button.centerY,
+          settings_button.height == show_current_month_button.height,
           settings_button.right == self.view.right - 5,
-          settings_button.width == today_button.width,
+          settings_button.width == show_current_month_button.width,
           
           table_view.centerX == self.view.centerX,
           table_view.width == self.view.width,
-          table_view.top == today_button.bottom + 10,
+          table_view.top == show_current_month_button.bottom + 10,
           table_view.bottom == self.view.bottom,
           table_view.height == 250.0
         ])
@@ -74,9 +74,9 @@ module Carendar
     end
     
     # UI Components
-    def today_button
-      @__today_button__ ||= create_button do |b|
-        b.title = localized_string("Today", "Today")
+    def show_current_month_button
+      @show_current_month_button ||= create_button do |b|
+        b.title = localized_string("Current Month", "Current Month")
         b.target = @content_view_model
         b.action = 'select_date:'
       end
@@ -95,7 +95,6 @@ module Carendar
     end
     
     private
-    
     def create_button
       NSButton.new.tap do |b|
         b.translatesAutoresizingMaskIntoConstraints = false
