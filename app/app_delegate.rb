@@ -26,6 +26,10 @@ class AppDelegate
     nc = NSWorkspace.sharedWorkspace.notificationCenter
     nc.removeObserver(self, name:name, object:nil)
   end
+  
+  def quit_application sender
+    NSApp.terminate sender
+  end
 
   private
   attr_reader :popover_controller, :app_name
