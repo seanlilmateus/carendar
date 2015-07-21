@@ -30,6 +30,14 @@ class AppDelegate
   def quit_application sender
     NSApp.terminate sender
   end
+  
+  def show_settings sender
+    puts "Show Settings"
+  end
+  
+  def show_about_screen sender
+    puts "Open About this Application"
+  end
 
   private
   attr_reader :popover_controller, :app_name
