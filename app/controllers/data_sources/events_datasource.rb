@@ -37,27 +37,6 @@ module Carendar
       @events.count
     end
     
-    # action
-    def double_clicked sender
-      item = @events[sender.clickedRow]
-      if item.is_a?(EKEvent)
-        show_event(item)
-      else
-        return false
-      end
-    end
-    
-    def show_event(event)
-      calendar_app = SBApplication.applicationWithBundleIdentifier('com.apple.ical')
-      #cal = calendar_app.calendars.find { |c| c.name == event.calendar.title }
-      #found_event = cal.events.find do |e| 
-      #  event.startDate == e.startDate && e.properties[:uid] == event.eventIdentifier
-      #end if cal
-      #found_event.show if found_event
-      calendar_app.viewCalendarAt(event.startDate)
-    end
-    
-
     def events=(items)
       groups = items.group_by { |event| event.calendar.title }
                     .to_a.flatten
