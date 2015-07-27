@@ -15,6 +15,7 @@ Motion::Project::App.setup do |app|
   app.entitlements['com.apple.security.app-sandbox'] = true
   app.frameworks += %W[ScriptingBridge CoreFoundation QuartzCore Security ServiceManagement EventKit]
   app.info_plist['NSUIElement'] = 1
+  app.info_plist['CFBundleIconFile'] = 'icon.icns'
   app.copyright = "Copyright Mateus Armando © 2014"
   app.short_version = `git log -n 1 --pretty=format:'%h'`
   app.version = '0.8'
