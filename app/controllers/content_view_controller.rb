@@ -16,7 +16,7 @@ module Carendar
       # add Subviews
       self.view.addSubview calendar_view_controller.view
       self.view.addSubview events_view_controller.view
-      self.view.addSubview show_current_month_button
+      self.view.addSubview today_button
       self.view.addSubview settings_button
       create_subviews_constraints
     end
@@ -34,17 +34,17 @@ module Carendar
           calendar.centerX == self.view.centerX,
           calendar.width == self.view.width,
           
-          show_current_month_button.centerX(750) == self.view.centerX,
-          show_current_month_button.top(250) == calendar.bottom + 5,
+          today_button.centerX(750) == self.view.centerX,
+          today_button.top(250) == calendar.bottom + 5,
           
           table_view.centerX == self.view.centerX,
           table_view.width == self.view.width,
-          table_view.top == show_current_month_button.bottom + 10,
+          table_view.top == today_button.bottom + 10,
           table_view.bottom == self.view.bottom,
           table_view.height == 250.0,
           
           #### Settings Button
-          settings_button.centerY == show_current_month_button.centerY,
+          settings_button.centerY == today_button.centerY,
           settings_button.trailing == self.view.trailing - 20,
         ])
         @__layouted__ = true
@@ -73,8 +73,8 @@ module Carendar
     end
     
     # UI Components
-    def show_current_month_button
-      @show_current_month_button ||= create_button do |b|
+    def today_button
+      @today_button ||= create_button do |b|
         b.title = localized_string("Today", "Today")
         b.target = @content_view_model
         b.action = 'select_date:'

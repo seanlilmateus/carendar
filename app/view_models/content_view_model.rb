@@ -6,7 +6,7 @@ module Carendar
     end
 
     def content_loaded
-      controller.show_current_month_button.enabled = false
+      controller.today_button.enabled = false
       events_for_the_month(calendar_controller.date)
       update_empty_view
     end
@@ -18,7 +18,7 @@ module Carendar
     def didChangeMonth(date)
       update_empty_view
       deselect_rows
-      controller.show_current_month_button.enabled = current_month?
+      controller.today_button.enabled = current_month?
       events_for_the_month(date)
     end
 
