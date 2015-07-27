@@ -20,7 +20,7 @@ module Carendar
       NSApp.activateIgnoringOtherApps(false)     
       status_button_cell.instance_variable_set(:@activated, false)
       status_button_cell.highlighted = false
-      window = NSApp.windows.first
+      window = NSApp.windows.last
       def window.canBecomeKeyWindow; false; end
       window.resignKeyWindow
     end
@@ -31,7 +31,14 @@ module Carendar
     def popoverDidClose(notif)
       popover = notif.object
       popover.animates = true
-      NSApp.hide(nil) unless @__contract_
+      windows = NSApp.windows
+      if windows.count > 2
+        window = windows.last
+        def window.canBecomeKeyWindow; true; end
+        window.becomeKeyWindow
+      else
+        NSApp.hide(nil) unless @__contract_
+      end
       @__contract_ = false
     end
 
