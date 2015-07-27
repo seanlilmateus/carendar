@@ -13,27 +13,15 @@ module Carendar
         NSString.stringWithString "Version #{version} (Build #{short})"
       end
     end
-
-    def acknowledgements
-      @__acknowledgements__ ||= begin
-        #path = NSBundle.mainBundle.pathForResource('Acknowledgements', ofType:'rtf')
-        #NSAttributedString.alloc.initWithPath(path, documentAttributes:nil)
-        NSString.string
-      end
-    end
-
-    def webpage
-      @__webpage__ ||= "Visit the #{self.name} Website"
-    end
-
+    
     def copyright
       @__copyright__ ||= dictionary['NSHumanReadableCopyright']
     end
-
+    
     def icon
       NSApp.applicationIconImage || NSImage.imageNamed('NSBonjour')
     end
-
+    
     def name
       @__name__ ||= dictionary[KCFBundleNameKey] || dictionary['CFBundleDisplayName']
     end
@@ -44,7 +32,15 @@ module Carendar
         NSAttributedString.alloc.initWithPath(path, documentAttributes:nil)
       end
     end
-
+    
+    def license
+      @shows_credits = false
+      @__license__ ||= begin
+        path = NSBundle.mainBundle.pathForResource('LICENSE', ofType:'rtf')
+        NSAttributedString.alloc.initWithPath(path, documentAttributes:nil)
+      end
+    end
+    
     private
     attr_reader :dictionary
   end
