@@ -36,10 +36,20 @@ class AppDelegate
   end
   
   def show_about_screen sender
-    puts "Open About this Application"
+    about_controller.showWindow(sender)
+    popover_controller.hide_popover
+    about_controller.window.makeKeyWindow
   end
-
+    
   private
+  def about_controller
+    @__about_window__ ||= Carendar::AboutWindowController.new.tap do |ac|
+      ac.windowDidLoad
+      ac.window.hidesOnDeactivate = true
+      ac.window.delegate = self
+    end
+  end
+  
   attr_reader :popover_controller, :app_name
 
   def foremost_app_activated(note)
