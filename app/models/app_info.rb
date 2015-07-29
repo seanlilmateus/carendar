@@ -1,10 +1,10 @@
 module Carendar
   class AppInfo
-    
+
     def initialize
       @dictionary = NSBundle.mainBundle.infoDictionary      
     end
-    
+
     # Generates Application information containing version and short version
     def version
       @__version__ ||= begin
@@ -12,18 +12,6 @@ module Carendar
         short = dictionary['CFBundleShortVersionString']
         NSString.stringWithString "Version #{version} (Build #{short})"
       end
-    end
-    
-    def acknowledgements
-      @__acknowledgements__ ||= begin
-        #path = NSBundle.mainBundle.pathForResource('Acknowledgements', ofType:'rtf')
-        #NSAttributedString.alloc.initWithPath(path, documentAttributes:nil)
-        NSString.string
-      end
-    end
-    
-    def webpage
-      @__webpage__ ||= "Visit the #{self.name} Website"
     end
     
     def copyright
@@ -37,10 +25,18 @@ module Carendar
     def name
       @__name__ ||= dictionary[KCFBundleNameKey] || dictionary['CFBundleDisplayName']
     end
-    
+
     def credits
       @__credits__ ||= begin
         path = NSBundle.mainBundle.pathForResource('Credits', ofType:'rtf')
+        NSAttributedString.alloc.initWithPath(path, documentAttributes:nil)
+      end
+    end
+    
+    def license
+      @shows_credits = false
+      @__license__ ||= begin
+        path = NSBundle.mainBundle.pathForResource('LICENSE', ofType:'rtf')
         NSAttributedString.alloc.initWithPath(path, documentAttributes:nil)
       end
     end

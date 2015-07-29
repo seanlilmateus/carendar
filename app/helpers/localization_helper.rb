@@ -5,4 +5,5 @@ module Kernel
     default = args.shift || key
     NSBundle.mainBundle.localizedStringForKey(key, value:default, table:nil)
   end
+  alias localized localized_string
 end

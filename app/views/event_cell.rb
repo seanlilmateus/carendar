@@ -14,13 +14,13 @@ module Carendar
         sf.extend(Layout::View)
       end
     end
-        
+
     def viewWillMoveToSuperview view
       super
       self.addSubview(textField)
       layout_subviews
     end
-    
+
     private
     def layout_subviews
       unless @__layout__
@@ -34,6 +34,5 @@ module Carendar
         @__layout__ = true
       end
     end
-    
   end
 end

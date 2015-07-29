@@ -1,12 +1,11 @@
 module Carendar
   class PopoverController
-    
+
     def initialize
       @popover_delegate = PopoverDelegate.new WeakRef.new(status_item)
       status_item.button.title  = 'Tue. 9:41'
       status_item.button.action = 'show_popover:'
     end
-    
     
     def status_item
       @__status_item__ ||= begin
@@ -24,7 +23,6 @@ module Carendar
       end
     end
     
-    
     def popover
       @_popover ||= NSPopover.alloc.init.tap do |pop|
         #pop.appearance = NSAppearance.appearanceNamed(NSAppearanceNameAqua)
@@ -35,13 +33,11 @@ module Carendar
         pop.delegate = popover_delegate
       end
     end
-    
-    
+
     def content_view_controller
       @__content_view_controller__ ||= ContentViewController.new
     end
-    
-    
+
     def show_popover sender
       if self.popover.shown?
         hide_popover
@@ -52,8 +48,7 @@ module Carendar
         make_popover_transient
       end
     end
-    
-    
+
     def hide_popover
       if self.popover.shown?
         NSEvent.removeMonitor(@__monitor__)
@@ -62,19 +57,20 @@ module Carendar
         self.popover.close        
       end
     end
-    
+
     private
     attr_reader :popover_delegate
-        
+
     def make_popover_transient
       mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
-      @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:-> event {
+      operation = Proc.new do |event|
         view = content_view_controller.view
         point = view.convertPoint(event.locationInWindow, fromView:nil)
         hide_popover unless view.mouse(point, inRect:view.bounds)
-      })
+      end
+      @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:operation)
     end
-    
+
   end
   
 end

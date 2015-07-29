@@ -1,9 +1,9 @@
-describe "Application 'carendar'" do
+describe "Application 'Carendar'" do
   before do
     @app = NSApplication.sharedApplication
   end
 
   it "has one window" do
-    @app.windows.size.should == 0
+    @app.windows.size.should == 1
   end
 end
