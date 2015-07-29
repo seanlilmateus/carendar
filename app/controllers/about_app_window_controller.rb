@@ -104,8 +104,8 @@ module Carendar
           credits_text_view.right == cv.right,
           credits_text_view.bottom == copyright_text_field.top,
           
-          copyright_text_field.width >= 300,
-          copyright_text_field.right == cv.right + 100,
+          #copyright_text_field.width >= 300,
+          copyright_text_field.right == cv.right-5,
         ])
       end
     end
