@@ -16,7 +16,7 @@ Motion::Project::App.setup do |app|
   app.frameworks += %W[ScriptingBridge CoreFoundation QuartzCore Security ServiceManagement EventKit]
   app.info_plist['NSUIElement'] = 1
   app.info_plist['CFBundleIconFile'] = 'icon.icns'
-  app.copyright = "© 2015 Mateus Armando All Rights Reserved."
+  app.copyright = "Copyright © 2015 Mateus Armando."
   app.short_version = `git log -n 1 --pretty=format:'%h'`
   app.version = '0.8'
 end
