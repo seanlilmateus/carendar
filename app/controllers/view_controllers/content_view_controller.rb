@@ -25,6 +25,10 @@ module Carendar
       @content_view_model.content_loaded
     end
     
+    def updateViewConstraints
+      super
+    end
+    
     def create_subviews_constraints
       unless @__layouted__
         calendar = calendar_view_controller.view

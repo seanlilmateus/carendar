@@ -1,10 +1,10 @@
 module Carendar
   class EventsTableView < NSTableView
-
     def self.new(frame)
       alloc.initWithFrame(frame).tap do |tbv|
         tbv.backgroundColor = NSColor.clearColor
         tbv.opaque = false
+        tbv.headerView = NSTableHeaderView.with(frame: NSRect.new([0, 0], [frame.size.width, 1]))
         column = NSTableColumn.with(identifier: 'Events')
         tbv.addTableColumn column
         column.width = frame.size.width - 3.0

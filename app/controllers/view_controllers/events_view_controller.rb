@@ -19,14 +19,13 @@ module Carendar
     end
     
     def show_event(event)
-      calendar_app = SBApplication.applicationWithBundleIdentifier('com.apple.ical')
-      # *cal = calendar_app.calendars.find { |c| c.name == event.calendar.title }
-      #found_event = cal.events.find do |e| 
-      #  event.startDate == e.startDate && e.properties[:uid] == event.eventIdentifier
-      #end if cal
-      #found_event.show if found_event
-      calendar_app.activate
-      calendar_app.viewCalendarAt(event.startDate)
+      # http://stackoverflow.com/questions/14472474/how-to-open-ical-to-a-specific-event-date-in-objective-c
+      Dispatch::Queue.concurrent.async do
+        calendar_app = SBApplication.applicationWithBundleIdentifier('com.apple.ical')
+        calendar_app.activate
+        cal = calendar_app.calendars.find { |c| c.name == event.calendar.title }
+        cal.events.objectWithID(event.UUID).show
+      end
     end
     
     def double_clicked sender

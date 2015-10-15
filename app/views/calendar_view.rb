@@ -29,13 +29,16 @@ module Carendar
     def week_days
       @__day_buttons__ ||= begin
         width = 38.0
-        [*0...7].zip(%W[SUN MON TUE WED THU FRI SAT]).map do |idx, day|
+        formatter = NSDateFormatter.alloc.init
+        short_weeks = formatter.shortWeekdaySymbols
+        access_attributes = formatter.weekdaySymbols
+        [*0...7].zip(short_weeks.map(&:upcase)).map do |idx, day|
           x = 6.0 + (width * idx)
           create_text_field(NSRect.new([x, 243.0], [width, 21.0])) do |tf|
             tf.stringValue, tf.identifier = "#{day}", "day#{idx}"
             tf.textColor = NSColor.disabledControlTextColor
-            tf.font = NSFont.fontWithName('.HelveticaNeueDeskInterface-Regular',
-                                     size:15.5)
+            #tf.setAccessibilityLabelValue(access_attributes[idx])
+            tf.font = NSFont.fontWithName('.HelveticaNeueDeskInterface-Regular', size:15.5)
           end
         end
         

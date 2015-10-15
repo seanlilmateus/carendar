@@ -33,11 +33,11 @@ module Carendar
         pop.delegate = popover_delegate
       end
     end
-
+    
     def content_view_controller
       @__content_view_controller__ ||= ContentViewController.new
     end
-
+    
     def show_popover sender
       if self.popover.shown?
         hide_popover
@@ -48,19 +48,19 @@ module Carendar
         make_popover_transient
       end
     end
-
+    
     def hide_popover
       if self.popover.shown?
         NSEvent.removeMonitor(@__monitor__)
         @__monitor__ = nil
         popover_delegate.instance_variable_set(:@__contract_, true)
-        self.popover.close        
+        self.popover.close
       end
     end
-
+    
     private
     attr_reader :popover_delegate
-
+    
     def make_popover_transient
       mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
       operation = Proc.new do |event|
