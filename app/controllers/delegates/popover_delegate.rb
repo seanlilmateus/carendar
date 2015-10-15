@@ -4,7 +4,7 @@ module Carendar
     def initialize(status_item)
       @status_button_cell = status_item.button.cell
     end
-
+    
     def popoverWillShow(_)
       NSApp.unhide(nil)
       NSApp.activateIgnoringOtherApps(true)
@@ -20,8 +20,16 @@ module Carendar
       NSApp.activateIgnoringOtherApps(false)     
       status_button_cell.instance_variable_set(:@activated, false)
       status_button_cell.highlighted = false
-      window = NSApp.windows.last
-      def window.canBecomeKeyWindow; false; end
+      windows = NSApp.windows
+      window = windows.last
+      #def window.canBecomeKeyWindow; false; end
+      if windows.count > 2
+        window = windows.last
+        def window.canBecomeKeyWindow; true; end
+        window.becomeKeyWindow
+      else
+        NSApp.hide(nil) #unless @__contract_
+      end
       window.resignKeyWindow
     end
 
@@ -32,13 +40,6 @@ module Carendar
       popover = notif.object
       popover.animates = true
       windows = NSApp.windows
-      if windows.count > 2
-        window = windows.last
-        def window.canBecomeKeyWindow; true; end
-        window.becomeKeyWindow
-      else
-        NSApp.hide(nil) unless @__contract_
-      end
       @__contract_ = false
     end
 

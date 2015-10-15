@@ -91,8 +91,7 @@ module Carendar
           name_text_field.top == cv.top + 12,
           version_text_field.top == name_text_field.bottom,
           credits_text_view.top == version_text_field.bottom,
-          copyright_text_field.bottom == cv.bottom,
-          copyright_text_field.height(750) == 30,
+          copyright_text_field.bottom == cv.bottom - 5,
           
           name_text_field.width == 350,
           name_text_field.right == cv.right,
@@ -104,8 +103,7 @@ module Carendar
           credits_text_view.right == cv.right,
           credits_text_view.bottom == copyright_text_field.top,
           
-          #copyright_text_field.width >= 300,
-          copyright_text_field.right == cv.right-5,
+          copyright_text_field.left == cv.left + 12,
         ])
       end
     end
