@@ -10,14 +10,10 @@ module Carendar
     def status_item
       @__status_item__ ||= begin
         sb = NSStatusBar.systemStatusBar.statusItemWithLength(IMAGE_VIEW_WIDTH)
-        sb.button.image = NSImage.imageNamed('icon_normal').tap do |img|
-          img.template = true
-          img.size = NSSize.new(20, 20)
-        end
+        sb.button.imagePosition = NSNoImage
         sb.button.cell.extend(StatusButtonCell)
         sb.highlightMode = true
         sb.button.target = self
-        sb.button.imagePosition = NSImageLeft
         sb.button.sendActionOn(NSLeftMouseDownMask|NSRightMouseDownMask)
         sb
       end
@@ -40,7 +36,7 @@ module Carendar
     
     def show_popover sender
       if self.popover.shown?
-        hide_popover
+        hide_popover(sender)
       else
         status_item.button.cell.instance_variable_set(:@activated, true)
         button, frame = status_item.button, status_item.button.frame
@@ -49,12 +45,12 @@ module Carendar
       end
     end
     
-    def hide_popover
+    def hide_popover(sender=nil)
       if self.popover.shown?
-        NSEvent.removeMonitor(@__monitor__)
         @__monitor__ = nil
+        NSEvent.removeMonitor(@__monitor__)
         popover_delegate.instance_variable_set(:@__contract_, true)
-        self.popover.close
+        self.popover.performClose(sender) unless popover_delegate.detached_window_visible?
       end
     end
     
@@ -70,7 +66,6 @@ module Carendar
       end
       @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:operation)
     end
-
   end
   
 end
