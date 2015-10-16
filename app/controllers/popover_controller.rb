@@ -10,14 +10,10 @@ module Carendar
     def status_item
       @__status_item__ ||= begin
         sb = NSStatusBar.systemStatusBar.statusItemWithLength(IMAGE_VIEW_WIDTH)
-        sb.button.image = NSImage.imageNamed('icon_normal').tap do |img|
-          img.template = true
-          img.size = NSSize.new(20, 20)
-        end
+        sb.button.imagePosition = NSNoImage
         sb.button.cell.extend(StatusButtonCell)
         sb.highlightMode = true
         sb.button.target = self
-        sb.button.imagePosition = NSImageLeft
         sb.button.sendActionOn(NSLeftMouseDownMask|NSRightMouseDownMask)
         sb
       end
