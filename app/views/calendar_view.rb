@@ -1,22 +1,22 @@
 module Carendar
   class CalendarView < NSView
-
+    
     def initWithFrame(frame)
       super.tap { common_init }
     end
-
+    
     def next_button
       @__next_button__ ||= create_button([[245, 275], [16, 16]], 'NSRightFacingTriangleTemplate') do |btn|
         btn.identifier = 'Next Month'
       end
     end
-
+    
     def prev_button
       @__prev_button__ ||= create_button([[17, 275], [16, 16]], 'NSLeftFacingTriangleTemplate') do |btn|
         btn.identifier = 'Previous Month'
       end
     end
-
+    
     def calendarTitle
       @__month__ ||= create_text_field(NSRect.new([39, 271], [200, 25])) do |tf| 
         tf.stringValue = "January, 2015"
@@ -25,7 +25,7 @@ module Carendar
         # NSFont.fontWithName('HelveticaNeue-Light', size:17.0)
       end
     end
-
+    
     def week_days
       @__day_buttons__ ||= begin
         width = 38.0
@@ -44,7 +44,7 @@ module Carendar
         
       end
     end
-
+    
     def calendar_days
       @__other_buttons__ ||= begin
         width, row, column = 38.0, 6.0, 200
@@ -58,7 +58,7 @@ module Carendar
         end
       end
     end
-
+    
     def populate_subviews
       self.addSubview(calendarTitle)
       self.addSubview(next_button)
@@ -66,7 +66,7 @@ module Carendar
       week_days.each { |day| self.addSubview(day) }
       calendar_days.each { |bts| self.addSubview(bts) }
     end
-
+    
     private
     def common_init
       @backgroundColor = NSColor.whiteColor
@@ -76,7 +76,7 @@ module Carendar
       week_days
       calendar_days
     end
-
+    
     def create_button(frame, image_named=nil)
       NSButton.alloc.initWithFrame(frame).tap do |b|
         if image_named
@@ -91,7 +91,7 @@ module Carendar
         b.enabled = true
       end
     end
-
+    
     def create_text_field(frame=NSRect.new) 
       NSTextField.with(frame:frame).tap do |tf|
         tf.backgroundColor = NSColor.controlColor
