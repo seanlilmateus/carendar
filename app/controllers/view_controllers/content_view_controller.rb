@@ -116,7 +116,7 @@ module Carendar
           eq: '',
         },
         {
-          title: localized_string("Preferences", "Preferences"),
+          title: "#{localized_string('Preferences', 'Preferences')} ...",
           action: 'show_settings:',
           eq: ',',
         },

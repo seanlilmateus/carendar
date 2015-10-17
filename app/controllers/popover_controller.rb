@@ -1,6 +1,5 @@
 module Carendar
   class PopoverController
-
     def initialize
       @popover_delegate = PopoverDelegate.new WeakRef.new(status_item)
       status_item.button.title  = 'Tue. 9:41'
