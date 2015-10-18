@@ -25,12 +25,15 @@ module Carendar
     def start_at_login(flag)
       url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent(path)
       status = LSRegisterURL(url, true)
-      NSLog("Failed to LSRegisterURL '%@': %@", url, status) unless status == NO_ERROR
-      NSLog("SMLoginItemSetEnabled failed!") unless SMLoginItemSetEnabled(bundle_id, flag)
+      unless status == NO_ERROR
+        NSLog("Failed to LSRegisterURL '%@': %@", url, status)
+      end
+      unless SMLoginItemSetEnabled(bundle_id, flag)
+        NSLog("SMLoginItemSetEnabled failed!")
+      end
       willChangeValueForKey("enabled")
       @enable = enabled?
       didChangeValueForKey("enabled")
-      # error = NSError.errorWithDomain(NSOSStatusErrorDomain, code:status, userInfo:nil)
     end
     
     def enabled?
@@ -38,13 +41,6 @@ module Carendar
       jobs_dicts.one? { |job| job[:Label] == bundle_id && job[:OnDemand] }
     end
     
-    def starter_helper
-      helper = "Contents/Library/LoginItems/carendar-app-launcher.app"
-      path = NSBundle.mainBundle.bundlePath.stringByAppendingPathComponent helper
-      bundle = NSBundle.bundleWithPath(path)
-      login_controller = AutoStarterController.new(bundle)
-    end
-        
     private
     attr_reader :bundle_id, :path
   end
