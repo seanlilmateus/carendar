@@ -21,7 +21,7 @@ module Carendar
       create_subviews_constraints
     end
     
-    def viewDidLayout
+    def viewDidAppear
       @content_view_model.content_loaded
     end
     
