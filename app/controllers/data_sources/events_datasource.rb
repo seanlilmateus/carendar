@@ -1,11 +1,11 @@
 module Carendar
   class EventsDataSource
-
+    
     def initialize
       @events = NSArray.array
     end
     attr_reader :events
-
+    
     # Delegate
     def tableView(tbv, viewForTableColumn:column, row:row)
       event = @events[row]
@@ -16,7 +16,7 @@ module Carendar
         cell.identifier, cell.stringValue = identifier, event
         if @events[row+1] && @events[row+1].is_a?(EKObject)
           cell.textColor = @events[row+1].calendar.color
-        end 
+        end
         cell
       elsif event
         cell = tbv.makeViewWithIdentifier(column.identifier, owner:self) 
@@ -31,7 +31,7 @@ module Carendar
         cell
       end
     end
-
+    
     # DataSource
     def numberOfRowsInTableView(tbv)
       @events.count
@@ -42,14 +42,13 @@ module Carendar
                     .to_a.flatten
       @events = NSArray.arrayWithArray(groups)
     end
-
+    
     def tableView(tbv, heightOfRow:row)
       @events[row].is_a?(String) ? 25.0 : 35.0
     end
-
+    
     def tableView(tableView, isGroupRow:row)
       @events[row].is_a?(String)
     end
-
   end
 end

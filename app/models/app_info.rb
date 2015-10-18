@@ -1,6 +1,10 @@
 module Carendar
   class AppInfo
-
+    def self.name
+      @instance ||= new
+      @instance.dictionary[KCFBundleNameKey] || @instance.dictionary['CFBundleDisplayName']
+    end
+    
     def initialize
       @dictionary = NSBundle.mainBundle.infoDictionary      
     end
