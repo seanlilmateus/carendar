@@ -15,4 +15,6 @@ Motion::Project::App.setup do |app|
   app.identifier = 'de.mateus.carendar-app-launcher'
   app.entitlements['com.apple.security.app-sandbox'] = true
   app.copyright = "Copyright Mateus Armando © 2014"
+  app.info_plist['NSSupportsSuddenTermination'] = 1
+  app.info_plist['NSUIElement'] = 1
 end
