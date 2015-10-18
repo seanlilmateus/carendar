@@ -9,8 +9,10 @@ module Carendar
       self.view.addSubview(b1)
       self.view.addSubview(b2)
       self.view.addSubview(token_field)
-      @tokenizer = Carendar::Token::DateTokenizer.instance
+      self.view.addSubview(restart_switcher)
+      self.view.addSubview(restart_label)
       
+      @tokenizer = Carendar::Token::DateTokenizer.instance
       @settings = SettingsModel.instance
       options = { 
         NSContinuouslyUpdatesValueBindingOption => true,
@@ -48,10 +50,32 @@ module Carendar
         box2.top == box1.bottom + 20,
         box2.width == self.view.width - 40,
         box2.height == self.view.height * 0.30,
+        restart_switcher.width == 100,
+        restart_switcher.height == 20,
+        restart_switcher.top == box2.bottom + 12,
+        restart_switcher.left == box2.left,
+        restart_label.top == box2.bottom + 12,
+        restart_label.left == restart_switcher.right + 12,
       ])
     end
     
     private
+    def restart_switcher
+      @__restart_switch__ ||= SwitchControl.new.tap do |sw|
+        sw.translatesAutoresizingMaskIntoConstraints = false
+        @auto_starter = AutoStarter.new(sw)
+        sw.extend(Layout::View)
+      end
+    end
+    
+    def restart_label
+      @restart_label ||= begin
+        str = localized_string("Launch %@ at Login")
+        label_title = NSString.stringWithFormat(str, AppInfo.name)
+        Label.create(label_title)
+      end
+    end
+    
     def simple_delegate
       @simple_delegate ||= SimpleTokenDelegate.new
     end
