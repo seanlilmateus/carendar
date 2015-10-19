@@ -19,6 +19,7 @@ Motion::Project::App.setup do |app|
   app.info_plist['NSUIElement'] = 1
   app.info_plist['CFBundleIconFile'] = 'icon.icns'
   app.copyright = "Copyright © 2015 Mateus Armando. All rights reserved."
+  app.copyright = "Copyright © 2015 %s. All rights reserved."
   app.short_version = `git log -n 1 --pretty=format:'%h'`
   app.version = "1.0β"
 end
