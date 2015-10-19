@@ -20,6 +20,7 @@ module Carendar
       deselect_rows
       controller.today_button.enabled = current_month?
       events_for_the_month(date)
+      controller.today_button.enabled = current_month?
     end
     
     def didSelectDate(date)
@@ -29,14 +30,15 @@ module Carendar
       end
       update_empty_view date_formatter.stringFromDate(date)
       events_for_the_day(date)
+      controller.today_button.enabled = current_month?
     end
     
     # Buttons Actions
     def select_date(sender) # previous go to date
       calendar_controller.date = NSDate.date
-      sender.enabled = false
-      events_for_the_month(controller.calendar_view_controller.date)
+      #events_for_the_month(controller.calendar_view_controller.date)
       deselect_rows(sender)
+      select_today
     end
     
     private
@@ -44,17 +46,27 @@ module Carendar
     def current_month?
       calendar_controller.view
                          .subviews
-                         .select { |sbv| sbv.is_a?(CalendarCell) }
-                         .none?(&:today?)
+                         .select { |sbv| sbv.is_a?(CalendarCell) && sbv.today? }
+                         .none?(&:selected)
     end
     
     def date_formatter
-      # dafault short date format from somewhere???
+      # default short date format from somewhere???
       @__date_formatter__ ||= NSDateFormatter.new.tap do |df|
         df.timeStyle = NSDateFormatterNoStyle
         df.dateStyle = NSDateFormatterFullStyle
         df.locale = NSLocale.autoupdatingCurrentLocale
       end
+    end
+    
+    def select_today
+      today = NSDate.date
+      calendar = controller.calendar_view_controller.view
+      calendar.subviews
+              .select { |sbv| sbv.is_a?(CalendarCell) && sbv.title ==  "#{today.day}" }
+              .each   { |sbv| sbv.selected = true }
+      events_for_the_day(today)
+      controller.today_button.enabled = false
     end
     
     def deselect_rows(sender=nil)
