@@ -53,7 +53,7 @@ module Carendar
       @df ||= NSDateFormatter.new
       day_labels = self.view.week_days
       @df.shortStandaloneWeekdaySymbols
-         .each_with_index { |day, i| day_labels[colForDay(i+1)].stringValue = day.upcase[0..1] }
+         .each_with_index {|day, i| day_labels[colForDay(i+1)].stringValue = day.upcase[0..1]}
       bv = self.view
       bv.backgroundColor = self.backgroundColor
       self.date = NSDate.date

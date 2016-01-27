@@ -19,7 +19,8 @@ module Carendar
     private
     attr_reader :storage
     def events_from(start_date, to:end_date)
-      predicate = storage.predicateForEventsWithStartDate(start_date, endDate: end_date, calendars: nil)
+      predicate = storage.predicateForEventsWithStartDate(start_date, 
+                                                  endDate: end_date, calendars: nil)
       storage.eventsMatchingPredicate(predicate)
     end
     
