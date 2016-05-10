@@ -52,7 +52,9 @@ module Carendar
 
     def observeValueForKeyPath(keyPath, ofObject:object, change:change, context:context)
       if keyPath == "current_format"
-        @__format__ = object.current_format.map(&:to_s).join
+        @__format__ = object.current_format
+                            .map { |c| c.is_a?(String) ? "'#{c}'" : c.to_s }
+                            .join
         Dispatch::Queue.main.after(0.1) {
           length = calculate_width(formatter.stringFromDate(NSDate.new)) + 4
           NSApp.delegate.popover_controller.status_item.length = length
