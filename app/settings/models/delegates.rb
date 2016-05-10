@@ -89,13 +89,9 @@ module Carendar
     end
 
 
-    def tokenField(field, styleForRepresentedObject:object)
-      object.is_a?(Token::Component) ? NSDefaultTokenStyle : NSPlainTextTokenStyle
-    end
-
-
     def controlTextDidChange(notification)
       SettingsModel.instance.setCurrent_format(token_field.objectValue)
+      token_field.update_display
       true
     end
 
