@@ -11,19 +11,16 @@ module Carendar
       start
     end
     attr_reader :queue
-    
+
+
     def register_as_observer
       settings = SettingsModel.instance
       opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
       settings.addObserver(self, forKeyPath: "current_format", options:opts, context:nil)
     end
-    
-    def start
-      # NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, 
-      #                              selector: :current_time, userInfo: nil,
-      #                               repeats: true)
-      timer
-    end
+
+
+    def start; timer; end
     
     def cancel
       timer.cancel!
@@ -39,29 +36,33 @@ module Carendar
     def timer
       @timer ||= Source.timer(0, @secs, 0, queue, &method(:tick))
     end
-    
+
+
     def formatter
       @formatter ||= NSDateFormatter.new
       @formatter.dateFormat = format
       @formatter
     end
-    
+
+
     def format
-      @__format__ ||= "HH:mm" #"HH:mm:ss"
+      @__format__ ||= "HH:mm"
     end
-    
+
+
     def observeValueForKeyPath(keyPath, ofObject:object, change:change, context:context)
       if keyPath == "current_format"
-        @__format__ = object.current_format.map(&:to_s).join('')
+        @__format__ = object.current_format.map(&:to_s).join
         Dispatch::Queue.main.after(0.1) {
-          width = NSApp.delegate.popover_controller.status_item.button.fittingSize.width
-          NSApp.delegate.popover_controller.status_item.length = width
+          length = formatter.stringFromDate(NSDate.new).length * 7.1
+          NSApp.delegate.popover_controller.status_item.length = length
         }
       else
         super
       end
     end
-    
+
+
     def output
       if @flash_sepatators && @blink
         formatter.dateFormat = format
@@ -71,8 +72,5 @@ module Carendar
       formatter.stringFromDate NSDate.date
     end
     
-    def output_width
-      formatter.stringFromDate(NSDate.new).length * 11
-    end
   end
 end

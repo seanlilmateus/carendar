@@ -1,6 +1,6 @@
 module Carendar
   module Token
-    class DateTokenizer
+    class Provider
       FIELDS = {
         time: {
           hour:         %W[HH h hh],

@@ -12,7 +12,7 @@ module Carendar
       self.view.addSubview(restart_switcher)
       self.view.addSubview(restart_label)
       
-      @tokenizer = Carendar::Token::DateTokenizer.instance
+      @tokenizer = Carendar::Token::Provider.instance
       @settings = SettingsModel.instance
       options = { 
         NSContinuouslyUpdatesValueBindingOption => true,
@@ -138,7 +138,7 @@ module Carendar
     end
     
     def create_token_field
-      NSTokenField.alloc.init.tap do |tf|
+      TokenField.alloc.init.tap do |tf|
         tf.extend(Layout::View)
         tf.translatesAutoresizingMaskIntoConstraints = false
         yield(tf) if block_given?
