@@ -95,8 +95,7 @@ module Carendar
 
 
     def controlTextDidChange(notification)
-      SettingsModel.instance.setCurrent_format(token_field.format)
-      token_field.update_display!
+      SettingsModel.instance.setCurrent_format(token_field.objectValue)
       true
     end
 

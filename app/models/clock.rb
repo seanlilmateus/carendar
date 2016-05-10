@@ -54,7 +54,7 @@ module Carendar
       if keyPath == "current_format"
         @__format__ = object.current_format.map(&:to_s).join
         Dispatch::Queue.main.after(0.1) {
-          length = formatter.stringFromDate(NSDate.new).length * 7.1
+          length = calculate_width(formatter.stringFromDate(NSDate.new)) + 4
           NSApp.delegate.popover_controller.status_item.length = length
         }
       else
@@ -71,6 +71,15 @@ module Carendar
       end
       formatter.stringFromDate NSDate.date
     end
-    
+
+
+    def calculate_width(string)
+      font = NSApp.delegate.popover_controller.status_item.button.font
+      attributes = { NSFontAttributeName => font }
+      NSAttributedString.alloc
+                        .initWithString(string, attributes:attributes)
+                        .size
+                        .width
+    end
   end
 end
