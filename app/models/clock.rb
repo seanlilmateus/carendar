@@ -8,6 +8,12 @@ module Carendar
       register_as_observer
       @flash_sepatators = true
       @blink, @secs = true, secs
+      attrs = { 
+        NSFontAttributeName => NSApp.delegate.popover_controller.status_item.button.font
+      }
+      @fixed_width = NSAttributedString.alloc
+                                       .initWithString("0", attributes:attrs)
+                                       .size.width
       start
     end
     attr_reader :queue
@@ -37,16 +43,15 @@ module Carendar
       @timer ||= Source.timer(0, @secs, 0, queue, &method(:tick))
     end
 
+    def format
+      @__format__ ||= "HH:mm"
+    end
+
 
     def formatter
       @formatter ||= NSDateFormatter.new
       @formatter.dateFormat = format
       @formatter
-    end
-
-
-    def format
-      @__format__ ||= "HH:mm"
     end
 
 
@@ -56,7 +61,7 @@ module Carendar
                             .map { |c| c.is_a?(String) ? "'#{c}'" : c.to_s }
                             .join
         Dispatch::Queue.main.after(0.1) {
-          length = calculate_width(formatter.stringFromDate(NSDate.new)) + 4
+          length = calculate_width(formatter.stringFromDate(NSDate.new))
           NSApp.delegate.popover_controller.status_item.length = length
         }
       else
@@ -76,12 +81,7 @@ module Carendar
 
 
     def calculate_width(string)
-      font = NSApp.delegate.popover_controller.status_item.button.font
-      attributes = { NSFontAttributeName => font }
-      NSAttributedString.alloc
-                        .initWithString(string, attributes:attributes)
-                        .size
-                        .width
+      string.length * @fixed_width * 0.9
     end
   end
 end
