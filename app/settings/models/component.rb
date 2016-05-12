@@ -6,6 +6,7 @@ module Carendar
         super(name, type, items, index)
       end
 
+
       def initWithCoder(decoder)
         self.tap do |instance|
           instance.name = decoder.decodeObjectOfClass(NSString, forKey: "name")
