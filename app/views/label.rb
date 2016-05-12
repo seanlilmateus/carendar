@@ -13,7 +13,6 @@ module Carendar
         lbl.usesSingleLineMode = true
         lbl.backgroundColor = NSColor.clearColor
         yield(lbl) if block_given?
-        lbl.extend(Layout::View)
       end
     end
   end

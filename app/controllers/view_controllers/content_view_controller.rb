@@ -4,7 +4,6 @@ module Carendar
     def loadView
       self.view = NSView.alloc.initWithFrame([[0, 0], [280.0, 600]])
       self.view.wantsLayer = true
-      self.view.extend(Layout::View)
     end
     
     def viewDidLoad
@@ -33,23 +32,22 @@ module Carendar
       unless @__layouted__
         calendar = calendar_view_controller.view
         table_view = events_view_controller.view
-        self.view.addConstraints([
-          calendar.top == self.view.leading - 160,
-          calendar.centerX == self.view.centerX,
-          calendar.width == self.view.width,
+        NSLayoutConstraint.activateConstraints([
+          calendar.topAnchor.constraintEqualToAnchor(self.view.leadingAnchor, constant:-160),
+          calendar.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
+          calendar.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
+          today_button.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
+          today_button.topAnchor.constraintEqualToAnchor(calendar.bottomAnchor, constant:5),
           
-          today_button.centerX(750) == self.view.centerX,
-          today_button.top(250) == calendar.bottom + 5,
-          
-          table_view.centerX == self.view.centerX,
-          table_view.width == self.view.width,
-          table_view.top == today_button.bottom + 10,
-          table_view.bottom == self.view.bottom,
-          table_view.height == 250.0,
+          table_view.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
+          table_view.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
+          table_view.topAnchor.constraintEqualToAnchor(today_button.bottomAnchor, constant:10),
+          table_view.bottomAnchor.constraintEqualToAnchor(self.view.bottomAnchor),
+          table_view.heightAnchor.constraintEqualToConstant(250.0),
           
           #### Settings Button
-          settings_button.centerY == today_button.centerY,
-          settings_button.trailing == self.view.trailing - 20,
+          settings_button.centerYAnchor.constraintEqualToAnchor(today_button.centerYAnchor),
+          settings_button.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor, constant:-20),
         ])
         @__layouted__ = true
       end
@@ -60,14 +58,12 @@ module Carendar
       @__calendar_view_controller__ ||= CalendarController.new.tap do |instance|
         instance.view.translatesAutoresizingMaskIntoConstraints = false      
         instance.delegate = @content_view_model
-        instance.view.extend(Layout::View)
       end
     end
     
     def events_view_controller
       @__events_view_controller ||= EventsViewController::new.tap do |evc|
         evc.view.translatesAutoresizingMaskIntoConstraints = false
-        evc.view.extend(Layout::View)
       end
     end
     
@@ -94,7 +90,6 @@ module Carendar
         bt.cell.menu = settings_popup_menu
         bt.pullsDown = true
         bt.bordered = false
-        bt.extend(Layout::View)
       end
     end
     
@@ -141,7 +136,6 @@ module Carendar
         b.bezelStyle = NSTextFieldRoundedBezel
         b.buttonType = NSMomentaryPushInButton
         yield(b) if block_given?
-        b.extend(Layout::View)
       end
     end
   end

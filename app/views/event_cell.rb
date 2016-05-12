@@ -11,7 +11,6 @@ module Carendar
         sf.cell.usesSingleLineMode = true
         sf.cell.lineBreakMode = NSLineBreakByTruncatingTail
         sf.backgroundColor = NSColor.clearColor
-        sf.extend(Layout::View)
       end
     end
 
@@ -24,12 +23,11 @@ module Carendar
     private
     def layout_subviews
       unless @__layout__
-        self.extend(Layout::View)
-        self.addConstraints([
-          textField.width == self.width - 20,
-          textField.height == self.height - 10,
-          textField.centerX == self.centerX,
-          textField.centerY(1000) == self.centerY,
+        NSLayoutConstraint.activateConstraints([
+          textField.widthAnchor.constraintEqualToAnchor(self.widthAnchor, constant:-20),
+          textField.heightAnchor.constraintEqualToAnchor(self.heightAnchor, constant:-10),
+          textField.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
+          textField.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
         ])
         @__layout__ = true
       end

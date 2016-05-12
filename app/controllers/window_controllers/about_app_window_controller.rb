@@ -12,7 +12,8 @@ module Carendar
         zoom_button.hidden = true
       end
     end
-    
+
+
     def init
       rect = NSRect.new([196, 240], [560, 320])
       mask = NSTitledWindowMask|NSClosableWindowMask
@@ -32,47 +33,43 @@ module Carendar
         AboutWindowController.hide_standard_window_buttons(window)
       end
     end
-    
+
+
     def main_view
       @__main_view__ ||= NSView.new.tap do |mv|
-        mv.extend(Layout::View)
-        self.window.contentView.extend(Layout::View)
         mv.translatesAutoresizingMaskIntoConstraints = false
         mv.wantsLayer = true
       
         self.window.contentView.addSubview(mv)
-        self.window.contentView.addConstraints([
-          mv.width == self.window.contentView.width,
-          mv.height == self.window.contentView.height,
-        ])
-        
-        width = CGRectGetWidth(self.window.contentView.frame) + 2.0
-        height = CGRectGetHeight(self.window.contentView.frame) + 1.0
-        
         mv.addSubview(information_view)
         mv.addSubview(bottom_view)
-        mv.addConstraints([
-          bottom_view.width == mv.width,
-          bottom_view.centerX == mv.centerX,
-          bottom_view.bottom == mv.bottom, 
-          bottom_view.height == 50.0,
         
-          information_view.width == mv.width,
-          information_view.centerX == mv.centerX,
-          information_view.top == mv.top,
-          information_view.height == mv.height - 50,
+        NSLayoutConstraint.activateConstraints([
+          mv.widthAnchor.constraintEqualToAnchor(self.window.contentView.widthAnchor),
+          mv.heightAnchor.constraintEqualToAnchor(self.window.contentView.heightAnchor),
+      
+          bottom_view.widthAnchor.constraintEqualToAnchor(mv.widthAnchor),
+          bottom_view.centerXAnchor.constraintEqualToAnchor(mv.centerXAnchor),
+          bottom_view.bottomAnchor.constraintEqualToAnchor(mv.bottomAnchor),
+          bottom_view.heightAnchor.constraintEqualToConstant(50.0),
+        
+          information_view.widthAnchor.constraintEqualToAnchor(mv.widthAnchor),
+          information_view.centerXAnchor.constraintEqualToAnchor(mv.centerXAnchor),
+          information_view.topAnchor.constraintEqualToAnchor(mv.topAnchor),
+          information_view.heightAnchor.constraintEqualToAnchor(mv.heightAnchor, constant:-50),
         ])
       end
     end
-    
+
+
     def windowDidLoad
       main_view
       self.window.center
     end
-    
+
+
     def information_view
       @__information_view__ ||= NSView.new.tap do |cv|
-        cv.extend(Layout::View)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.wantsLayer = true
         cv.backgroundColor = NSColor.whiteColor
@@ -82,32 +79,33 @@ module Carendar
         cv.addSubview copyright_text_field
         cv.addSubview credits_text_view
         
-        cv.addConstraints([
-          icon_image_view.width == 100,
-          icon_image_view.top == cv.top + 50,
-          icon_image_view.left == cv.left + 50,
-          icon_image_view.height >= 90,
+        NSLayoutConstraint.activateConstraints([
+          icon_image_view.widthAnchor.constraintEqualToConstant(100),
+          icon_image_view.topAnchor.constraintEqualToAnchor(cv.topAnchor, constant:50),
+          icon_image_view.leftAnchor.constraintEqualToAnchor(cv.leftAnchor, constant:50),
+          icon_image_view.heightAnchor.constraintGreaterThanOrEqualToConstant(90),
           
-          name_text_field.top == cv.top + 12,
-          version_text_field.top == name_text_field.bottom,
-          credits_text_view.top == version_text_field.bottom,
-          copyright_text_field.bottom == cv.bottom - 5,
+          name_text_field.topAnchor.constraintEqualToAnchor(cv.topAnchor, constant:12),
+          version_text_field.topAnchor.constraintEqualToAnchor(name_text_field.bottomAnchor),
+          credits_text_view.topAnchor.constraintEqualToAnchor(version_text_field.bottomAnchor),
+          copyright_text_field.bottomAnchor.constraintEqualToAnchor(cv.bottomAnchor, constant:-5),
           
-          name_text_field.width == 350,
-          name_text_field.right == cv.right,
+          name_text_field.widthAnchor.constraintEqualToConstant(350),
+          name_text_field.rightAnchor.constraintEqualToAnchor(cv.rightAnchor),
           
-          version_text_field.width == 350,
-          version_text_field.right == cv.right,
+          version_text_field.widthAnchor.constraintEqualToConstant(350),
+          version_text_field.rightAnchor.constraintEqualToAnchor(cv.rightAnchor),
           
-          credits_text_view.width == 350,
-          credits_text_view.right == cv.right,
-          credits_text_view.bottom == copyright_text_field.top,
+          credits_text_view.widthAnchor.constraintEqualToConstant(350),
+          credits_text_view.rightAnchor.constraintEqualToAnchor(cv.rightAnchor),
+          credits_text_view.bottomAnchor.constraintEqualToAnchor(copyright_text_field.topAnchor),
           
-          copyright_text_field.left == cv.left + 12,
+          copyright_text_field.leftAnchor.constraintEqualToAnchor(cv.leftAnchor, constant:12),
         ])
       end
     end
-    
+
+
     def name_text_field
       @__name_text__ ||= NSTextField.alloc.init.tap do |tf|
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -117,10 +115,10 @@ module Carendar
         tf.drawsBackground = false
         tf.stringValue = @information.name
         tf.font = NSFont.boldSystemFontOfSize(22)
-        tf.extend(Layout::View)
       end
     end
-    
+
+
     def version_text_field
       @__version__ ||= NSTextField.alloc.init.tap do |tf|
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -131,10 +129,10 @@ module Carendar
         tf.drawsBackground = false
         tf.stringValue = @information.version
         tf.font = NSFont.boldSystemFontOfSize(NSFont.smallSystemFontSize)
-        tf.extend(Layout::View)
       end
     end
-    
+
+
     def copyright_text_field
       @__copyright__ ||= NSTextField.alloc.init.tap do |tf|
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -145,23 +143,22 @@ module Carendar
         tf.textColor = NSColor.disabledControlTextColor
         tf.stringValue = @information.copyright
         tf.font = NSFont.systemFontOfSize NSFont.smallSystemFontSize
-        tf.extend(Layout::View)
       end
     end
-    
+
+
     def icon_image_view
       @__icon_image_view__ ||= NSImageView.alloc.init.tap do |imgv|
-        imgv.extend(Layout::View)
         imgv.translatesAutoresizingMaskIntoConstraints = false
         imgv.imageAlignment = NSImageAlignCenter
         imgv.imageScaling = NSImageScaleProportionallyUpOrDown
         imgv.image = @information.icon #NSApplicationIcon
       end
     end
-    
+
+
     def segment
       @segment ||= NSSegmentedControl.new.tap do |seg|
-        seg.extend(Layout::View)
         seg.segmentCount = 2
         seg.selectedSegment = 0
         seg.translatesAutoresizingMaskIntoConstraints = false
@@ -179,10 +176,10 @@ module Carendar
         scr.translatesAutoresizingMaskIntoConstraints = false
         scr.autoresizingMask = NSViewWidthSizable|NSViewHeightSizable
         scr.attributedString = @information.credits
-        scr.extend(Layout::View)
       end
     end
-    
+
+
     def toggle_credits(sender)
       text = case sender.selectedSegment
         when 0 then @information.credits
@@ -190,16 +187,16 @@ module Carendar
       end
       credits_text_view.attributedString = text
     end
-    
+
+
     def bottom_view
       @__bottom_view__ ||= NSVisualEffectView.new.tap do |bv|
-        bv.extend(Layout::View)
         bv.material = NSVisualEffectMaterialDark
         bv.translatesAutoresizingMaskIntoConstraints = false
         bv.addSubview(segment)
-        bv.addConstraints([
-          segment.right == bv.right - 10,
-          segment.centerY == bv.centerY,
+        NSLayoutConstraint.activateConstraints([
+          segment.rightAnchor.constraintEqualToAnchor(bv.rightAnchor, constant:-10),
+          segment.centerYAnchor.constraintEqualToAnchor(bv.centerYAnchor),
         ])
       end
     end
