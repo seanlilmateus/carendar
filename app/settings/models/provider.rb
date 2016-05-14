@@ -1,6 +1,6 @@
 module Carendar
   module Token
-    class DateTokenizer
+    class Provider
       FIELDS = {
         time: {
           hour:         %W[HH h hh],
@@ -15,9 +15,9 @@ module Carendar
           month:         %W[M MM MMM MMMM],
           day_of_week:   %W[eee eeee eeeee eeeeee],
           day_of_month:  %W[dd d],
-          week_of_month: %W[w W],
+          week_of_month: %W[W],
           day_of_year:   %W[D DD DDD],
-          week_of_year:  %W[w ww],
+          week_of_year:  %W[w],
           quartal:       %W[qqq qq q QQQQ],
         }
       }

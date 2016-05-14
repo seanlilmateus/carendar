@@ -15,23 +15,28 @@ module Carendar
       end
     end
 
+
     def has_rows_to_display?
       self.numberOfRows > 0
     end
+
 
     def reloadData
       super
       update_empty_view
     end
 
+
     def layoutSubviews
       super
       update_empty_view
     end
 
+
     def empty_view
       @empty_view || default_empty_view
     end
+
 
     def empty_view=(nv)
       if self.empty_view && self.empty_view.superview
@@ -41,6 +46,7 @@ module Carendar
       update_empty_view
     end
 
+
     def date_label
       @__date_label__ ||= create_label do |sf|
         sf.stringValue = "Date Come here"
@@ -49,8 +55,8 @@ module Carendar
       end
     end
 
+
     private
-    
     def update_empty_view
       return unless self.empty_view
       if self.empty_view.superview != self
@@ -77,19 +83,20 @@ module Carendar
       self.empty_view.hidden = !empty_view_should_be_shown
     end
 
+
     def default_empty_view
       @__default_empty_view__ ||= NSView.alloc.initWithFrame(self.frame).tap do |v|
         v.addSubview empty_label
         v.addSubview date_label
-        v.extend(Layout::View)
-        v.addConstraints([
-          date_label.centerX == v.centerX,
-          date_label.centerY(1000) == v.centerY - 35,
-          empty_label.centerX == v.centerX,
-          empty_label.top == date_label.bottom + 5,
+        NSLayoutConstraint.activateConstraints([
+          date_label.centerXAnchor.constraintEqualToAnchor(v.centerXAnchor),
+          date_label.centerYAnchor.constraintEqualToAnchor(v.centerYAnchor, constant:-35),
+          empty_label.centerXAnchor.constraintEqualToAnchor(v.centerXAnchor),
+          empty_label.topAnchor.constraintEqualToAnchor(date_label.bottomAnchor, constant:5),
         ])
       end
     end
+
 
     def empty_label
       @__empty_label__ ||= create_label do |sf|        
@@ -104,6 +111,7 @@ module Carendar
       end
     end
 
+
     def create_label
       NSTextField.alloc.init.tap do |sf|
         sf.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +121,6 @@ module Carendar
         sf.editable = false
         sf.enabled = true
         sf.backgroundColor = NSColor.clearColor
-        sf.extend(Layout::View)
       end
     end
   end

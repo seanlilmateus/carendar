@@ -1,42 +1,49 @@
 module Carendar
   module Token
-    class Component
-      def initialize(name=nil, type=nil, items)
-        @name = name
-        @type = type
-        @attributes = items
-        @current_string = items.first
+    class Component < Struct.new(:name, :type, :attributes, :index)
+      def initialize(name = nil, type = nil, items = [], index = 0)
+        items = NSArray.arrayWithArray(items)
+        super(name, type, items, index)
       end
-      attr_accessor :name, :type, :attributes, :current_string
-    
+
+
       def initWithCoder(decoder)
         self.tap do |instance|
           instance.name = decoder.decodeObjectOfClass(NSString, forKey: "name")
           instance.type = decoder.decodeObjectOfClass(NSString, forKey: "type")
           instance.attributes = decoder.decodeObjectOfClass(NSArray, forKey: "attributes")
-          instance.current_string = decoder.decodeObjectOfClass(NSString, forKey: "current_string")
+          instance.index = decoder.decodeObjectOfClass(NSNumber, forKey: "index") || 0
         end
       end
-   
+
+
+      def current_string
+        self.attributes[self.index]
+      end
+
+
       def encodeWithCoder(encoder)
         encoder.encodeObject(self.name, forKey: "name")
         encoder.encodeObject(self.type, forKey: "type")
         encoder.encodeObject(self.attributes, forKey: "attributes")
-        encoder.encodeObject(self.current_string, forKey: "current_string")
+        encoder.encodeObject(self.index, forKey: "index")
       end
-      
-      def current_index=(index)
-        @current_string = attributes[index] || attributes.first
+
+
+      def current_index=(number)
+        self.index = number
       end
-      
-      def ==(another)
-        self.class == another.class &&  self.name == another.name
+
+
+      def ==(other)
+        self.class == other.class && self.name == other.name && self.index == other.index
       end
-    
+
+
       def current_value
-        fmt = Token::DateTokenizer.date_formatter
+        fmt = Token::Provider.date_formatter
         fmt.dateFormat = self.current_string
-        fmt.stringFromDate(DateTokenizer.date)
+        fmt.stringFromDate(Provider.date)
       end
       alias to_s current_string
     end
