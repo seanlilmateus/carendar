@@ -8,15 +8,18 @@ module Carendar
       super.tap { common_init }
     end
 
+
     def today?
       return false unless self.representedDate
       CalendarController.isSameDate(self.representedDate, date:NSDate.date)
     end
 
+
     def selected=(flag)
       @selected = flag
       self.needsDisplay = true
     end
+
 
     def representedDate=(represented_date)
       @representedDate = represented_date
@@ -29,6 +32,7 @@ module Carendar
         NSString.string
       end
     end
+
 
     def drawRect(dirty_rect)
       if self.owner
@@ -81,6 +85,7 @@ module Carendar
       end
     end
 
+
     private
     def common_init
       self.bordered = true
@@ -89,5 +94,6 @@ module Carendar
       self.representedDate = nil
       self.enabled = true
     end
+
   end
 end

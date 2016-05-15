@@ -1,11 +1,12 @@
 module Carendar
   class EventsDataSource
-    
+
     def initialize
       @events = NSArray.array
     end
     attr_reader :events
-    
+
+
     # Delegate
     def tableView(tbv, viewForTableColumn:column, row:row)
       event = @events[row]
@@ -31,24 +32,29 @@ module Carendar
         cell
       end
     end
-    
+
+
     # DataSource
     def numberOfRowsInTableView(tbv)
       @events.count
     end
-    
+
+
     def events=(items)
       groups = items.group_by { |event| event.calendar.title }
                     .to_a.flatten
       @events = NSArray.arrayWithArray(groups)
     end
-    
+
+
     def tableView(tbv, heightOfRow:row)
       @events[row].is_a?(String) ? 25.0 : 35.0
     end
-    
+
+
     def tableView(tableView, isGroupRow:row)
       @events[row].is_a?(String)
     end
+
   end
 end

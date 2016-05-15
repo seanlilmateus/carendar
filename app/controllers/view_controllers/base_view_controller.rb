@@ -5,16 +5,20 @@ module Carendar
       initWithNibName(nil, bundle:nil)
     end
 
+
     def loadView
       self.view = NSView.alloc.init
     end
+
 
     def viewDidLoad
       super
     end
 
+
     def updateViewConstraints
       super
     end
+
   end
 end

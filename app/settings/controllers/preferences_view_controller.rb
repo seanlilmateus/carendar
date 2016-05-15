@@ -1,5 +1,6 @@
 module Carendar
   class PreferencesViewController < BaseViewController
+
     def viewDidLoad
       super
       b1, b2 = create_boxes
@@ -156,5 +157,6 @@ module Carendar
         tf
       end
     end
+
   end
 end

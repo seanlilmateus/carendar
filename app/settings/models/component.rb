@@ -1,6 +1,7 @@
 module Carendar
   module Token
     class Component < Struct.new(:name, :type, :attributes, :index)
+
       def initialize(name = nil, type = nil, items = [], index = 0)
         items = NSArray.arrayWithArray(items)
         super(name, type, items, index)
@@ -46,7 +47,7 @@ module Carendar
         fmt.stringFromDate(Provider.date)
       end
       alias to_s current_string
+
     end
   end
-  
 end

@@ -1,7 +1,9 @@
 module Carendar
   class PreferencesToolbarDelegate
+
     GENERAL_IDENTIFIER   = "General Preference Identifier"
     APPEARANCE_IDENTIFER = "Appearance Preference Identifer"
+
     # @ret NSToolbarItem
     def toolbar(toolbar, itemForItemIdentifier:item_id, willBeInsertedIntoToolbar:flag)
       item = nil
@@ -14,7 +16,8 @@ module Carendar
       end
       item
     end
-  
+
+
     # @ret Array<String>
     def toolbarDefaultItemIdentifiers(toolbar)
       [
@@ -22,12 +25,14 @@ module Carendar
         NSToolbarFlexibleSpaceItemIdentifier,
       ]
     end
-  
+
+
     # @ret Array<String>
     def toolbarSelectableItemIdentifiers(toolbar)
       [GENERAL_IDENTIFIER]
     end
-  
+
+
     # @ret Array<String>
     def toolbarAllowedItemIdentifiers(toolbar)
       [
@@ -37,13 +42,16 @@ module Carendar
         NSToolbarSpaceItemIdentifier,
       ]
     end
-    
+
+
     def validateToolbarItem item
       item.itemIdentifier == GENERAL_IDENTIFIER
     end
-    
+
+
     def toolbarItemClicked(sender)
       #puts sender
     end
+
   end
 end

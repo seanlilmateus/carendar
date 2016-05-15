@@ -1,5 +1,6 @@
 module Carendar
-  class PreferencesWindowController < NSWindowController  
+  class PreferencesWindowController < NSWindowController
+
     def init
       rect = NSRect.new([196, 240], [500, 470])
       mask = NSTitledWindowMask|NSClosableWindowMask|NSMiniaturizableWindowMask
@@ -15,7 +16,8 @@ module Carendar
         instance.load_window
       end
     end
-    
+
+
     def load_window
       @toolbar_delegate = PreferencesToolbarDelegate.new
       toolbar = NSToolbar.alloc.initWithIdentifier('Preferences Toolbar').tap do |tb|
@@ -31,5 +33,6 @@ module Carendar
       self.window.toolbar = toolbar
       self.window.center
     end
+
   end
 end

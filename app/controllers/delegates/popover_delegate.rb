@@ -1,10 +1,11 @@
 module Carendar
   class PopoverDelegate
-    
+
     def initialize(status_item)
       @status_button_cell = status_item.button.cell
     end
-    
+
+
     def popoverWillShow(_)
       NSApp.unhide(nil)
       NSApp.activateIgnoringOtherApps(true)
@@ -13,7 +14,8 @@ module Carendar
       def window.canBecomeKeyWindow; true; end
       window.becomeKeyWindow
     end
-    
+
+
     # Without this the button cell will deactivate after the
     # status bar item was clicked, but we want it to keep 
     # highlighted as long as the Popover is visible
@@ -33,37 +35,42 @@ module Carendar
         NSApp.hide(nil) #unless @__contract_
       end
     end
-    
+
+
     # Without this the animation acts weird...
     # In addition to that, we hide our app in order to bring
     # the previous application to the front
     def popoverDidClose(notif)
       popover = notif.object
       popover.animates = true
-      windows = NSApp.windows
       @__contract_ = false
     end
-    
+
+
     def popoverDidShow(notif)
       popover = notif.object
       popover.animates = false
     end
-    
+
+
     # enable datachable window/view for the popover
     def detachableWindowForPopover(popover)
       @detached_window_controller_loaded = true
       nil
     end
-    
+
+
     def popoverShouldDetach(popover)
       true
     end
-    
+
+
     def detached_window_visible?
       @detached_window_controller_loaded
     end
-    
+
     private
     attr_reader :status_button_cell
+
   end
 end

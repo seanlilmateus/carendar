@@ -5,11 +5,13 @@ module Carendar
       super.tap { @data_source = EventsDataSource.new }
     end
     attr_reader :data_source
-    
+
+
     def loadView
       self.view = table_container
     end
-    
+
+
     def viewDidLoad
       super
       self.tableView.delegate = @data_source
@@ -17,9 +19,9 @@ module Carendar
       self.tableView.target = self
       self.tableView.doubleAction = 'double_clicked:'
     end
-    
+
+
     def show_event(event)
-      # http://stackoverflow.com/questions/14472474/how-to-open-ical-to-a-specific-event-date-in-objective-c
       Dispatch::Queue.concurrent.async do
         calendar_app = SBApplication.applicationWithBundleIdentifier('com.apple.ical')
         calendar_app.activate
@@ -27,7 +29,8 @@ module Carendar
         cal.events.objectWithID(event.UUID).show
       end
     end
-    
+
+
     def double_clicked sender
       item = @data_source.events[sender.clickedRow]
       if item.is_a?(EKEvent)
@@ -36,12 +39,13 @@ module Carendar
         return false
       end
     end
-    
-    
+
+
     def tableView
       @__tableView__ ||= EventsTableView.new NSRect.new([0, 0], [280.0, 200])
     end
-    
+
+
     private
     def table_container
       @__table_container__ ||= begin
@@ -56,6 +60,6 @@ module Carendar
         end
       end
     end
-    
+
   end
 end

@@ -1,9 +1,10 @@
 module Carendar
   class TableHeaderCell < NSTextField
-    
+
     def self.cellClass; CustomTextFieldCell; end
     def self.layerClass; CALayer; end
-  
+
+
     def initWithFrame(frame)
       super.tap do |tf|
         tf.wantsLayer = true 
@@ -16,8 +17,10 @@ module Carendar
         tf.alignment = NSNaturalTextAlignment
       end
     end
-  
+
+
     class CustomTextFieldCell < NSTextFieldCell
+
       PADDING_MARGIN = 13.0
   
       def titleRectForBounds(theRect)
@@ -37,12 +40,14 @@ module Carendar
         textFrame.size.width -= (2* PADDING_MARGIN)
         super(textFrame, controlView, editor, object, start, length)
       end
-  
+
+
       def drawInteriorWithFrame(cellFrame, inView:controlView)
         titleRect = self.titleRectForBounds(cellFrame)
         self.attributedStringValue.drawInRect(titleRect)
       end
+
     end
-    
+
   end
 end

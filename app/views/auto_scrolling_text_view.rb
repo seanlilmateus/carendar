@@ -1,16 +1,19 @@
 module Carendar
   class AutoScrollingTextView < NSView
+
     attr_accessor :attributed_string
     attr_writer :background_color
     attr_reader :time, :text_rect
-  
+
+
     def init
       super.tap do |instance|
         @pause_scrolling = false # don't pause at start up
         @background_color = NSColor.clearColor
       end
     end
-  
+
+
     def viewWillMoveToSuperview(v)
       super
       @timer = NSTimer.scheduledTimerWithTimeInterval(0.03, 
@@ -20,12 +23,14 @@ module Carendar
                                               repeats: true)
     
     end
-  
+
+
     def removeFromSuperview
       @timer.invalidate
       super
     end
-  
+
+
     def scroll_text(timer)
       return if self.pause_scrolling?
       frame = self.bounds
@@ -35,11 +40,13 @@ module Carendar
       @text_rect.origin.y -= 1
       self.setNeedsDisplay(true) 
     end
-    
+
+
     def attributedString=(attr_string)
       __attributed_string_setter__(attr_string)
     end
-    
+
+
     def string=(value)
       @pause_scrolling = false
       dict = { 
@@ -49,11 +56,13 @@ module Carendar
       attributed_string = NSAttributedString.alloc.initWithString(value, attributes:dict)
       __attributed_string_setter__(attributed_string)
     end
-  
+
+
     def pause_scrolling?
       @pause_scrolling
     end
-  
+
+
     def drawRect dirty_rect
       frame = self.bounds
     
@@ -64,16 +73,20 @@ module Carendar
       # Draw atrtributed string
       @attributed_string.drawInRect(@text_rect)
     end
-  
+
+
     def isFlipped
       true
     end
-  
+
+
     def mouseDown(event)
       @pause_scrolling = !@pause_scrolling
     end
-    
-    private def __attributed_string_setter__(attributed_string)
+
+
+    private
+    def __attributed_string_setter__(attributed_string)
       @attributed_string = attributed_string
       size = NSSize.new(330, attributed_string.size.height) #
       #opts = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
@@ -91,6 +104,6 @@ module Carendar
       @text_rect.origin.y = NSMaxY(self.bounds)
       self.setNeedsDisplay(true)
     end
-    
+
   end
 end

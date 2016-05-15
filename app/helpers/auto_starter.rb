@@ -1,10 +1,12 @@
 module Carendar
   class AutoStarter
+
     def self.automaticallyNotifiesObserversForKey(key)
       return false if key.isEqualToString("enabled")
       super
     end
-    
+
+
     attr_accessor :enable
     def initialize(switcher)
       app_name = 'carendar-app-launcher'
@@ -15,12 +17,14 @@ module Carendar
       switcher.on = enabled?
       @enable = enabled?
     end
-    
+
+
     def switcher_action(sender)
       start_at_login(sender.isOn?)
       sender.on = enabled?
     end
-    
+
+
     NO_ERROR = 0
     def start_at_login(flag)
       url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent(path)
@@ -35,13 +39,16 @@ module Carendar
       @enable = enabled?
       didChangeValueForKey("enabled")
     end
-    
+
+
     def enabled?
       jobs_dicts = SMCopyAllJobDictionaries(KSMDomainUserLaunchd) || []
       jobs_dicts.one? { |job| job[:Label] == bundle_id && job[:OnDemand] }
     end
-    
+
+
     private
     attr_reader :bundle_id, :path
+
   end
 end

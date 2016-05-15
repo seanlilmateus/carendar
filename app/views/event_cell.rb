@@ -1,6 +1,6 @@
 module Carendar
   class EventCell < NSTableCellView
-    
+
     def textField
       @__textField__ ||= NSTextField.alloc.init.tap do |sf|
         sf.translatesAutoresizingMaskIntoConstraints = false
@@ -14,11 +14,13 @@ module Carendar
       end
     end
 
+
     def viewWillMoveToSuperview view
       super
       self.addSubview(textField)
       layout_subviews
     end
+
 
     private
     def layout_subviews
@@ -32,5 +34,6 @@ module Carendar
         @__layout__ = true
       end
     end
+
   end
 end

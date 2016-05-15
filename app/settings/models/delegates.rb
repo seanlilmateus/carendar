@@ -1,5 +1,6 @@
 module Carendar
   class SimpleTokenDelegate
+
     def tokenField(field, completionsForSubstring:substring,
                 indexOfToken:index, indexOfSelectedItem:selected_index)
       NSArray.array
@@ -34,7 +35,8 @@ module Carendar
       pboard.setData(archived, forType: Token::Component.description)
       true
     end
-    
+
+
     def tokenField(field, readFromPasteboard:pboard)
       if pboard.types.include?(Token::Component.description)
         data = pboard.dataForType(Token::Component.description)
@@ -48,7 +50,7 @@ module Carendar
   end
   
   class FullTokenDelegate < SimpleTokenDelegate
-    
+
     def initialize(token_field)
       @token_field = token_field
       @token_menu = NSMenu.new

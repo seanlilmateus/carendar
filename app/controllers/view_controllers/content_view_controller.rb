@@ -5,7 +5,8 @@ module Carendar
       self.view = NSView.alloc.initWithFrame([[0, 0], [280.0, 600]])
       self.view.wantsLayer = true
     end
-    
+
+
     def viewDidLoad
       super
       @content_view_model = ContentViewModel.new WeakRef.new(self)
@@ -19,15 +20,18 @@ module Carendar
       self.view.addSubview settings_button
       create_subviews_constraints
     end
-    
+
+
     def viewDidAppear
       @content_view_model.content_loaded
     end
-    
+
+
     def updateViewConstraints
       super
     end
-    
+
+
     def create_subviews_constraints
       unless @__layouted__
         calendar = calendar_view_controller.view
@@ -52,7 +56,8 @@ module Carendar
         @__layouted__ = true
       end
     end
-    
+
+
     # childrean Controllers
     def calendar_view_controller
       @__calendar_view_controller__ ||= CalendarController.new.tap do |instance|
@@ -60,18 +65,21 @@ module Carendar
         instance.delegate = @content_view_model
       end
     end
-    
+
+
     def events_view_controller
       @__events_view_controller ||= EventsViewController::new.tap do |evc|
         evc.view.translatesAutoresizingMaskIntoConstraints = false
       end
     end
-    
+
+
     ## Events Fetcher Promise based
     def events_fetcher
       @__events_fetcher ||= EventsFetcher.new
     end
-    
+
+
     # UI Components
     def today_button
       @today_button ||= create_button do |b|
@@ -80,7 +88,8 @@ module Carendar
         b.action = 'select_date:'
       end
     end
-    
+
+
     def settings_button
       @setting_button ||= NSPopUpButton.new.tap do |bt|
         bt.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +101,8 @@ module Carendar
         bt.bordered = false
       end
     end
-    
+
+
     private
     def settings_popup_menu
       menu = NSMenu.new
@@ -129,7 +139,8 @@ module Carendar
       menu.insertItem(NSMenuItem.separatorItem, atIndex:3)    
       menu
     end
-    
+
+
     def create_button
       NSButton.new.tap do |b|
         b.translatesAutoresizingMaskIntoConstraints = false
@@ -138,5 +149,6 @@ module Carendar
         yield(b) if block_given?
       end
     end
+
   end
 end

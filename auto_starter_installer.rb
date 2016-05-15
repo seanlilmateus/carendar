@@ -10,8 +10,9 @@ class Motion::Project::App
       destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
       puts destination
       info 'Create', destination 
-      FileUtils.mkdir_p destination 
-      helper_path = File.dirname(__FILE__)+"/carendar-app-launcher/build/#{platform}-10.11-Development/carendar-app-launcher.app"
+      FileUtils.mkdir_p destination
+      path = "/carendar-app-launcher/build/#{platform}-10.11-Development/carendar-app-launcher.app"
+      helper_path = File.dirname(__FILE__) + path
       info 'Copy', helper_path 
       FileUtils.cp_r helper_path, destination 
     end 

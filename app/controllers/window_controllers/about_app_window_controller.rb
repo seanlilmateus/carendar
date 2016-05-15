@@ -1,7 +1,7 @@
 module Carendar
   class AboutWindowController < NSWindowController
+
     def self.hide_standard_window_buttons(win)
-      close_button = win.standardWindowButton(NSWindowCloseButton)
       minimize_button = win.standardWindowButton(NSWindowMiniaturizeButton)
       if minimize_button
         minimize_button.hidden = true
@@ -170,7 +170,8 @@ module Carendar
         seg.action = 'toggle_credits:'
       end
     end
-    
+
+
     def credits_text_view
       @__scroll_view__ ||= AutoScrollingTextView.alloc.init.tap do |scr|
         scr.translatesAutoresizingMaskIntoConstraints = false

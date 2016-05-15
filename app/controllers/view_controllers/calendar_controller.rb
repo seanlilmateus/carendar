@@ -6,7 +6,8 @@ module Carendar
     attr_reader :delegate
     
     def delegate=(d); @delegate = WeakRef.new(d); end
-    
+
+
     class << self
       def calendar
         @__calendar__ ||= NSCalendar.currentCalendar.tap do |cal|
@@ -14,12 +15,14 @@ module Carendar
           cal.timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")
         end
       end
-    
+
+
       def isSameDate(d1, date:d2)
         return false if d2.nil? || d1.nil?
         calendar.isDate(d1, inSameDayAsDate:d2)
       end
-    
+
+
       def dd(dt)
         dt ||= NSDate.date
         unit_flags = NSCalendarUnitDay | NSCalendarUnitYear | NSCalendarUnitMonth
@@ -27,17 +30,20 @@ module Carendar
         "#{comps.year}-#{comps.month}-#{comps.day}"
       end
     end
-    
+
+
     def init
       super.tap { common_init }
     end
-    
+
+
     def loadView
       rect = NSRect.new([0, 0], [280.0, 332.0])
       self.view = CalendarView.alloc.initWithFrame(rect)
       self.view.populate_subviews
     end
-        
+
+
     def viewDidLoad
       super
       self.view.calendar_days
@@ -58,12 +64,14 @@ module Carendar
       bv.backgroundColor = self.backgroundColor
       self.date = NSDate.date
     end
-    
+
+
     def viewWillAppear
       super
       self.layoutCalendar
     end
-    
+
+
     def date=(dt)
       dt ||= NSDate.date
       @date = self.toUTC(dt)
@@ -75,20 +83,23 @@ module Carendar
       month_name = @df.standaloneMonthSymbols[month-1].capitalize
       self.view.calendarTitle.stringValue = "#{month_name} #{year}"
     end
-    
+
+
     def toUTC(dt)
       dt ||= NSDate.date
       unit_flags = NSCalendarUnitDay | NSCalendarUnitYear | NSCalendarUnitMonth
       components = self.class.calendar.components(unit_flags, fromDate:dt)
       self.class.calendar.dateFromComponents(components)
     end
-    
+
+
     def selectedDate=(dt)
       @selectedDate = toUTC(dt)
       self.view.calendar_days
           .each { |cell| cell.selected = self.class.isSameDate(cell.representedDate, date:@selectedDate) }
     end
-    
+
+
     def cellClicked(sender)
       self.view.subviews
           .select { |sbv| sbv.is_a?(CalendarCell) }
@@ -99,7 +110,8 @@ module Carendar
         self.delegate.didSelectDate(@selectedDate)
       end
     end
-    
+
+
     def monthDay(day)
       unit_flags = NSCalendarUnitDay | NSCalendarUnitYear | NSCalendarUnitMonth
       components = self.class.calendar.components(unit_flags, fromDate:(@date || NSDate.date))
@@ -107,20 +119,23 @@ module Carendar
       comps.day, comps.year, comps.month = day, components.year, components.month
       self.class.calendar.dateFromComponents(comps)
     end
-    
+
+
     def lastDayOfTheMonth
       opts, unit = NSCalendarUnitMonth, NSCalendarUnitDay
       days_range = self.class.calendar
                        .rangeOfUnit(unit, inUnit:opts, forDate:self.date)
       days_range.length
     end
-    
+
+
     def colForDay(day)
       idx = day - self.class.calendar.firstWeekday
       idx = 7 + idx if idx < 0
       idx 
     end
-    
+
+
     def layoutCalendar
       return unless self.view
       cells = self.view.subviews
@@ -145,7 +160,8 @@ module Carendar
         end
       end
     end
-    
+
+
     def stepMonth(dm)
     	unit_flags = NSCalendarUnitDay | NSCalendarUnitYear | NSCalendarUnitMonth
       components = self.class.calendar.components(unit_flags, fromDate:self.date)
@@ -169,15 +185,18 @@ module Carendar
           self.delegate.didChangeMonth(self.date)
       end
     end
-    
+
+
     def nextMonth(sender)
       stepMonth(1)
     end
-    
+
+
     def prevMonth(sender)
       stepMonth(-1)
     end
-    
+
+
     private
     def common_init
       @todayMarkerColor = NSColor.greenColor
@@ -187,5 +206,6 @@ module Carendar
       @textColor = NSColor.blackColor
       @date = NSDate.date
     end
+
   end
 end

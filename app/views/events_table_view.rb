@@ -1,5 +1,6 @@
 module Carendar
   class EventsTableView < NSTableView
+
     def self.new(frame)
       alloc.initWithFrame(frame).tap do |tbv|
         tbv.backgroundColor = NSColor.clearColor
@@ -123,6 +124,6 @@ module Carendar
         sf.backgroundColor = NSColor.clearColor
       end
     end
+
   end
-  
 end
