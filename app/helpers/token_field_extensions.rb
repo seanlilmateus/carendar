@@ -5,6 +5,6 @@ class NSTokenField
     object_value = self.objectValue
     self.setObjectValue(nil)
     self.setObjectValue(object_value)
-    field_editor.setSelectedRange(selection_range)
+    field_editor.setSelectedRange(selection_range) if selection_range
   end
 end
