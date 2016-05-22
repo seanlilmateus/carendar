@@ -12,7 +12,7 @@ module Carendar
       window.collectionBehavior = NSWindowCollectionBehaviorCanJoinAllSpaces
       window.title = localized_string("Preferences")
       initWithWindow(window).tap do |instance|
-        @content_controller = PreferencesViewController.new
+        instance.contentViewController = PreferencesViewController.new
         instance.load_window
       end
     end
@@ -26,9 +26,8 @@ module Carendar
         tb.showsBaselineSeparator = true
         tb.delegate = @toolbar_delegate
       end
-      @content_controller.view.frame = NSRect.new(NSPoint.new, self.window.contentView.frame.size)
-      self.window.contentView.addSubview(@content_controller.view)
-      @content_controller.update_view_constraints
+      contentViewController.view.frame = NSRect.new(NSPoint.new, self.window.contentView.frame.size)
+      contentViewController.update_view_constraints
       toolbar.selectedItemIdentifier = PreferencesToolbarDelegate::GENERAL_IDENTIFIER
       self.window.toolbar = toolbar
       self.window.center
