@@ -40,6 +40,7 @@ class AppDelegate
     preferences_controller.showWindow(sender)
     popover_controller.hide_popover
     preferences_controller.window.makeKeyWindow
+    preferences_controller.window.center
   end
 
 
@@ -47,6 +48,7 @@ class AppDelegate
     about_controller.showWindow(sender)
     popover_controller.hide_popover
     about_controller.window.makeKeyWindow
+    about_controller.window.center
   end
 
 
