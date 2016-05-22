@@ -10,7 +10,8 @@ module Carendar
 
     def status_item
       @__status_item__ ||= begin
-        sb = NSStatusBar.systemStatusBar.statusItemWithLength(IMAGE_VIEW_WIDTH)
+        sb = NSStatusBar.systemStatusBar
+                        .statusItemWithLength(NSVariableStatusItemLength)
         sb.button.imagePosition = NSNoImage
         sb.button.cell.extend(StatusButtonCell)
         sb.highlightMode = true
@@ -23,10 +24,9 @@ module Carendar
 
     def popover
       @_popover ||= NSPopover.alloc.init.tap do |pop|
-        #pop.appearance = NSAppearance.appearanceNamed(NSAppearanceNameAqua)
         pop.contentViewController = content_view_controller
         pop.appearance = NSPopoverAppearanceMinimal
-        pop.behavior = NSPopoverBehaviorTransient # NSPopoverBehaviorSemitransient
+        pop.behavior = NSPopoverBehaviorTransient
         pop.animates = true
         pop.delegate = popover_delegate
       end

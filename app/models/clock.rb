@@ -1,52 +1,65 @@
 module Carendar
+  CURRENT_FORMAT = NSString.stringWithString("current_format")
+  
   class Clock
-
-    include Dispatch
 
 
     def initialize(secs=1.0, &block)
       raise ArgumentError, "Missing block" unless block_given?
-      @queue ||= Queue.new 'carendar.timer'
+      @queue  = Dispatch::Queue.new 'carendar.timer'
       @action = block.weak!
       register_as_observer
-      @flash_sepatators = true
-      @blink, @secs = true, secs
-      attrs = { 
-        NSFontAttributeName => NSApp.delegate.popover_controller.status_item.button.font
-      }
-      @fixed_width = NSAttributedString.alloc
-                                       .initWithString("0", attributes:attrs)
-                                       .size.width
-      start
+      @flash_sepatators = false
+      @blink = true
+      timer
     end
     attr_reader :queue
 
 
     def register_as_observer
-      settings = SettingsModel.instance
-      opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-      settings.addObserver(self, forKeyPath: "current_format", options:opts, context:nil)
+      opts = NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial
+      defaults = NSUserDefaults.standardUserDefaults
+      defaults.addObserver( self,
+                forKeyPath: CURRENT_FORMAT,
+                   options: opts,
+                   context: nil)
     end
 
-
-    def start; timer; end
+    def deregister_as_observer
+      defaults = NSUserDefaults.standardUserDefaults
+      defaults.removeObserver(self, forKeyPath: CURRENT_FORMAT)
+    end
 
 
     def cancel
       timer.cancel!
       @timer = nil
+      deregister_as_observer
+    end
+
+    def dealloc
+      deregister_as_observer
+      super
     end
 
 
-    def tick(_)
-      value = output
-      Queue.main.sync { @action.call(value) }
+    def tick(time)
+      Dispatch::Queue.main.sync do
+        value = if @flash_sepatators && @blink
+          @blink = false
+          output.gsub(":", " ")
+        else
+          @blink = true
+          output
+        end
+        @action.call(value)
+      end
     end
 
 
     private
     def timer
-      @timer ||= Source.timer(0, @secs, 0, queue, &method(:tick))
+      @timer ||= Dispatch::Source.timer(0, 1, 0, queue, &method(:tick))
     end
 
 
@@ -62,15 +75,12 @@ module Carendar
     end
 
 
-    def observeValueForKeyPath(keyPath, ofObject:object, change:change, context:context)
-      if keyPath == "current_format"
-        @__format__ = object.current_format
-                            .map { |c| c.is_a?(String) ? "'#{c}'" : c.to_s }
-                            .join
-        Dispatch::Queue.main.after(0.1) {
-          length = calculate_width(formatter.stringFromDate(NSDate.new))
-          NSApp.delegate.popover_controller.status_item.length = length
-        }
+    def observeValueForKeyPath(keyPath, ofObject:obj, change:change, context:ctxt)
+      if keyPath == CURRENT_FORMAT
+        new_value = change[NSKeyValueChangeNewKey]
+        values = NSKeyedUnarchiver.unarchiveObjectWithData(new_value)
+        func = Proc.new { |c| c.is_a?(String) ? "'#{c}'" : c.to_s }
+        @__format__ = values.map(&func).join
       else
         super
       end
@@ -78,17 +88,7 @@ module Carendar
 
 
     def output
-      if @flash_sepatators && @blink
-        formatter.dateFormat = format
-        @__current_blink__ = !@__current_blink__
-        formatter.dateFormat = @__current_blink__ ? format : format.gsub(":", " ")
-      end
       formatter.stringFromDate NSDate.date
-    end
-
-
-    def calculate_width(string)
-      string.length * @fixed_width * 0.9
     end
 
   end
