@@ -12,23 +12,48 @@ module Carendar
       end
       
       @tokenizer = Carendar::Token::Provider.instance
-      @settings = SettingsModel.instance
-      options = { 
-        NSContinuouslyUpdatesValueBindingOption => true,
-        NSValidatesImmediatelyBindingOption => true,
-      }
-      token_field.bind( NSValueBinding, 
-              toObject: @settings, withKeyPath: "current_format", options: options)
     end
 
 
     def viewWillAppear
       super
       box1, box2 = self.view.subviews.select { |sb| sb.is_a?(NSBox) }
-      date_elements = create_token_elements(box1, @tokenizer.date_token)
-      time_elements = create_token_elements(box2, @tokenizer.time_token)
-      positioning(date_elements)
+      time_elements = create_token_elements(box1, @tokenizer.time_token)
+      date_elements = create_token_elements(box2, @tokenizer.date_token)
       positioning(time_elements)
+      positioning(date_elements)
+    end
+
+
+    def viewDidAppear
+      super
+      token_field = self.view.subviews.find { |s| s.is_a?(NSTokenField) }
+      controller = NSUserDefaultsController.sharedUserDefaultsController
+      initial = { CURRENT_FORMAT => Token::Provider.defaults }
+      controller.setInitialValues(initial)
+      options = {
+        NSValueTransformerNameBindingOption => "FormatTransformer",
+        NSContinuouslyUpdatesValueBindingOption => true,
+        NSValidatesImmediatelyBindingOption => true,
+      }
+      token_field.bind( NSValueBinding, 
+              toObject: controller, 
+           withKeyPath: "values.current_format", 
+               options: options)
+      token_field.window.makeFirstResponder(token_field.superview)
+    end
+
+
+    def viewWillDisappear
+      super
+      token_field = self.view.subviews.find { |s| s.is_a?(NSTokenField) }
+      token_field.window.makeFirstResponder(token_field.superview)
+      token_field.unbind(NSValueBinding)
+    end
+
+
+    def preferredContentSize
+      NSSize.new(500, 470)
     end
 
 

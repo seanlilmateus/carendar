@@ -19,7 +19,7 @@ module Carendar
 
     def tokenField(field, displayStringForRepresentedObject:object)
       if object.is_a?(Token::Component)
-        title = object.current_value
+        title = object.value
         title = title.upcase if object.type == :time
         title
       else
@@ -59,7 +59,7 @@ module Carendar
 
 
     def tokenField(_, hasMenuForRepresentedObject:object)
-      object.is_a?(Token::Component) && object.attributes.count > 1
+      object.is_a?(Token::Component) && object.attributes.size > 1
     end
 
 
@@ -83,18 +83,20 @@ module Carendar
 
 
     def click(sender)
-      if sender && sender.representedObject
-        index = sender.menu.indexOfItem(sender)
-        sender.representedObject.current_index = index
-        controlTextDidChange(nil)
-      end
+      return unless sender.representedObject
+      index = sender.menu.indexOfItem(sender)
+      sender.representedObject.setValue(index, forKey:"index")
+      update
     end
 
 
-    def controlTextDidChange(notification)
-      SettingsModel.instance.setCurrent_format(token_field.objectValue)
+    def update
+      values = token_field.objectValue
+      data = NSKeyedArchiver.archivedDataWithRootObject(values)
+      defaults = NSUserDefaults.standardUserDefaults
+      defaults.setObject(data, forKey: CURRENT_FORMAT)
+      defaults.synchronize
       token_field.update_display
-      true
     end
 
   end  

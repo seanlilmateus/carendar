@@ -1,11 +1,18 @@
 module Carendar
   module Token
-    class Component < Struct.new(:name, :type, :attributes, :index)
+    class Component
+
+      def self.automaticallyNotifiesObserversForKey(key)
+        true
+      end
+
 
       def initialize(name = nil, type = nil, items = [], index = 0)
-        items = NSArray.arrayWithArray(items)
-        super(name, type, items, index)
+        self.name, self.type, self.index = name, type, index
+        #timezone = NSTimeZone.timeZoneWithAbbreviation()
+        self.attributes = NSArray.arrayWithArray(items)
       end
+      attr_accessor :name, :type, :attributes, :index
 
 
       def initWithCoder(decoder)
@@ -18,7 +25,7 @@ module Carendar
       end
 
 
-      def current_string
+      def to_s
         self.attributes[self.index]
       end
 
@@ -31,22 +38,16 @@ module Carendar
       end
 
 
-      def current_index=(number)
-        self.index = number
-      end
-
-
       def ==(other)
         self.class == other.class && self.name == other.name && self.index == other.index
       end
 
 
-      def current_value
+      def value
         fmt = Token::Provider.date_formatter
-        fmt.dateFormat = self.current_string
+        fmt.dateFormat = self.to_s
         fmt.stringFromDate(Provider.date)
       end
-      alias to_s current_string
 
     end
   end
