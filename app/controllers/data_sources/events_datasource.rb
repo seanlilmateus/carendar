@@ -36,7 +36,7 @@ module Carendar
 
     # DataSource
     def numberOfRowsInTableView(tbv)
-      @events.count
+      @events.size
     end
 
 

@@ -26,7 +26,7 @@ module Carendar
       windows = NSApp.windows
       window = windows.last
       # def window.canBecomeKeyWindow; false; end
-      if windows.count > 2
+      if windows.size > 2
         window = windows.last
         def window.canBecomeKeyWindow; true; end
         window.becomeKeyWindow
