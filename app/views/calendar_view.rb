@@ -7,14 +7,14 @@ module Carendar
 
 
     def next_button
-      @__next_button__ ||= create_button([[245, 275], [16, 16]], 'NSRightFacingTriangleTemplate') do |btn|
+      @__next_button__ ||= create_button([[245, 275], [18, 18]], 'NSRightFacingTriangleTemplate') do |btn|
         btn.identifier = 'Next Month'
       end
     end
 
 
     def prev_button
-      @__prev_button__ ||= create_button([[17, 275], [16, 16]], 'NSLeftFacingTriangleTemplate') do |btn|
+      @__prev_button__ ||= create_button([[17, 275], [18, 18]], 'NSLeftFacingTriangleTemplate') do |btn|
         btn.identifier = 'Previous Month'
       end
     end
@@ -35,7 +35,7 @@ module Carendar
         width = 38.0
         formatter = NSDateFormatter.alloc.init
         short_weeks = formatter.shortWeekdaySymbols
-        [*0...7].zip(short_weeks.map(&:upcase)).map do |idx, day|
+        Array(0...7).zip(short_weeks.map(&:upcase)).map do |idx, day|
           x = 6.0 + (width * idx)
           create_text_field(NSRect.new([x, 243.0], [width, 21.0])) do |tf|
             tf.stringValue, tf.identifier = "#{day}", "day#{idx}"
@@ -86,6 +86,12 @@ module Carendar
 
     def create_button(frame, image_named=nil)
       NSButton.alloc.initWithFrame(frame).tap do |b|
+        b.cell.backgroundStyle = NSBackgroundStyleLight
+        b.cell.controlTint = NSBlueControlTint
+        b.bezelStyle = NSRegularSquareBezelStyle
+        b.buttonType = NSMomentaryLightButton
+        b.alignment = NSTextAlignmentCenter
+        b.enabled = true
         if image_named
           b.imagePosition = NSImageOnly # 1
           b.imageScaling = NSImageScaleProportionallyUpOrDown
@@ -93,9 +99,6 @@ module Carendar
           b.image = NSImage.imageNamed(image_named)
         end
         yield b if block_given?
-        b.bezelStyle = NSRoundedBezelStyle
-        b.buttonType = NSMomentaryPushInButton
-        b.enabled = true
       end
     end
 

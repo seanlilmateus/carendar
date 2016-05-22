@@ -1,10 +1,6 @@
 module Carendar
   class SwitchControl < NSControl
 
-    KCALayerWidthSizable = 16 unless defined? KCALayerWidthSizable
-    KCALayerHeightSizable = 2 unless defined? KCALayerHeightSizable
-
-
     def initWithFrame(frame)
       super
       self
@@ -71,7 +67,10 @@ module Carendar
       invoke = (is_on != self.isOn?)
       
       self.on = is_on
-      self.target.send(self.action, self) if self.target && self.action && invoke
+      
+      if self.target && self.action && invoke
+        self.target.send(self.action, self)
+      end
       
       updateLayer
       # reset
@@ -125,7 +124,6 @@ module Carendar
 
 
     private
-
     def updateLayer
       animation_transaction do
         CATransaction.animationDuration = ANIMATION_DURATION
