@@ -15,9 +15,9 @@ module Carendar
     # Generates Application information containing version and short version
     def version
       @__version__ ||= begin
-        version = dictionary['CFBundleVersion']
-        short = dictionary['CFBundleShortVersionString']
-        NSString.stringWithString "Version #{version} (Build #{short})"
+        version = dictionary['CFBundleShortVersionString']
+        build = dictionary['CFBundleVersion']
+        NSString.stringWithString "Version #{version} (Build #{build})"
       end
     end
 
