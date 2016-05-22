@@ -4,17 +4,17 @@ module Carendar
 
       FIELDS = {
         time: {
-          hour:         %W[HH h hh],
-          minute:       %W[mm],
-          second:       %W[ss],
-          period:       %W[a], #AM PM,
-          milliseconds: %W[SSS],
-          time_zone:    %W[ZZZ ZZZZ ZZ],
+          hour:          %W[hh HH h],
+          minute:        %W[mm],
+          second:        %W[ss],
+          period:        %W[a], #AM PM,
+          milliseconds:  %W[SSS],
+          time_zone:     %W[zzz Z ZZZZ VV v V vvvv zzzz],
         },
         date: {
-          year:          %W[yyy yy yyyy],
-          month:         %W[M MM MMM MMMM],
-          day_of_week:   %W[eee eeee eeeee eeeeee],
+          year:          %W[yyyy yy],
+          month:         %W[M MM MMM MMMM MMMMM],
+          day_of_week:   %W[eee eeeee eeeeee eeee],
           day_of_month:  %W[dd d],
           week_of_month: %W[W],
           day_of_year:   %W[D DD DDD],
@@ -28,7 +28,9 @@ module Carendar
       class << self
 
         def defaults
-          [instance.time_token.first, ":", instance.time_token[1]]
+          items = [instance.time_token.first, ":", instance.time_token[1]]
+          items = NSArray.arrayWithArray(items)
+          NSKeyedArchiver.archivedDataWithRootObject(items)
         end
 
 
@@ -40,7 +42,10 @@ module Carendar
 
 
         def date_formatter
-          @date_formatter ||= NSDateFormatter.new
+          @date_formatter ||= NSDateFormatter.new.tap do |df|
+            df.locale = NSLocale.autoupdatingCurrentLocale
+            df.timeZone = NSTimeZone.systemTimeZone
+          end
         end
 
 
@@ -72,10 +77,10 @@ module Carendar
 
 
       private
-      def create_tokens(key)
-        FIELDS[key].map do |key, value|
+      def create_tokens(type)
+        FIELDS[type].map do |key, value|
           name = key.to_s.gsub("_", " ").split(/(\W)/).map(&:capitalize).join
-          Token::Component.new(name, key, value)
+          Token::Component.new(name, type, value)
         end
       end
 
