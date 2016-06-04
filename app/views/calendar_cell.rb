@@ -11,7 +11,7 @@ module Carendar
 
     def today?
       return false unless self.representedDate
-      CalendarController.isSameDate(self.representedDate, date:NSDate.date)
+      self.representedDate.isInSameDayAsDate(NSDate.date)
     end
 
 
