@@ -4,6 +4,7 @@ module Carendar
     def loadView
       self.view = NSView.alloc.initWithFrame([[0, 0], [280.0, 600]])
       self.view.wantsLayer = true
+      viewDidLoad
     end
 
 
@@ -15,11 +16,13 @@ module Carendar
       add_child_controller events_view_controller
       self.view.addSubview today_button
       self.view.addSubview settings_button
+      calendar_view_controller.viewDidLoad
       create_subviews_constraints
     end
 
 
     def viewDidAppear
+      super
       @content_view_model.content_loaded
     end
 
@@ -35,7 +38,7 @@ module Carendar
         table_view = events_view_controller.view
         NSLayoutConstraint.activateConstraints([
           calendar.topAnchor
-                  .constraintEqualToAnchor(self.view.leadingAnchor, constant:-160),
+                  .constraintEqualToAnchor(self.view.leadingAnchor, constant:20),
           calendar.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
           calendar.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
           today_button.centerXAnchor
@@ -63,8 +66,7 @@ module Carendar
 
     # childrean Controllers
     def calendar_view_controller
-      @__calendar_view_controller__ ||= CalendarController.new.tap do |instance|
-        instance.view.translatesAutoresizingMaskIntoConstraints = false      
+      @__calendar_view_controller__ ||= CalendarViewController.new.tap do |instance|
         instance.delegate = @content_view_model
       end
     end
