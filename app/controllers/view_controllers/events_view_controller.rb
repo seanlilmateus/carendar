@@ -31,7 +31,7 @@ module Carendar
     end
 
 
-    def double_clicked sender
+    def double_clicked(sender)
       item = @data_source.events[sender.clickedRow]
       if item.is_a?(EKEvent)
         show_event(item)
