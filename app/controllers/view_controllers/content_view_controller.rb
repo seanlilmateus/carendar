@@ -11,11 +11,8 @@ module Carendar
       super
       @content_view_model = ContentViewModel.new WeakRef.new(self)
       # attache the childrean Controllers
-      addChildViewController calendar_view_controller
-      addChildViewController events_view_controller
-      # add Subviews
-      self.view.addSubview calendar_view_controller.view
-      self.view.addSubview events_view_controller.view
+      add_child_controller calendar_view_controller
+      add_child_controller events_view_controller
       self.view.addSubview today_button
       self.view.addSubview settings_button
       create_subviews_constraints
@@ -37,21 +34,27 @@ module Carendar
         calendar = calendar_view_controller.view
         table_view = events_view_controller.view
         NSLayoutConstraint.activateConstraints([
-          calendar.topAnchor.constraintEqualToAnchor(self.view.leadingAnchor, constant:-160),
+          calendar.topAnchor
+                  .constraintEqualToAnchor(self.view.leadingAnchor, constant:-160),
           calendar.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
           calendar.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
-          today_button.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
-          today_button.topAnchor.constraintEqualToAnchor(calendar.bottomAnchor, constant:5),
+          today_button.centerXAnchor
+                      .constraintEqualToAnchor(self.view.centerXAnchor),
+          today_button.topAnchor
+                      .constraintEqualToAnchor(calendar.bottomAnchor, constant:5),
           
           table_view.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
           table_view.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
-          table_view.topAnchor.constraintEqualToAnchor(today_button.bottomAnchor, constant:10),
+          table_view.topAnchor
+                  .constraintEqualToAnchor(today_button.bottomAnchor, constant:10),
           table_view.bottomAnchor.constraintEqualToAnchor(self.view.bottomAnchor),
           table_view.heightAnchor.constraintEqualToConstant(250.0),
           
           #### Settings Button
-          settings_button.centerYAnchor.constraintEqualToAnchor(today_button.centerYAnchor),
-          settings_button.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor, constant:-20),
+          settings_button.centerYAnchor
+                         .constraintEqualToAnchor(today_button.centerYAnchor),
+          settings_button.trailingAnchor
+                .constraintEqualToAnchor(self.view.trailingAnchor, constant:-20),
         ])
         @__layouted__ = true
       end
