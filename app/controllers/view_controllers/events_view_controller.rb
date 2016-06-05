@@ -1,14 +1,12 @@
 module Carendar
   class EventsViewController < BaseViewController
-
-    def init
-      super.tap { @data_source = EventsDataSource.new }
-    end
     attr_reader :data_source
 
 
     def loadView
+      @data_source = EventsDataSource.new
       self.view = table_container
+      viewDidLoad
     end
 
 
@@ -42,7 +40,7 @@ module Carendar
 
 
     def tableView
-      @__tableView__ ||= EventsTableView.new NSRect.new([0, 0], [280.0, 200])
+      @__tableView__ ||= EventsTableView.new(NSRect.new([0, 0], [280.0, 200]))
     end
 
 
