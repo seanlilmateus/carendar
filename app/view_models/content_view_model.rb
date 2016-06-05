@@ -40,9 +40,11 @@ module Carendar
 
     # Buttons Actions
     def select_date(sender) # previous go to date
-      calendar_controller.select_date(NSDate.date)
+      date = NSDate.date
+      calendar_controller.select_date(date)
+      events_for_the_day(date)
       deselect_rows(sender)
-      today_button_selected?
+      sender.enabled = false
     end
 
 

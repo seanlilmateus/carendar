@@ -58,7 +58,6 @@ module Carendar
 
     def change_to_date(date=@current_date)
       self.current_date = date
-      @collection_view&.viewController&.month_changed
     end
 
 
@@ -67,6 +66,7 @@ module Carendar
       @current_date = calendar.dateByAddingComponents(date_compts, 
                         toDate:@current_date,
                        options:NSCalendarMatchFirst)
+      @collection_view&.viewController&.month_changed
     end
 
 
