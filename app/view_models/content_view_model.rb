@@ -42,9 +42,7 @@ module Carendar
     def select_date(sender) # previous go to date
       date = NSDate.date
       calendar_controller.select_date(date)
-      events_for_the_day(date)
-      deselect_rows(sender)
-      sender.enabled = false
+      didSelectDate(date)
     end
 
 
