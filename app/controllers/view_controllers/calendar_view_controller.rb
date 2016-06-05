@@ -82,6 +82,13 @@ module Carendar
 
 
     def collectionView(clv, didDeselectItemsAtIndexPaths:indexPaths)
+      Dispatch::Queue.main.after(0.01) do
+        if clv.selectionIndexPaths.count.zero?
+          if self.delegate && self.delegate.respond_to?('didChangeMonth:')
+            self.delegate.didChangeMonth(self.date)
+          end
+        end
+      end
     end
 
 
