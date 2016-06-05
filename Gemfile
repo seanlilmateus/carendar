@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-source 'https://rubygems.org'
 gem 'rake'
 gem 'motion-bundler'
 gem 'WithMotion'
