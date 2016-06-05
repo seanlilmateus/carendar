@@ -9,6 +9,12 @@ module Carendar
     end
 
 
+    def viewController=(value)
+      @viewController = WeakRef.new(value)
+    end
+    attr_reader :viewController
+
+
     def setContentOffset(point)
       if scroll = checkedSuperview
         scroll.documentView.scrollPoint point
@@ -48,32 +54,6 @@ module Carendar
       else
         self.frame.size
       end
-    end
-
-
-    # Mouse events and selection
-    def canBecomeKeyView
-      true
-    end
-
-
-    def acceptsFirstResponder
-      true
-    end
-
-
-    def becomeFirstResponder
-      true
-    end
-
-
-    def resignFirstResponder
-      true
-    end
-
-
-    def becomeFirstResponder
-      true
     end
 
 

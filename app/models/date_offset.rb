@@ -18,27 +18,26 @@ module Carendar
     attr_reader :start_date, :end_date
 
     private
+    def calendar
+      NSCalendar.autoupdatingCurrentCalendar
+    end
+    
     def beginning_of_day(date)
-      calendar = CalendarController.calendar
       opts = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
       components = calendar.components(opts, fromDate:date)
-      # date.dateForStartOfDayInTimeZone(NSTimeZone.systemTimeZone)
       calendar.dateFromComponents(components)
     end
 
 
     def end_of_day(date, offset=1)
-      calendar = CalendarController.calendar
       components = NSDateComponents.new
       components.day = offset
       date = calendar.dateByAddingComponents(components, toDate:date, options:0)
-      # date.dateForEndOfDayInTimeZone(NSTimeZone.systemTimeZone)
       date.dateByAddingTimeInterval(-1)
     end
 
 
     def beginning_of_month(date)
-      calendar = CalendarController.calendar
       opts = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
       components = calendar.components(opts, fromDate:date)
       components.day = 1
@@ -47,7 +46,6 @@ module Carendar
 
 
     def end_of_month(date, offset=1)
-      calendar = CalendarController.calendar
       opts = NSYearCalendarUnit|NSMonthCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit
       comps = calendar.components(opts, fromDate:date)
       # set last of month
