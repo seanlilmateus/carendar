@@ -23,7 +23,7 @@ module Carendar
       deselect_rows
       controller.today_button.enabled = current_month?
       events_for_the_month(date)
-      controller.today_button.enabled = current_month?
+      today_button_selected?
     end
 
 
@@ -34,16 +34,15 @@ module Carendar
       end
       update_empty_view date_formatter.stringFromDate(date)
       events_for_the_day(date)
-      controller.today_button.enabled = current_month?
+      today_button_selected?
     end
 
 
     # Buttons Actions
     def select_date(sender) # previous go to date
-      calendar_controller.date = NSDate.date
-      #events_for_the_month(controller.calendar_view_controller.date)
+      calendar_controller.select_date(NSDate.date)
       deselect_rows(sender)
-      select_today
+      today_button_selected?
     end
 
 
@@ -51,10 +50,9 @@ module Carendar
     attr_reader :controller
 
     def current_month?
-      calendar_controller.view
+      calendar_controller.collectionView
                          .subviews
                          .select { |sbv| sbv.is_a?(CalendarCell) && sbv.today? }
-                         .none?(&:selected)
     end
 
 
@@ -68,28 +66,20 @@ module Carendar
     end
 
 
-    def select_today
-      today = NSDate.date
-      calendar = controller.calendar_view_controller.view
-      calendar.subviews
-              .select { |sbv| sbv.is_a?(CalendarCell) && sbv.title ==  "#{today.day}" }
-              .each   { |sbv| sbv.selected = true }
-      events_for_the_day(today)
-      controller.today_button.enabled = false
+    def today_button_selected?
+      calendar = calendar_controller.collectionView
+      flag = calendar.subviews.none? { |sbv| sbv.is_a?(CalendarCell) && sbv.today? && sbv.selected? }
+      controller.today_button.enabled = flag
     end
 
 
     def deselect_rows(sender=nil)
       table_view = controller.events_view_controller.tableView
-      calendar = controller.calendar_view_controller.view
-      calendar.subviews
-              .select { |sbv| sbv.is_a?(CalendarCell) }
-              .each   { |sbv| sbv.selected = false }
       table_view.deselectAll(sender)
     end
 
 
-    def update_empty_view(date_string=calendar_controller.view.calendarTitle.stringValue)
+    def update_empty_view(date_string=calendar_controller.data_source.title)
       table_view = controller.events_view_controller.tableView
       table_view.date_label.stringValue = date_string
     end
