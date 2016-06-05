@@ -1,12 +1,15 @@
 module Carendar
   class BaseViewController < NSViewController
     def init
-      initWithNibName(nil, bundle:nil)
+      instance = initWithNibName(nil, bundle:nil)
+      loadView
+      instance
     end
 
 
     def loadView
       self.view = NSView.alloc.init
+      viewDidLoad
     end
 
 
@@ -14,31 +17,6 @@ module Carendar
       super
     end
 
-
-    # Mouse events and selection
-    def canBecomeKeyView
-      true
-    end
-
-
-    def acceptsFirstResponder
-      true
-    end
-
-
-    def becomeFirstResponder
-      true
-    end
-
-
-    def resignFirstResponder
-      true
-    end
-
-
-    def becomeFirstResponder
-      true
-    end
 
     def updateViewConstraints
       super
