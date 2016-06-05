@@ -10,7 +10,8 @@ class NSDate
                    .dateFromComponents(date_comps)
     self.dateWithTimeInterval(0, sinceDate: dt)
   end
-  
+
+
   def firstDayOfMonth
     units = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
     date_comps = unit_component(units).tap { |dc| dc.day = 1 }
@@ -50,7 +51,6 @@ class NSDate
     unit_component(NSCalendarUnitDay).day
   end
 
-  # http://nshipster.com/nscalendar-additions/
   alias today? isInToday # isDateInToday
   alias isDateSameDay isInSameDayAsDate
 

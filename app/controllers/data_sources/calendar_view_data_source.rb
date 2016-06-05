@@ -7,24 +7,13 @@ module Carendar
     attr_reader :current_date
 
 
-    def date_formatter
-      # default short date format from somewhere???
-      @__date_formatter__ ||= NSDateFormatter.new.tap do |df|
-        df.timeStyle = NSDateFormatterNoStyle
-        df.dateStyle = NSDateFormatterFullStyle
-        df.dateFormat = "MMMM yyyy";
-        df.locale = NSLocale.autoupdatingCurrentLocale
-      end
-    end
-
-
     def month
       @current_date.month
     end
 
 
     def title
-      date_formatter.stringFromDate(self.current_date)
+      self.current_date.month_name_full
     end
     
 

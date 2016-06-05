@@ -68,7 +68,8 @@ module Carendar
 
     def today_button_selected?
       calendar = calendar_controller.collectionView
-      flag = calendar.subviews.none? { |sbv| sbv.is_a?(CalendarCell) && sbv.today? && sbv.selected? }
+      flag = calendar.subviews
+                     .none? { |sbv| sbv.is_a?(CalendarCell) && sbv.today? && sbv.selected? }
       controller.today_button.enabled = flag
     end
 
@@ -79,9 +80,9 @@ module Carendar
     end
 
 
-    def update_empty_view(date_string=calendar_controller.data_source.title)
+    def update_empty_view(string=calendar_controller.data_source.title)
       table_view = controller.events_view_controller.tableView
-      table_view.date_label.stringValue = date_string
+      table_view.date_label.stringValue = string
     end
 
 
