@@ -176,7 +176,7 @@ module Carendar
 
 
     def create_token_field
-      NSTokenField.alloc.init.tap do |tf|
+      TokenField.alloc.init.tap do |tf|
         tf.translatesAutoresizingMaskIntoConstraints = false
         yield(tf) if block_given?
         tf
