@@ -11,7 +11,7 @@ class Motion::Project::App
       puts destination
       info 'Create', destination 
       FileUtils.mkdir_p destination
-      path = "/carendar-app-launcher/build/#{platform}-10.11-Development/carendar-app-launcher.app"
+      path = "/carendar-app-launcher/build/#{platform}-10.12-Release/carendar-app-launcher.app"
       helper_path = File.dirname(__FILE__) + path
       info 'Copy', helper_path 
       FileUtils.cp_r helper_path, destination 
