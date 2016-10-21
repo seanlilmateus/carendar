@@ -37,14 +37,12 @@ module Carendar
         calendar = calendar_view_controller.view
         table_view = events_view_controller.view
         NSLayoutConstraint.activateConstraints([
-          calendar.topAnchor
-                  .constraintEqualToAnchor(self.view.leadingAnchor, constant:20),
           calendar.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
           calendar.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
           today_button.centerXAnchor
                       .constraintEqualToAnchor(self.view.centerXAnchor),
           today_button.topAnchor
-                      .constraintEqualToAnchor(calendar.bottomAnchor, constant:5),
+                       .constraintEqualToAnchor(calendar.bottomAnchor, constant:5),
           
           table_view.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
           table_view.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
@@ -57,9 +55,9 @@ module Carendar
           settings_button.centerYAnchor
                          .constraintEqualToAnchor(today_button.centerYAnchor),
           settings_button.trailingAnchor
-                .constraintEqualToAnchor(self.view.trailingAnchor, constant:-20),
-        ])
-        @__layouted__ = true
+                         .constraintEqualToAnchor(self.view.trailingAnchor, constant:-20),
+          ])
+          @__layouted__ = true
       end
     end
 

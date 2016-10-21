@@ -60,6 +60,7 @@ class AppDelegate
 
 
   private
+  attr_reader :popover_controller, :app_name
   def preferences_controller
     @__prefs_window__ ||= Carendar::PreferencesWindowController.new.tap do |pc|
       pc.window.hidesOnDeactivate = true
@@ -77,7 +78,6 @@ class AppDelegate
   end
 
 
-  attr_reader :popover_controller, :app_name
   def foremost_app_activated(note)
     app = note.userInfo[NSWorkspaceApplicationKey]
     popover_controller.hide_popover unless app.localizedName == app_name

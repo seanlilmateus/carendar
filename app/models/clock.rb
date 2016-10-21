@@ -78,9 +78,11 @@ module Carendar
     def observeValueForKeyPath(keyPath, ofObject:obj, change:change, context:ctxt)
       if keyPath == CURRENT_FORMAT
         new_value = change[NSKeyValueChangeNewKey]
-        values = NSKeyedUnarchiver.unarchiveObjectWithData(new_value)
-        func = Proc.new { |c| c.is_a?(String) ? "'#{c}'" : c.to_s }
-        @__format__ = values.map(&func).join
+        if new_value
+          values = NSKeyedUnarchiver.unarchiveObjectWithData(new_value)
+          func = Proc.new { |c| c.is_a?(String) ? "'#{c}'" : c.to_s }
+          @__format__ = values.map(&func).join
+        end
       else
         super
       end
