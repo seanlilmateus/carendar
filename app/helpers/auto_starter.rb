@@ -7,11 +7,10 @@ module Carendar
     end
 
 
-    attr_accessor :enable
     def initialize(switcher)
-      app_name = 'carendar-app-launcher'
-      @path = "Contents/Library/LoginItems/#{app_name}.app"
-      @bundle_id = "de.mateus.#{app_name}"
+      @bundle_id = "de.mateus.carendar-app-launcher"
+      @login_item = LoginItem.new(@bundle_id)
+      @login_item.valid?
       switcher.target = self
       switcher.action = 'switcher_action:'
       switcher.on = enabled?
@@ -25,30 +24,67 @@ module Carendar
     end
 
 
+    def enabled=(flag)
+      start_at_login(flag)
+    end
+    alias_method :setEnable, :enabled=
+
+
     NO_ERROR = 0
     def start_at_login(flag)
-      url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent(path)
-      status = LSRegisterURL(url, true)
-      unless status == NO_ERROR
-        NSLog("Failed to LSRegisterURL '%@': %@", url, status)
-      end
-      unless SMLoginItemSetEnabled(bundle_id, flag)
-        NSLog("SMLoginItemSetEnabled failed!")
-      end
       willChangeValueForKey("enabled")
-      @enable = enabled?
+      @login_item.enabled = flag
       didChangeValueForKey("enabled")
     end
 
 
     def enabled?
-      jobs_dicts = SMCopyAllJobDictionaries(KSMDomainUserLaunchd) || []
-      jobs_dicts.one? { |job| job[:Label] == bundle_id && job[:OnDemand] }
+      @login_item.enabled?
     end
+    alias_method :enabled, :enabled?
 
 
     private
     attr_reader :bundle_id, :path
+  end
 
+
+  class LoginItem < Struct.new(:identifier)
+    DEFAULTS = NSUserDefaults.standardUserDefaults
+    def initialize(id)
+      super
+      DEFAULTS.registerDefaults({ default_key => false })
+    end
+
+
+    def enabled?
+      DEFAULTS.boolForKey(default_key) || false
+    end
+
+
+    def enabled=(value)
+      if SMLoginItemSetEnabled(self.identifier, value)
+        willChangeValueForKey("enabled")
+        DEFAULTS.setBool(value, forKey: default_key)
+        DEFAULTS.synchronize
+        didChangeValueForKey("enabled")
+        return value
+      end
+      false
+    end
+
+
+    def valid?
+      flag = (self.enabled = self.enabled?)
+      return true if flag
+      DEFAULTS.removeObjectForKey(default_key)
+      return false
+    end
+
+
+    private
+    def default_key
+      "SMLoginItem-#{self.identifier}"
+    end
   end
 end
