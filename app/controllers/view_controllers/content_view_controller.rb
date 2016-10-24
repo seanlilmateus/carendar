@@ -16,7 +16,6 @@ module Carendar
       add_child_controller events_view_controller
       self.view.addSubview today_button
       self.view.addSubview settings_button
-      calendar_view_controller.viewDidLoad
       create_subviews_constraints
     end
 
@@ -24,6 +23,7 @@ module Carendar
     def viewDidAppear
       super
       @content_view_model.content_loaded
+      calendar_view_controller.collectionView.reloadData
     end
 
 

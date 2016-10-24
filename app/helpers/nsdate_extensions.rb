@@ -86,6 +86,13 @@ class NSDate
   end
 
 
+  def month_short_name
+    formats = NSDateFormatter.new
+    formats.dateFormat = "MMMM"
+    formats.stringFromDate(self)
+  end
+
+
   def sunday?
     self.weekday == 1
   end
