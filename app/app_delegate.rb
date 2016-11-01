@@ -36,17 +36,17 @@ class AppDelegate
   end
 
 
-  def show_settings sender
+  def show_settings(sender)
     preferences_controller.showWindow(sender)
-    popover_controller.hide_popover
+    popover_controller.close_popover(sender)
     preferences_controller.window.makeKeyWindow
     preferences_controller.window.center
   end
 
 
-  def show_about_screen sender
+  def show_about_screen(sender)
     about_controller.showWindow(sender)
-    popover_controller.hide_popover
+    popover_controller.close_popover(sender)
     about_controller.window.makeKeyWindow
     about_controller.window.center
   end
@@ -80,7 +80,9 @@ class AppDelegate
 
   def foremost_app_activated(note)
     app = note.userInfo[NSWorkspaceApplicationKey]
-    popover_controller.hide_popover unless app.localizedName == app_name
+    unless app.localizedName == app_name
+      popover_controller.close_popover(app)
+    end
   end
 
 end
