@@ -27,5 +27,9 @@ Motion::Project::App.setup do |app|
   app.version = `git log -n 1 --pretty=format:'%h'`
   app.short_version = "1.0β"
   app.codesign_certificate = 'Mac Developer: seanlilmateus@yahoo.de (VHMJ26E3RY)'
+  app.entitlements['com.apple.security.temporary-exception.apple-events'] = [
+    "com.apple.iCal"
+  ]
+  
 end
 MotionBundler.setup
