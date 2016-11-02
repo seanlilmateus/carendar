@@ -28,9 +28,9 @@ module Carendar
     def viewDidAppear
       super
       token_field = self.view.subviews.find { |s| s.is_a?(NSTokenField) }
-      controller = NSUserDefaultsController.sharedUserDefaultsController
       initial = { CURRENT_FORMAT => Token::Provider.defaults }
-      controller.setInitialValues(initial)
+      controller = NSUserDefaultsController.alloc.initWithDefaults(DEFAULTS,    
+                                               initialValues: initial)
       options = {
         NSValueTransformerNameBindingOption => "FormatTransformer",
         NSContinuouslyUpdatesValueBindingOption => true,
