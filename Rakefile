@@ -16,8 +16,6 @@ NAME = [
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Carendar'
-  app.entitlements['com.apple.security.app-sandbox'] = true
-  app.entitlements['com.apple.security.personal-information.calendars'] = true
   app.identifier = 'de.mateus.Carendar'
   frameworks = %W[ScriptingBridge QuartzCore Security ServiceManagement EventKit]
   app.frameworks += frameworks
@@ -26,10 +24,12 @@ Motion::Project::App.setup do |app|
   app.copyright = "Copyright © 2015 #{NAME}. All rights reserved."
   app.version = `git log -n 1 --pretty=format:'%h'`
   app.short_version = "1.0β"
-  app.codesign_certificate = 'Mac Developer: seanlilmateus@yahoo.de (VHMJ26E3RY)'
-  app.entitlements['com.apple.security.temporary-exception.apple-events'] = [
-    "com.apple.iCal"
-  ]
-  
+  app.release do
+    app.codesign_certificate = 'Mac Developer: seanlilmateus@yahoo.de (VHMJ26E3RY)'
+    app.entitlements['com.apple.security.app-sandbox'] = true
+    app.entitlements['com.apple.security.personal-information.calendars'] = true
+    app.entitlements['com.apple.security.temporary-exception.apple-events'] = ["com.apple.iCal"]
+    app.category = 'Utilities'
+  end
 end
 MotionBundler.setup
