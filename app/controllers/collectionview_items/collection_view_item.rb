@@ -32,6 +32,17 @@ module Carendar
     end
 
 
+    def double_click(&block)
+     @double_click_event = block.weak!
+    end
+
+
+    def mouseDown(event)
+      super
+      @double_click_event&.call if event.clickCount > 1
+    end
+
+
     def setHighlightState(state)
       self.view.highlightState = state
       super

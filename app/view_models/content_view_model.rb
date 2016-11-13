@@ -9,7 +9,6 @@ module Carendar
     def content_loaded
       controller.today_button.enabled = current_month?
       events_for_the_month(calendar_controller.date)
-      update_empty_view
     end
 
 
@@ -19,7 +18,6 @@ module Carendar
 
 
     def didChangeMonth(date)
-      update_empty_view
       deselect_rows
       controller.today_button.enabled = current_month?
       events_for_the_month(date)
@@ -32,7 +30,6 @@ module Carendar
         didChangeMonth(calendar_controller.date)
         return
       end
-      update_empty_view date_formatter.stringFromDate(date)
       events_for_the_day(date)
       today_button_selected?
     end
@@ -75,14 +72,20 @@ module Carendar
 
 
     def deselect_rows(sender=nil)
-      table_view = controller.events_view_controller.tableView
-      table_view.deselectAll(sender)
+      collectionView = controller.events_view_controller.collectionView
+      collectionView.deselectAll(sender)
     end
 
 
-    def update_empty_view(string=calendar_controller.data_source.title)
-      table_view = controller.events_view_controller.tableView
-      table_view.date_label.stringValue = string
+    def update_empty_view(events=[], selected_date=calendar_controller.data_source.title)
+      subject = Promise.new
+      Dispatch::Queue.main.async do
+        clv = controller.events_view_controller.collectionView
+        clv.backgroundView.subviews.first.stringValue = selected_date
+        clv.backgroundView.alphaValue = events.empty? ? 1.0 : 0.0
+        subject.fulfill(events)
+      end
+      subject
     end
 
 
@@ -90,9 +93,10 @@ module Carendar
       events_controller = controller.events_view_controller
       controller.events_fetcher
                 .events_of_the_month(date)
-                .on_queue(Dispatch::Queue.main)
+                .then { |items| update_empty_view(items) }
                 .then { |items| events_controller.data_source.events = items }
-                .then { events_controller.tableView.reloadData }
+                .on_queue(Dispatch::Queue.main)
+                .then { events_controller.collectionView.reloadData }
     end
 
 
@@ -100,9 +104,10 @@ module Carendar
       events_controller = controller.events_view_controller
       controller.events_fetcher
                 .events_of_the_day(date)
-                .on_queue(Dispatch::Queue.main)
+                .then { |items| update_empty_view(items, date_formatter.stringFromDate(date)) }
                 .then { |items| events_controller.data_source.events = items }
-                .then { events_controller.tableView.reloadData }
+                .on_queue(Dispatch::Queue.main)
+                .then { events_controller.collectionView.reloadData }
     end
 
   end
