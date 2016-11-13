@@ -88,7 +88,7 @@ class NSDate
 
   def month_short_name
     formats = NSDateFormatter.new
-    formats.dateFormat = "MMMM"
+    formats.dateFormat = "MMM"
     formats.stringFromDate(self)
   end
 

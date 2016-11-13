@@ -1,8 +1,10 @@
 module Carendar
-  class DetailsHeaderView < NSVisualEffectView # HeaderView
-    IDENTIFIER = NSString.stringWithString(self.to_s)
+  class DetailsHeaderView < NSVisualEffectView
+    IDENTIFIER = "DetailsHeaderView"
+    include ReusableView
+    
 
-    def initWithFrame(frame)
+    def init
       super.tap do |instance|
         instance.material = NSVisualEffectMaterialLight
         instance.blendingMode = NSVisualEffectBlendingModeWithinWindow
@@ -39,6 +41,7 @@ module Carendar
       end
     end
 
+
     def viewWillMoveToSuperview(v)
       super
       self.addSubview(stack)
@@ -47,24 +50,23 @@ module Carendar
         sep.translatesAutoresizingMaskIntoConstraints = false
       end
       stack.translatesAutoresizingMaskIntoConstraints = false
-      stack.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor)
-               .active = true
-      stack.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor)
-               .active = true
-      stack.widthAnchor.constraintEqualToAnchor(self.widthAnchor, constant:-24)
-               .active = true
-      # -------------------------------------------------
-      separators.each do |sep|
-        sep.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor)
-           .active = true
-        sep.widthAnchor.constraintEqualToAnchor(self.widthAnchor)
-           .active = true
-        sep.heightAnchor.constraintEqualToConstant(1).active = true
-      end
-      separators[1].topAnchor.constraintEqualToAnchor(self.topAnchor)
-                    .active = true
-      separators[0].bottomAnchor.constraintEqualToAnchor(self.bottomAnchor)
-                   .active = true    
+      
+      seps = separators.map do |sep|
+        [
+          sep.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
+          sep.widthAnchor.constraintEqualToAnchor(self.widthAnchor),
+          sep.heightAnchor.constraintEqualToConstant(1),
+        ]
+      end.flatten
+
+      NSLayoutConstraint.activateConstraints([
+        stack.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
+        stack.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
+        stack.widthAnchor.constraintEqualToAnchor(self.widthAnchor, constant:-24),
+        *seps,
+        separators[1].topAnchor.constraintEqualToAnchor(self.topAnchor),
+        separators[0].bottomAnchor.constraintEqualToAnchor(self.bottomAnchor)
+      ])
     end
 
 
@@ -82,5 +84,4 @@ module Carendar
       end
     end
   end
-  
 end

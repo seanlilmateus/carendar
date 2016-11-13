@@ -93,9 +93,8 @@ module Carendar
     def update
       values = token_field.objectValue
       data = NSKeyedArchiver.archivedDataWithRootObject(values)
-      defaults = NSUserDefaults.standardUserDefaults
-      defaults.setObject(data, forKey: CURRENT_FORMAT)
-      defaults.synchronize
+      DEFAULTS.setObject(data, forKey: CURRENT_FORMAT)
+      DEFAULTS.synchronize
       token_field.update_display
     end
 

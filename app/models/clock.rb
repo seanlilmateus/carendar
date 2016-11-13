@@ -18,7 +18,7 @@ module Carendar
 
     def register_as_observer
       opts = NSKeyValueObservingOptionNew|NSKeyValueObservingOptionInitial
-      defaults = NSUserDefaults.standardUserDefaults
+      defaults = DEFAULTS
       defaults.addObserver( self,
                 forKeyPath: CURRENT_FORMAT,
                    options: opts,
@@ -26,7 +26,7 @@ module Carendar
     end
 
     def deregister_as_observer
-      defaults = NSUserDefaults.standardUserDefaults
+      defaults = DEFAULTS
       defaults.removeObserver(self, forKeyPath: CURRENT_FORMAT)
     end
 

@@ -1,5 +1,5 @@
 module Carendar
-  class DetailsItemView < NSView # ItemView
+  class DetailsItemView < NSView
 
     def initWithFrame(frame)
       super.tap do |instance|
@@ -16,7 +16,7 @@ module Carendar
 
     def sideView
       @side ||= NSView.new.tap do |instance|
-        instance.extend(ViewBackGround)
+        instance.wantsLayer = true
       end
     end
 

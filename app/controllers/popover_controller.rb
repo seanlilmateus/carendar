@@ -5,6 +5,13 @@ module Carendar
       @popover_delegate = PopoverDelegate.new WeakRef.new(status_item)
       status_item.button.title  = 'Tue. 9:41'
       status_item.button.action = 'show_popover:'
+      mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
+      @event_monitor = EventMonitor.new(mask) do |event|
+        view = content_view_controller.view
+        point = view.convertPoint(event.locationInWindow, fromView:nil)
+        close_popover(event) unless view.mouse(point, inRect:view.bounds)
+      end
+      @event_monitor.start
     end
 
 
@@ -38,39 +45,32 @@ module Carendar
     end
 
 
-    def show_popover sender
+    def toggle_popover(sender=nil)
       if self.popover.shown?
-        hide_popover(sender)
+        close_popover(sender)
       else
-        status_item.button.cell.instance_variable_set(:@activated, true)
-        button, frame = status_item.button, status_item.button.frame
-        popover.showRelativeToRect(frame, ofView:button, preferredEdge: NSMaxYEdge)
-        make_popover_transient
+        show_popover(sender)
       end
     end
 
 
-    def hide_popover(sender=nil)
-      if self.popover.shown?
-        @__monitor__ = nil
-        NSEvent.removeMonitor(@__monitor__)
-        popover_delegate.instance_variable_set(:@__contract_, true)
-        self.popover.performClose(sender) unless popover_delegate.detached_window_visible?
+    def show_popover(sender)
+      status_item.button.cell.instance_variable_set(:@activated, true)
+      button, frame = status_item.button, status_item.button.frame
+      popover.showRelativeToRect(frame, ofView:button, preferredEdge: NSMaxYEdge)
+      @event_monitor.start
+    end
+
+
+    def close_popover(sender)
+      @event_monitor.stop
+      popover_delegate.instance_variable_set(:@__contract_, true)
+      unless popover_delegate.detached_window_visible?
+        self.popover.performClose(sender) 
       end
     end
 
     private
     attr_reader :popover_delegate
-
-    def make_popover_transient
-      mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
-      operation = Proc.new do |event|
-        view = content_view_controller.view
-        point = view.convertPoint(event.locationInWindow, fromView:nil)
-        hide_popover unless view.mouse(point, inRect:view.bounds)
-      end
-      @__monitor__ ||= NSEvent.addGlobalMonitorForEventsMatchingMask(mask, handler:operation)
-    end
-
   end
 end

@@ -12,10 +12,10 @@ module Carendar
       super
       @content_view_model = ContentViewModel.new WeakRef.new(self)
       # attache the childrean Controllers
-      add_child_controller calendar_view_controller
-      add_child_controller events_view_controller
-      self.view.addSubview today_button
-      self.view.addSubview settings_button
+      add_child_controller(calendar_view_controller)
+      add_child_controller(events_view_controller)
+      self.view.addSubview(today_button)
+      self.view.addSubview(settings_button)
       create_subviews_constraints
     end
 
@@ -71,7 +71,7 @@ module Carendar
 
 
     def events_view_controller
-      @__events_view_controller ||= EventsViewController::new.tap do |evc|
+      @__events_view_controller ||= DetailsViewController.new.tap do |evc|
         evc.view.translatesAutoresizingMaskIntoConstraints = false
       end
     end

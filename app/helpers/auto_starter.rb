@@ -1,4 +1,6 @@
 module Carendar
+  DEFAULTS = NSUserDefaults.alloc.initWithSuiteName("group.mateus.Carendar")
+
   class AutoStarter
 
     def self.automaticallyNotifiesObserversForKey(key)
@@ -50,7 +52,6 @@ module Carendar
 
 
   class LoginItem < Struct.new(:identifier)
-    DEFAULTS = NSUserDefaults.standardUserDefaults
     def initialize(id)
       super
       DEFAULTS.registerDefaults({ default_key => false })

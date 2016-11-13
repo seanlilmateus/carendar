@@ -92,7 +92,7 @@ module Carendar
 
     # create attribute for text
     def create_attributes(color)
-      if weekend? && !(self.selected? || self.today?)
+      if weekend? && !self.today?
         color = TODAY_BACKGROUND_COLOR
         color = color.colorWithAlphaComponent(0.2) unless self.active?
       end
@@ -118,9 +118,9 @@ module Carendar
     ### SELECTED LABEL
     def draw_selected_label
       # Oval Drawing
-      draw_border(BORDER_COLOR, STRONG_SELECTED_BACKGROUND)
+      draw_border(BORDER_COLOR, NSColor.alternateSelectedControlColor)
       # title_label Drawing
-      attributes = create_attributes(NSColor.whiteColor)
+      attributes = create_attributes(NSColor.selectedMenuItemTextColor)
       draw_text(attributes)
     end
 
@@ -129,7 +129,7 @@ module Carendar
     def draw_normal_label
       # Oval Drawing
       draw_border(BORDER_COLOR)
-      attributes = create_attributes(NSColor.labelColor)
+      attributes = create_attributes(NSColor.controlTextColor)
       draw_text(attributes)
     end
 
@@ -184,7 +184,7 @@ module Carendar
       oval_path.stroke
 
       # Text Drawing
-      attributes = create_attributes(NORMAL_BACKGROUND)
+      attributes = create_attributes(NSColor.selectedMenuItemTextColor)
       draw_text(attributes)
     end
 

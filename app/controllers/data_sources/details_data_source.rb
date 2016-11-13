@@ -1,19 +1,23 @@
 module Carendar
+
   class DetailsDataSource
+
     def initialize
-      @events = NSArray.array
+      @events = NSDictionary.dictionary
     end
     attr_reader :events
 
 
     def events=(items)
-      groups = items.group_by { |event| [event.startDate.day, event.startDate.month_short_name] }
+      groups = items.group_by { |event| event.startDate.day }
       @events = NSDictionary.dictionaryWithDictionary(groups)
+      @sorted_keys = @events.keys.sort #.sortedArrayUsingSelector('compare:')
+      @events
     end
 
 
     def eventAtIndexPath(index_path)
-      key = @events.keys[index_path.section]
+      key = @sorted_keys[index_path.section]
       @events[key][index_path.item]
     end
 
@@ -27,9 +31,10 @@ module Carendar
     def indexPathsOfEventsBetweenMinDayIndex(min_day_index, maxDayIndex:max_day_index, minStartHour:min_start_hour, maxStartHour:max_start_hour)
       @events.flat_map.with_index do |(section, items), i|
         section = @events.keys.index(section)
-        items.flat_map.with_index do |e, item|
+        items.flat_map.with_index do |event, item|
+          e = event.startDate
           if e.day >= min_day_index && e.day <= max_day_index && 
-             e.startHour >= min_start_hour && e.startHour <= max_start_hour
+             e.hour >= min_start_hour && e.hour <= max_start_hour
             NSIndexPath.indexPathForItem(item, inSection:section)
           end
         end.compact
@@ -43,48 +48,44 @@ module Carendar
 
 
     def collectionView(clv, numberOfItemsInSection:section)
-      key = @events.keys[section]
-      @events[key].count
+      key = @sorted_keys[section]
+      @events.fetch(key, []).count
     end
 
 
     def collectionView(clv, itemForRepresentedObjectAtIndexPath:index_path)
-      id = CollectionViewItem::IDENTIFIER
-      cell = clv.dequeueReusableItemWithReuseIdentifier(id, forIndexPath:index_path)
-      cell.view.backgroundColor = NSColor.magentaColor
+      cell = clv.makeItemWithIdentifier(CollectionViewItem::IDENTIFIER, forIndexPath:index_path)
       event = self[index_path]
-    
-      xcross = "%02d:%02d" % [event.hour, event.minute]
-      value = '%02d:%02d duration - %04d' % [event.hour, event.minute, event.duration]
+      cell.view.backgroundColor = event.calendar.color
+      start_date = event.startDate
+      cell.double_click do
+        Dispatch::Queue.concurrent.async do
+          calendar_app = SBApplication.applicationWithBundleIdentifier('com.apple.ical')
+          calendar_app.activate
+          cal = calendar_app.calendars.find { |c| c.name == event.calendar.title }
+          cal.events.objectWithID(event.UUID).show
+        end
+      end
       cell.textField.stringValue =  event.title
-      cell.descriptionLabel.stringValue = xcross
-      cell.timeLabel.stringValue = value
-      cell.view.setToolTip event.title
+      cell.descriptionLabel.stringValue = event.calendar.title
+      cell.timeLabel.stringValue = duration(start_date, event.endDate)
+      cell.view.toolTip = event.title
       cell
     end
 
 
     def collectionView(clv, viewForSupplementaryElementOfKind:kind, atIndexPath:index_path)
-      id = DetailsHeaderView::IDENTIFIER
-      clv.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:id, forIndexPath:index_path).tap do |header|
+      identifier = DetailsHeaderView::IDENTIFIER
+      clv.makeSupplementaryViewOfKind(kind, withIdentifier:identifier, forIndexPath:index_path).tap do |header|
+        event = self[index_path]
         header.detailsField.hidden = true
         header.separators.each { |s| s.hidden = false }
-        if index_path.item == 0 && clv.collectionViewLayout.is_a?(DayCalendarViewLayout) && kind == id
-          header.stack.alignment = NSLayoutAttributeCenterX
-          text = "SUNDAY #{index_path.item + 1}st January 2016"
-          header.textField.stringValue = text
-        elsif clv.collectionViewLayout.is_a?(StickyHeaderDaily)
+        if clv.collectionViewLayout.is_a?(StickyHeaderDaily)
           header.textField.alignment = NSCenterTextAlignment
           header.stack.alignment = NSLayoutAttributeCenterX
           header.detailsField.hidden = false
-          header.textField.stringValue = "%02d" % (index_path.section + 1)
-          header.detailsField.stringValue = "DEZ"
-        elsif clv.collectionViewLayout.is_a?(DayCalendarViewLayout)
-          header.stack.alignment = NSLayoutAttributeLeft
-          header.separators.each { |s| s.hidden = true }
-          header.textField.stringValue = "10:00"
-          text = "#{'%.2i:00' % (index_path.item == 24 ? 0 : index_path.item)}"
-          header.textField.stringValue = text
+          header.textField.stringValue = "%02d" % (event.startDate.day)
+          header.detailsField.stringValue = event.startDate.month_short_name.upcase
         end
       end
     end
@@ -94,5 +95,30 @@ module Carendar
       NSSize.new(clv.frame.size.width - 2.0, 60.0)
     end
 
+
+    def duration(start_date, end_date)
+      opts = NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute
+      components = NSCalendar.currentCalendar
+                             .components(opts, fromDate: start_date, toDate: end_date, options: 0)
+      days, hours, minutes = components.day, components.hour, components.minute
+      
+      duration_string = ""
+      if days > 0
+        duration_string = days > 1 ? "#{days} days" : localized_string('all-day', 'all-day')
+      end
+      
+      if hours > 0
+        value = hours > 1 ? "#{hours} hours" : "#{hours} hour"
+        duration_string = duration_string.empty? ? value : (duration_string += " and #{value}")
+      end
+      
+      if minutes > 0
+        value = minutes > 1 ? "#{minutes} minutes" : "#{minutes} minute"
+        duration_string = duration_string.empty? ? value : (duration_string += " and #{value}")
+      end
+      
+      duration_string
+    end
+    
   end
 end
