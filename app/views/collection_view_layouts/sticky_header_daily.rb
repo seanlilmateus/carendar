@@ -1,4 +1,5 @@
 module Carendar
+  
   class StickyHeaderDaily < NSCollectionViewFlowLayout
     def init
       super.tap do |instance|
@@ -25,7 +26,7 @@ module Carendar
            .each do |item|
               width = item.frame.size.width
               height = item.frame.size.height
-              origin_y =  item.frame.origin.y - 20.0
+              origin_y =  item.frame.origin.y - 25.0
               size = NSSize.new(width, height)
               item.frame = NSRect.new([50, origin_y - 25.0], size)
             end
@@ -48,7 +49,7 @@ module Carendar
               pos = [
                  content_offset.y, 
                  (CGRectGetMinY(first_cell_attrs.frame) - header_height)
-              ].max
+              ].max - 5.0
             
               diff = first_cell_attrs.frame.size.height
               origin.y = [
@@ -60,6 +61,9 @@ module Carendar
               size = NSSize.new(50.0, first_cell_attrs.frame.size.height)
               item.frame = CGRect.new(origin, size)
            end
+           # items.select { |item| item.representedElementKind == NSCollectionElementKindSectionFooter }
+           #      .each   { |item| item.frame = CGRect.new(item.frame.origin, [item.frame.size.width, 1.0]) }
+           #
         items
     end
 
@@ -74,7 +78,7 @@ module Carendar
            .each   { |item| missing_sections.addIndex(item.indexPath.section) }
          
       items.select { |item| item.representedElementKind ==  section_header }
-            .each   { |item| missing_sections.removeIndex(item.indexPath.section) }
+            .each  { |item| missing_sections.removeIndex(item.indexPath.section) }
     
       operation = Proc.new do |index, _|
         indexPath = NSIndexPath.indexPathForItem(0, inSection:index)
@@ -107,9 +111,7 @@ module Carendar
 
 
     def initialLayoutAttributesForAppearingDecorationElementOfKind(kind, atIndexPath:indexPath)
-      attributes =  self.layoutAttributesForDecorationViewOfKind(kind, atIndexPath:indexPath)
-      return attributes
+      self.layoutAttributesForDecorationViewOfKind(kind, atIndexPath:indexPath)
     end
   end
-  
 end

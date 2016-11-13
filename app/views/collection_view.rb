@@ -7,12 +7,12 @@ module Carendar
         NSPoint.new#(10, 10)
       end
     end
+    attr_accessor :viewController
 
 
-    def viewController=(value)
-      @viewController = WeakRef.new(value)
+    def accessibilityChildren
+      subviews
     end
-    attr_reader :viewController
 
 
     def setContentOffset(point)
@@ -56,6 +56,27 @@ module Carendar
       end
     end
 
+    # Mouse events and selection
+    def canBecomeKeyView
+      true
+    end
+
+
+    def acceptsFirstResponder
+      true
+    end
+
+
+    def becomeFirstResponder
+      true
+    end
+
+
+    def resignFirstResponder
+      true
+    end
+
+
 
     def mouseDown(sender)
       super
@@ -85,6 +106,6 @@ module Carendar
         return superview.superview
       end
     end
-    
   end
+  
 end
