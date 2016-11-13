@@ -17,3 +17,5 @@ nbproject
 .dat*.*
 
 .motion-bundler.rb
+
+logs.txt
