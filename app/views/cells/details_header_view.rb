@@ -73,14 +73,14 @@ module Carendar
     def textField
       @label ||= Label.new.tap do |tf|
         tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha:1.0)
-        tf.font = NSFont.titleBarFontOfSize(14)
+        tf.font = NSFont.titleBarFontOfSize(18)
       end
     end
   
     def detailsField
       @detail ||= Label.new.tap do |tf|
         tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha:1.0)
-        tf.font = NSFont.titleBarFontOfSize(12)
+        tf.font = NSFont.boldSystemFontOfSize(12)
       end
     end
   end
