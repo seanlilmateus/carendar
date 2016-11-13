@@ -17,8 +17,7 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Carendar'
   app.identifier = 'de.mateus.Carendar'
-  frameworks = %W[ScriptingBridge QuartzCore Security ServiceManagement EventKit]
-  app.frameworks += frameworks
+  app.frameworks += %W[ScriptingBridge QuartzCore Security ServiceManagement EventKit]
   app.info_plist['NSUIElement'] = 1
   app.info_plist['CFBundleIconFile'] = 'icon.icns'
   app.copyright = "Copyright © 2015 #{NAME}. All rights reserved."
