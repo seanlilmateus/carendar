@@ -24,11 +24,8 @@ module Carendar
       items += missing_sections(items)
       items.select { |item| item.representedElementKind.nil? }
            .each do |item|
-              width = item.frame.size.width
-              height = item.frame.size.height
-              origin_y =  item.frame.origin.y - 25.0
-              size = NSSize.new(width, height)
-              item.frame = NSRect.new([50, origin_y - 25.0], size)
+              origin_y =  item.frame.origin.y - 50
+              item.frame = NSRect.new([50, origin_y], item.frame.size)
             end
       
       items.select { |item| item.representedElementKind == NSCollectionElementKindSectionHeader }
@@ -51,7 +48,7 @@ module Carendar
                  (CGRectGetMinY(first_cell_attrs.frame) - header_height)
               ].max - 5.0
             
-              diff = first_cell_attrs.frame.size.height
+              diff = first_cell_attrs.frame.size.height + 5
               origin.y = [
                  pos, 
                  (CGRectGetMaxY(last_cell_attrs.frame) - header_height) - diff
@@ -61,9 +58,6 @@ module Carendar
               size = NSSize.new(50.0, first_cell_attrs.frame.size.height)
               item.frame = CGRect.new(origin, size)
            end
-           # items.select { |item| item.representedElementKind == NSCollectionElementKindSectionFooter }
-           #      .each   { |item| item.frame = CGRect.new(item.frame.origin, [item.frame.size.width, 1.0]) }
-           #
         items
     end
 
