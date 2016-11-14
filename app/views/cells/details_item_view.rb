@@ -43,17 +43,23 @@ module Carendar
 
     def stack_view
       @stack_view ||= begin
-        labels = Array.new(3) { |text| Label.create("Label #{text}") }
+        labels = Array.new(3) do |text| 
+          label = Label.create("Label #{text}")
+          label.cell.lineBreakMode = NSLineBreakByTruncatingMiddle
+          label.alignment = NSTextAlignmentLeft
+          label
+        end
         NSStackView.stackViewWithViews(labels).tap do |stack|
           stack.alignment = NSLayoutAttributeLeading
-          stack.orientation = NSUserInterfaceLayoutOrientationVertical
-          stack.huggingPriorityForOrientation(NSLayoutPriorityDefaultLow)
+          stack.orientation = NSLayoutConstraintOrientationVertical
+          stack.setHuggingPriority(NSLayoutPriorityRequired, forOrientation:NSLayoutConstraintOrientationVertical)
+          stack.setHuggingPriority(NSLayoutPriorityRequired, forOrientation:NSLayoutConstraintOrientationHorizontal)
           priority = NSStackViewVisibilityPriorityMustHold
           stack.views.each do |view| 
             stack.setVisibilityPriority(priority, forView:view)
             stack.setCustomSpacing(2, afterView:view)
           end
-          stack.edgeInsets = NSEdgeInsets.new(5.0, 10.0, 5.0, 0.0)
+          stack.edgeInsets = NSEdgeInsets.new(2.0, 5.0, 2.0, 5.0)
           stack.distribution = NSStackViewDistributionFillEqually
         end
       end
@@ -70,23 +76,9 @@ module Carendar
         sideView.widthAnchor.constraintEqualToConstant(5.0),
         stack_view.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
         stack_view.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
-        stack_view.widthAnchor.constraintEqualToAnchor(self.widthAnchor),
+        stack_view.widthAnchor
+          .constraintEqualToAnchor(self.widthAnchor, multiplier:0.95),
       ].map { |c|  c.active = true }
-    end
-
-
-    def __viewWillMoveToSuperview__(v)
-      textField.translatesAutoresizingMaskIntoConstraints = false
-      sideView.translatesAutoresizingMaskIntoConstraints = false
-      NSLayoutConstraint.activateConstraints([ 
-        sideView.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
-        sideView.heightAnchor.constraintEqualToAnchor(self.heightAnchor),
-        sideView.leftAnchor.constraintEqualToAnchor(self.leftAnchor),
-        sideView.widthAnchor.constraintEqualToConstant(5.0),
-        textField.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
-        textField.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
-        textField.widthAnchor.constraintEqualToAnchor(self.widthAnchor, multiplier:1.0, constant:-24),
-      ])
     end
 
 
