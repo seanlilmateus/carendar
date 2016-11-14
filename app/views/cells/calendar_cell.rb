@@ -199,7 +199,6 @@ module Carendar
         fill_color.setFill
         bzc.fill
       end
-      bzc_color = border_color.colorWithAlphaComponent(0.3)
       border_color.set
       bzc.lineWidth = 0.3
       bzc.stroke

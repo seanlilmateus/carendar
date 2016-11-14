@@ -11,19 +11,19 @@ module Carendar
     def events=(items)
       groups = items.group_by { |event| event.startDate.day }
       @events = NSDictionary.dictionaryWithDictionary(groups)
-      @sorted_keys = @events.keys.sort #.sortedArrayUsingSelector('compare:')
+      @sorted_keys = NSArray.arrayWithArray(@events.keys.sort)
       @events
     end
 
 
     def eventAtIndexPath(index_path)
       key = @sorted_keys[index_path.section]
-      @events[key][index_path.item]
+      events[key][index_path.item]
     end
 
 
-    def [](value)
-      eventAtIndexPath(value)
+    def [](index_path)
+      eventAtIndexPath(index_path)
     end
 
 
@@ -43,13 +43,13 @@ module Carendar
 
 
     def numberOfSectionsInCollectionView(clv)
-      @events.keys.count
+      events.keys.count
     end
 
 
     def collectionView(clv, numberOfItemsInSection:section)
       key = @sorted_keys[section]
-      @events.fetch(key, []).count
+      events.fetch(key, []).count
     end
 
 
