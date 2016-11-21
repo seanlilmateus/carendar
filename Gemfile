@@ -4,6 +4,6 @@ gem 'rake'
 gem 'motion-bundler'
 gem 'WithMotion'
 group :motion do
-  gem 'promise.rb', :path => '../promise.rb'
+  gem 'promise.rb'
 end
 # Add your dependencies here:

@@ -17,3 +17,10 @@ class NSObject
     pointer[0]
   end
 end
+
+# This is needed in order to support
+# Module#private_constant in the
+class Class
+  def private_constant(*names)
+  end
+end

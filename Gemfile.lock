@@ -1,14 +1,10 @@
-PATH
-  remote: ../promise.rb
-  specs:
-    promise.rb (0.7.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
     WithMotion (0.1.1)
     motion-bundler (0.2.1)
       thor
+    promise.rb (0.7.2)
     rake (11.3.0)
     thor (0.19.1)
 
@@ -18,7 +14,7 @@ PLATFORMS
 DEPENDENCIES
   WithMotion
   motion-bundler
-  promise.rb!
+  promise.rb
   rake
 
 BUNDLED WITH
