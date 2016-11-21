@@ -88,10 +88,7 @@ module Carendar
     private
     def __attributed_string_setter__(attributed_string)
       @attributed_string = attributed_string
-      size = NSSize.new(330, attributed_string.size.height) #
-      #opts = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-      #rect = attributed_string.boundingRectWithSize(NSSize.new(320, 10000), options:opts)
-      #size = rect.size
+      size = NSSize.new(330, attributed_string.size.height)
       storage = NSTextStorage.alloc.initWithAttributedString(attributed_string)
       container = NSTextContainer.alloc.initWithContainerSize(size)
       manager = NSLayoutManager.new
