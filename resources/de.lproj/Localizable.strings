@@ -24,3 +24,6 @@
 "Time Components" = "Uhrzeitelemente";
 "General" = "Allgemein";
 "Launch %@ at Login" = "%@ beim Systemstart starten";
+"%@ to %@ duration: (%@)" = "%@ bis %@ (%@)";
+"all-day" = "ganztägig";
+"one.day" = "24 Stunden";

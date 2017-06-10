@@ -134,7 +134,32 @@ module Carendar
     def wantsUpdateLayer
       true
     end
-  
+
+
+    # Accessibility
+    def shouldGroupAccessibilityChildren
+      true
+    end
+
+
+    def isAccessibilityElement
+      false
+    end
+
+
+    def accessibilityElementCount
+      stack_view.views.count
+    end
+
+
+    def accessibilityElementAtIndex(index)
+      stack_view.views[index]
+    end
+
+
+    def indexOfAccessibilityElement(index)
+      stack_view.views.index(index)
+    end
   end
 
 end

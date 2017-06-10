@@ -24,3 +24,6 @@
 "Time Components" = "Time Elements";
 "General" = "General";
 "Launch %@ at Login" = "Launch %@ at Login";
+"%@ to %@ duration: (%@)" = "%@ - %@ (%@)";
+"all-day" = "all-day";
+"one.day" = "24 hours";
