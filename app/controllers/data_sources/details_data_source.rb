@@ -69,7 +69,7 @@ module Carendar
       cell.textField.stringValue =  event.title
       cell.descriptionLabel.stringValue = event.calendar.title
       cell.timeLabel.stringValue = duration(start_date, event.endDate)
-      cell.view.toolTip = event.title
+      cell.view.toolTip = "#{event.title}\n#{cell.timeLabel.stringValue}"
       cell
     end
 
@@ -97,6 +97,12 @@ module Carendar
 
 
     def duration(start_date, end_date)
+      @timeFormat ||= NSDateFormatter.new
+                        .tap {|tf| tf.dateFormat = "HH:mm" }
+      times = [start_date, end_date].map do |time|
+          @timeFormat.stringFromDate(time)
+      end
+      
       opts = NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute
       components = NSCalendar.currentCalendar
                              .components(opts, fromDate: start_date, toDate: end_date, options: 0)
@@ -104,7 +110,15 @@ module Carendar
       
       duration_string = ""
       if days > 0
-        duration_string = days > 1 ? "#{days} days" : localized_string('all-day', 'all-day')
+        duration_string = if days == 1 && [hours, minutes].all?(&:zero?)
+          localized_string('all-day', 'all-day')
+        elsif days == 1 && [hours, minutes].any? { |v| !(v.zero?) }
+          "#{days} day"
+        elsif days > 1
+           "#{days} days"
+         else
+           ""
+         end
       end
       
       if hours > 0
@@ -114,10 +128,21 @@ module Carendar
       
       if minutes > 0
         value = minutes > 1 ? "#{minutes} minutes" : "#{minutes} minute"
-        duration_string = duration_string.empty? ? value : (duration_string += " and #{value}")
+        duration_string = duration_string.empty? ? value : (duration_string.gsub('and', ',') + " and #{value}")
       end
       
-      duration_string
+      if duration_string == localized_string('all-day', 'all-day') 
+        duration_string = if times.all? { |time| time == "00:00" }
+          localized_string('all-day', 'all-day') 
+        else
+          localized_string("one.day", "24 HOURS")
+        end
+      else
+        locale = NSLocale.currentLocale
+        args = [*times, duration_string]
+        format = localized_string("%@ to %@ duration: (%@)", "%@ to %@ duration: (%@)")
+        NSString.stringWithFormat(format, *args)
+      end
     end
     
   end

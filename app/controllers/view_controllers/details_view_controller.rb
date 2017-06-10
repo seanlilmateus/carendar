@@ -11,7 +11,7 @@ module Carendar
 
     def viewDidLoad
       super
-      collectionView.registerClass( DetailsHeaderView, 
+      collectionView.registerClass(DetailsHeaderView, 
         forSupplementaryViewOfKind: NSCollectionElementKindSectionHeader,
                     withIdentifier: DetailsHeaderView::IDENTIFIER)
     
@@ -66,41 +66,6 @@ module Carendar
 
     def collectionView(clv, shouldSelectItemAtIndexPath:indexpath)
       true
-    end
-
-
-    def collectionView(clv, layout:layout, sizeForItemAtIndexPath:indexPath)
-      case layout
-      when StickyHeaderDaily
-        NSSize.new(clv.frame.size.width - 50.0, 60.0)
-      else
-        NSSize.new
-      end
-    end
-
-
-    def collectionView(clv, layout:layout, referenceSizeForHeaderInSection:section)
-      case layout
-      when StickyHeaderDaily
-        NSSize.new(50.0, 50.0)
-      else
-        NSSize.new
-      end
-    end
-
-
-    # def collectionView(clv, didSelectItemsAtIndexPaths: indexPaths)
-    #   puts indexPaths
-    # end
-
-
-    def ___collectionView(clv, layout:layout, referenceSizeForFooterInSection:section)
-      case layout
-      when StickyHeaderDaily
-        NSSize.new(clv.frame.size.width - 10.0, 1.0)
-      else
-        NSSize.new
-      end
     end
 
 

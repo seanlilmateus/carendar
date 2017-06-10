@@ -107,7 +107,11 @@ module Carendar
     def update_weeks(numbers)
       return unless numbers.count >= 5
       labels.zip(numbers) do |label, number|
-        label.stringValue = "#{number ? ("%02d" % number) : ''}"
+        description = "#{number ? ("%02d" % number) : ''}"
+        label.stringValue = description
+        string = localized_string("Calendar Week %@", "Calendar Week %@")
+        calendar_week = NSString.stringWithFormat(string, description)
+        label.accessibilityLabel = calendar_week
       end
     end
 
@@ -142,7 +146,6 @@ module Carendar
 
 
     def autolayout
-      #self.view.translatesAutoresizingMaskIntoConstraints = false
       container.translatesAutoresizingMaskIntoConstraints = false
       stacker.translatesAutoresizingMaskIntoConstraints = false
       width = preferredContentSize.width
@@ -155,7 +158,6 @@ module Carendar
                .constraintEqualToAnchor(container.topAnchor, constant:93),
         stacker.rightAnchor
               .constraintEqualToAnchor(container.leftAnchor, constant:7),
-        ## container view
         container.centerXAnchor
                  .constraintEqualToAnchor(self.view.centerXAnchor),
         container.centerYAnchor

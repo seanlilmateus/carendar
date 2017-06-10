@@ -76,12 +76,40 @@ module Carendar
         tf.font = NSFont.titleBarFontOfSize(18)
       end
     end
-  
+
+
     def detailsField
       @detail ||= Label.new.tap do |tf|
         tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha:1.0)
         tf.font = NSFont.boldSystemFontOfSize(12)
       end
     end
+
+
+    # Accessibility
+    def shouldGroupAccessibilityChildren
+      true
+    end
+
+
+    def isAccessibilityElement
+      false
+    end
+
+
+    def accessibilityElementCount
+      stack_view.views.count
+    end
+
+
+    def accessibilityElementAtIndex(index)
+      stack_view.views[index]
+    end
+
+
+    def indexOfAccessibilityElement(index)
+      stack_view.views.index(index)
+    end
+
   end
 end
