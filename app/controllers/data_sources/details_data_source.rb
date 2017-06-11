@@ -57,7 +57,6 @@ module Carendar
       cell = clv.makeItemWithIdentifier(CollectionViewItem::IDENTIFIER, forIndexPath:index_path)
       event = self[index_path]
       cell.view.backgroundColor = event.calendar.color
-      start_date = event.startDate
       cell.double_click do
         Dispatch::Queue.concurrent.async do
           calendar_app = SBApplication.applicationWithBundleIdentifier('com.apple.ical')
@@ -67,8 +66,8 @@ module Carendar
         end
       end
       cell.textField.stringValue =  event.title
-      cell.descriptionLabel.stringValue = event.calendar.title
-      cell.timeLabel.stringValue = duration(start_date, event.endDate)
+      cell.descriptionLabel.stringValue = event.calendar.title         
+      cell.timeLabel.stringValue = duration_of(event)
       cell.view.toolTip = "#{event.title}\n#{cell.timeLabel.stringValue}"
       cell
     end
@@ -96,27 +95,30 @@ module Carendar
     end
 
 
-    def duration(start_date, end_date)
-      @timeFormat ||= NSDateFormatter.new.tap {|tf| tf.dateFormat = "HH:mm" }
-      times = [start_date, end_date].map do |time|
-          @timeFormat.stringFromDate(time)
-      end
-      
-      iterval = NSDateInterval.alloc.initWithStartDate(start_date, endDate:end_date)
-      duration_string = TimeIntervalUtils.time_interval(iterval.duration)
-      
-      if duration_string == localized_string('all-day', 'all-day') 
-        duration_string = if times.all? { |time| time == "00:00" }
-          localized_string('all-day', 'all-day') 
-        else
-          localized_string("one.day", "24 HOURS")
-        end
+    private
+    def duration_of(event)
+      if event.allDay?
+        localized_string('all-day', 'all-day')
       else
-        args = [*times, duration_string]
-        format = localized_string("%@ to %@ duration: (%@)", "%@ to %@ duration: (%@)")
-        NSString.stringWithFormat(format, *args)
+        start_date = event.startDate
+        end_date   = event.endDate
+        @intervalFormat ||= NSDateIntervalFormatter.new
+        @durationFormatter ||= NSDateComponentsFormatter.new.tap do |df|
+          df.unitsStyle = NSDateComponentsFormatterUnitsStyleFull
+          df.collapsesLargestUnit = true
+          df.allowedUnits = NSCalendarUnitWeekOfMonth|NSCalendarUnitDay|
+                            NSCalendarUnitHour|NSCalendarUnitMinute
+        end
+        @intervalFormat.dateStyle = if start_date.isInSameDayAsDate(end_date)
+                                      NSDateIntervalFormatterNoStyle
+                                    else
+                                      NSDateIntervalFormatterShortStyle
+                                    end
+        interval = @intervalFormat.stringFromDate(start_date, toDate:end_date)
+        duration = @durationFormatter.stringFromDate(start_date, toDate:end_date)
+        "#{interval} (#{duration})"
       end
     end
-    
+
   end
 end
