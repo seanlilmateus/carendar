@@ -97,39 +97,13 @@ module Carendar
 
 
     def duration(start_date, end_date)
-      @timeFormat ||= NSDateFormatter.new
-                        .tap {|tf| tf.dateFormat = "HH:mm" }
+      @timeFormat ||= NSDateFormatter.new.tap {|tf| tf.dateFormat = "HH:mm" }
       times = [start_date, end_date].map do |time|
           @timeFormat.stringFromDate(time)
       end
       
-      opts = NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute
-      components = NSCalendar.currentCalendar
-                             .components(opts, fromDate: start_date, toDate: end_date, options: 0)
-      days, hours, minutes = components.day, components.hour, components.minute
-      
-      duration_string = ""
-      if days > 0
-        duration_string = if days == 1 && [hours, minutes].all?(&:zero?)
-          localized_string('all-day', 'all-day')
-        elsif days == 1 && [hours, minutes].any? { |v| !(v.zero?) }
-          "#{days} day"
-        elsif days > 1
-           "#{days} days"
-         else
-           ""
-         end
-      end
-      
-      if hours > 0
-        value = hours > 1 ? "#{hours} hours" : "#{hours} hour"
-        duration_string = duration_string.empty? ? value : (duration_string += " and #{value}")
-      end
-      
-      if minutes > 0
-        value = minutes > 1 ? "#{minutes} minutes" : "#{minutes} minute"
-        duration_string = duration_string.empty? ? value : (duration_string.gsub('and', ',') + " and #{value}")
-      end
+      iterval = NSDateInterval.alloc.initWithStartDate(start_date, endDate:end_date)
+      duration_string = TimeIntervalUtils.time_interval(iterval.duration)
       
       if duration_string == localized_string('all-day', 'all-day') 
         duration_string = if times.all? { |time| time == "00:00" }
@@ -138,7 +112,6 @@ module Carendar
           localized_string("one.day", "24 HOURS")
         end
       else
-        locale = NSLocale.currentLocale
         args = [*times, duration_string]
         format = localized_string("%@ to %@ duration: (%@)", "%@ to %@ duration: (%@)")
         NSString.stringWithFormat(format, *args)
