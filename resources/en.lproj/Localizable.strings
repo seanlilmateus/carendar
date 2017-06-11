@@ -26,4 +26,8 @@
 "Launch %@ at Login" = "Launch %@ at Login";
 "%@ to %@ duration: (%@)" = "%@ - %@ (%@)";
 "all-day" = "all-day";
+"one.week" = "one week";
 "one.day" = "24 hours";
+"one.hour" = "an hour";
+"one.minute" = "a minute";
+"and" = " and ";

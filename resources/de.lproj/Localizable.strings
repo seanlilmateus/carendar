@@ -26,4 +26,8 @@
 "Launch %@ at Login" = "%@ beim Systemstart starten";
 "%@ to %@ duration: (%@)" = "%@ bis %@ (%@)";
 "all-day" = "ganztägig";
+"one.week" = "eine Woche";
 "one.day" = "24 Stunden";
+"one.hour" = "eine Stunde";
+"one.minute" = "eine Minute";
+"and" = " und ";
