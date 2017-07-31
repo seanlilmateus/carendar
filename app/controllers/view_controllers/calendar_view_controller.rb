@@ -153,11 +153,11 @@ module Carendar
         self.view.widthAnchor
             .constraintGreaterThanOrEqualToConstant(width),
         stacker.heightAnchor
-               .constraintEqualToAnchor(self.view.widthAnchor, constant:-10),
+               .constraintEqualToAnchor(self.view.widthAnchor, constant: -10),
         stacker.topAnchor
-               .constraintEqualToAnchor(container.topAnchor, constant:93),
+               .constraintEqualToAnchor(container.topAnchor, constant: 93),
         stacker.rightAnchor
-              .constraintEqualToAnchor(container.leftAnchor, constant:7),
+              .constraintEqualToAnchor(container.leftAnchor, constant: 7),
         container.centerXAnchor
                  .constraintEqualToAnchor(self.view.centerXAnchor),
         container.centerYAnchor

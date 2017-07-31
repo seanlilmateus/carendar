@@ -42,12 +42,12 @@ module Carendar
           today_button.centerXAnchor
                       .constraintEqualToAnchor(self.view.centerXAnchor),
           today_button.topAnchor
-                       .constraintEqualToAnchor(calendar.bottomAnchor, constant:5),
+                       .constraintEqualToAnchor(calendar.bottomAnchor, constant: 5),
           
           table_view.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor),
           table_view.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor),
           table_view.topAnchor
-                  .constraintEqualToAnchor(today_button.bottomAnchor, constant:10),
+                  .constraintEqualToAnchor(today_button.bottomAnchor, constant: 10),
           table_view.bottomAnchor.constraintEqualToAnchor(self.view.bottomAnchor),
           table_view.heightAnchor.constraintEqualToConstant(250.0),
           
@@ -55,7 +55,7 @@ module Carendar
           settings_button.centerYAnchor
                          .constraintEqualToAnchor(today_button.centerYAnchor),
           settings_button.trailingAnchor
-                         .constraintEqualToAnchor(self.view.trailingAnchor, constant:-20),
+                         .constraintEqualToAnchor(self.view.trailingAnchor, constant: -20),
           ])
           @__layouted__ = true
       end

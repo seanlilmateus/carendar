@@ -7,24 +7,28 @@ module Carendar
 
 
     def events_of_the_day(date)
-      allowed?.then { validate_date?(date) }
-              .then { DateOffset.new(date, DateOffset::DAY, 1) }
-              .then { |offset| events_from(offset.start_date, to:offset.end_date) }
+      allowed?
+        .then { validate_date?(date) }
+        .then { DateOffset.new(date, DateOffset::DAY, 1) }
+        .then { |offset| events_from(offset.start_date, to:offset.end_date) }
     end
 
 
     def events_of_the_month(date)
-      allowed?.then { validate_date?(date) }
-              .then { DateOffset.new(date, DateOffset::MONTH, 1) }
-              .then { |offset| events_from(offset.start_date, to:offset.end_date) }
+      allowed?
+        .then { validate_date?(date) }
+        .then { DateOffset.new(date, DateOffset::MONTH, 1) }
+        .then { |offset| events_from(offset.start_date, to:offset.end_date) }
     end
 
 
     private
     attr_reader :storage
     def events_from(start_date, to:end_date)
+      type = EKEntityTypeEvent
+      cals = storage.calendarsForEntityType(type)
       predicate = storage.predicateForEventsWithStartDate(start_date, 
-                                                  endDate: end_date, calendars: nil)
+                  endDate: end_date, calendars: cals)
       storage.eventsMatchingPredicate(predicate)
     end
 
@@ -47,7 +51,7 @@ module Carendar
       completion = Proc.new do |flag, error|
         flag ? promise.fulfill(flag) : promise.reject(error)
       end
-      type = EKEntityTypeEvent # | EKEntityTypeReminder
+      type = EKEntityTypeEvent #| EKEntityTypeReminder
       storage.requestAccessToEntityType(type, completion:completion)
       promise
     end

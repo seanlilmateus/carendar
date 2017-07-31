@@ -88,9 +88,9 @@ module Carendar
         bgv.addSubview(detail)
         NSLayoutConstraint.activateConstraints([
           detail.centerXAnchor.constraintEqualToAnchor(bgv.centerXAnchor),
-          detail.centerYAnchor.constraintEqualToAnchor(bgv.centerYAnchor, constant:-30),
+          detail.centerYAnchor.constraintEqualToAnchor(bgv.centerYAnchor, constant: -30),
           date.centerXAnchor.constraintEqualToAnchor(bgv.centerXAnchor),
-          date.centerYAnchor.constraintEqualToAnchor(bgv.centerYAnchor, constant:-55),
+          date.centerYAnchor.constraintEqualToAnchor(bgv.centerYAnchor, constant: -55),
         ])
       end
     end

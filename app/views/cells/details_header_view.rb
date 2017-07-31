@@ -62,7 +62,7 @@ module Carendar
       NSLayoutConstraint.activateConstraints([
         stack.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
         stack.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
-        stack.widthAnchor.constraintEqualToAnchor(self.widthAnchor, constant:-24),
+        stack.widthAnchor.constraintEqualToAnchor(self.widthAnchor, constant: -24),
         *seps,
         separators[1].topAnchor.constraintEqualToAnchor(self.topAnchor),
         separators[0].bottomAnchor.constraintEqualToAnchor(self.bottomAnchor)
@@ -72,7 +72,7 @@ module Carendar
 
     def textField
       @label ||= Label.new.tap do |tf|
-        tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha:1.0)
+        tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha: 1.0)
         tf.font = NSFont.titleBarFontOfSize(18)
       end
     end
@@ -80,7 +80,7 @@ module Carendar
 
     def detailsField
       @detail ||= Label.new.tap do |tf|
-        tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha:1.0)
+        tf.textColor = NSColor.colorWithCalibratedWhite(0.326, alpha: 1.0)
         tf.font = NSFont.boldSystemFontOfSize(12)
       end
     end

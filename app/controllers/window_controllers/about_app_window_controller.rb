@@ -56,7 +56,7 @@ module Carendar
           information_view.widthAnchor.constraintEqualToAnchor(mv.widthAnchor),
           information_view.centerXAnchor.constraintEqualToAnchor(mv.centerXAnchor),
           information_view.topAnchor.constraintEqualToAnchor(mv.topAnchor),
-          information_view.heightAnchor.constraintEqualToAnchor(mv.heightAnchor, constant:-50),
+          information_view.heightAnchor.constraintEqualToAnchor(mv.heightAnchor, constant: -50),
         ])
       end
     end
@@ -81,14 +81,14 @@ module Carendar
         
         NSLayoutConstraint.activateConstraints([
           icon_image_view.widthAnchor.constraintEqualToConstant(100),
-          icon_image_view.topAnchor.constraintEqualToAnchor(cv.topAnchor, constant:50),
-          icon_image_view.leftAnchor.constraintEqualToAnchor(cv.leftAnchor, constant:50),
+          icon_image_view.topAnchor.constraintEqualToAnchor(cv.topAnchor, constant: 50),
+          icon_image_view.leftAnchor.constraintEqualToAnchor(cv.leftAnchor, constant: 50),
           icon_image_view.heightAnchor.constraintGreaterThanOrEqualToConstant(90),
           
-          name_text_field.topAnchor.constraintEqualToAnchor(cv.topAnchor, constant:12),
+          name_text_field.topAnchor.constraintEqualToAnchor(cv.topAnchor, constant: 12),
           version_text_field.topAnchor.constraintEqualToAnchor(name_text_field.bottomAnchor),
           credits_text_view.topAnchor.constraintEqualToAnchor(version_text_field.bottomAnchor),
-          copyright_text_field.bottomAnchor.constraintEqualToAnchor(cv.bottomAnchor, constant:-5),
+          copyright_text_field.bottomAnchor.constraintEqualToAnchor(cv.bottomAnchor, constant: -5),
           
           name_text_field.widthAnchor.constraintEqualToConstant(350),
           name_text_field.rightAnchor.constraintEqualToAnchor(cv.rightAnchor),
@@ -100,7 +100,7 @@ module Carendar
           credits_text_view.rightAnchor.constraintEqualToAnchor(cv.rightAnchor),
           credits_text_view.bottomAnchor.constraintEqualToAnchor(copyright_text_field.topAnchor),
           
-          copyright_text_field.leftAnchor.constraintEqualToAnchor(cv.leftAnchor, constant:12),
+          copyright_text_field.leftAnchor.constraintEqualToAnchor(cv.leftAnchor, constant: 12),
         ])
       end
     end
@@ -152,7 +152,7 @@ module Carendar
         imgv.translatesAutoresizingMaskIntoConstraints = false
         imgv.imageAlignment = NSImageAlignCenter
         imgv.imageScaling = NSImageScaleProportionallyUpOrDown
-        imgv.image = @information.icon #NSApplicationIcon
+        imgv.image = @information.icon
       end
     end
 
@@ -164,8 +164,8 @@ module Carendar
         seg.translatesAutoresizingMaskIntoConstraints = false
         seg.trackingMode = NSSegmentSwitchTrackingSelectOne
         seg.segmentStyle = NSSegmentStyleTexturedSquare
-        seg.setLabel localized_string("Acknowledgements"), forSegment:0
-        seg.setLabel localized_string("License"), forSegment:1
+        seg.setLabel(localized_string("Acknowledgements"), forSegment: 0)
+        seg.setLabel(localized_string("License"), forSegment: 1)
         seg.target = self
         seg.action = 'toggle_credits:'
       end
@@ -196,7 +196,7 @@ module Carendar
         bv.translatesAutoresizingMaskIntoConstraints = false
         bv.addSubview(segment)
         NSLayoutConstraint.activateConstraints([
-          segment.rightAnchor.constraintEqualToAnchor(bv.rightAnchor, constant:-10),
+          segment.rightAnchor.constraintEqualToAnchor(bv.rightAnchor, constant: -10),
           segment.centerYAnchor.constraintEqualToAnchor(bv.centerYAnchor),
         ])
       end

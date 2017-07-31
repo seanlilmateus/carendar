@@ -26,8 +26,10 @@ module Carendar
     def layout_subviews
       unless @__layout__
         NSLayoutConstraint.activateConstraints([
-          textField.widthAnchor.constraintEqualToAnchor(self.widthAnchor, constant:-20),
-          textField.heightAnchor.constraintEqualToAnchor(self.heightAnchor, constant:-10),
+          textField.widthAnchor
+                   .constraintEqualToAnchor(self.widthAnchor, constant: -20),
+          textField.heightAnchor
+                   .constraintEqualToAnchor(self.heightAnchor, constant: -10),
           textField.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor),
           textField.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
         ])
