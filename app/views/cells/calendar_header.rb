@@ -103,14 +103,14 @@ module Carendar
         next_button.widthAnchor.constraintEqualToConstant(18),
         prev_button.widthAnchor.constraintEqualToConstant(18),
         prev_button.leftAnchor
-                   .constraintEqualToAnchor(self.leftAnchor, constant:10),
+                   .constraintEqualToAnchor(self.leftAnchor, constant: 10),
         next_button.rightAnchor
-                   .constraintEqualToAnchor(self.rightAnchor, constant:-10),
+                   .constraintEqualToAnchor(self.rightAnchor, constant: -10),
         week_days.widthAnchor.constraintEqualToAnchor(self.widthAnchor),
         stacker.centerXAnchor
                .constraintEqualToAnchor(self.centerXAnchor),
         stacker.centerYAnchor
-               .constraintEqualToAnchor(self.centerYAnchor, constant:10),
+               .constraintEqualToAnchor(self.centerYAnchor, constant: 10),
         stacker.widthAnchor.constraintEqualToAnchor(self.widthAnchor),
         stacker.heightAnchor.constraintEqualToAnchor(self.heightAnchor),
       ]
@@ -138,10 +138,9 @@ module Carendar
 
 
     def create_label(title="0")
-      label = Label.create(title)
-      label.translatesAutoresizingMaskIntoConstraints = false
+      label = NSTextField.labelWithString(title)
       label.alignment = NSTextAlignmentCenter
-      label.font = NSFont.monospacedDigitSystemFontOfSize(12, weight:NSFontWeightSemibold)
+      label.font = NSFont.monospacedDigitSystemFontOfSize(12, weight: NSFontWeightSemibold)
       label
     end
   end

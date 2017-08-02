@@ -1,3 +1,7 @@
+class NSTextField
+  alias text stringValue
+  alias text= setStringValue
+end
 module Carendar
   class VerticallyCenteredTextFieldCell < NSTextFieldCell
     def drawingRectForBounds(the_rect)

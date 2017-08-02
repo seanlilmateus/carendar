@@ -3,7 +3,7 @@ module Carendar
 
     def initialize
       @popover_delegate = PopoverDelegate.new WeakRef.new(status_item)
-      status_item.button.title  = 'Tue. 9:41'
+      status_item.button.title  = 'Carendar'
       status_item.button.action = 'show_popover:'
       mask = NSLeftMouseDownMask | NSRightMouseDownMask | NSKeyUpMask
       @event_monitor = EventMonitor.new(mask) do |event|

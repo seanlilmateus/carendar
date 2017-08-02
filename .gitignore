@@ -15,7 +15,5 @@ nbproject
 .sass-cache
 .idea
 .dat*.*
-
 .motion-bundler.rb
-
 logs.txt
