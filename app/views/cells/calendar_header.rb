@@ -138,10 +138,9 @@ module Carendar
 
 
     def create_label(title="0")
-      label = Label.create(title)
-      label.translatesAutoresizingMaskIntoConstraints = false
+      label = NSTextField.labelWithString(title)
       label.alignment = NSTextAlignmentCenter
-      label.font = NSFont.monospacedDigitSystemFontOfSize(12, weight:NSFontWeightSemibold)
+      label.font = NSFont.monospacedDigitSystemFontOfSize(12, weight: NSFontWeightSemibold)
       label
     end
   end
